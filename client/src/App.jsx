@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import HomePage from './pages/HomePage';
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NoPage from "./pages/NoPage";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -17,6 +18,7 @@ import ExamList from "./pages/examPage/ExamList";
 import ExamDetails from "./pages/examPage/ExamDetails";
 import EnrollCourse from "./pages/course/EnrollCourse";
 import { AuthProvider } from "../context/AuthContext"; // Fixed import path
+
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route path="/courses/:id" element={<CourseDetails />} />
           <Route path="/exams" element={<ExamList />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="/register-page" element={<Register/>}/>
 
           {/* Protected Routes - Common for all roles */}
           <Route element={<ProtectedRoute allowedRoles={["admin", "faculty", "student"]} />}>

@@ -4,9 +4,18 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role  , phone , address , enrollYear , endYear , Department , HOD} = req.body;
+        const { name, email, password, role, phone, enrollYear, endYear, address, Department, HOD } = req.body;
+
+        //  check if the user already exists
+        const existingUser = await User.findOne({ $or: [{ email }, { phone }] });
+        if (existingUser) {
+            return res.status(400).json({ error: "User with the provided email or phone number already exists" });
+        }
+
+        //  Hash the password securely
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        //  Create new user after checking for duplicates
         const user = await User.create({
             name,
             email,
@@ -20,11 +29,13 @@ const registerUser = async (req, res) => {
             HOD
         });
 
-        res.status(201).json({ message: "User registered successfully" , user });
+        res.status(201).json({ message: "User registered successfully", user });
+
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
+
 
 const loginUser = async (req, res) => {
     try {

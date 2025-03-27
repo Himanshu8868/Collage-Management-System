@@ -7,10 +7,16 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         phone: { type: String, required: true },
         address: { type: String, required: true },
-        enrollYear: { type: String, required: true },
-        endYear: { type: String, required: true },
-        Department: { type: String, required: true },
-        HOD: { type: String, required: true },
+        enrollYear: { 
+            type: String, 
+            required: function() { return this.role === "student"; } 
+        },
+        endYear: { 
+            type: String, 
+            required: function() { return this.role === "student"; }  
+        },
+        Department: { type: String },
+        HOD: { type: String },
         
         role: {
             type: String,
