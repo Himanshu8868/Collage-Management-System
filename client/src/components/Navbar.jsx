@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 import axios from "axios"
 import { FiUser, FiLogOut, FiSettings, FiHome, FiBook, FiLogIn } from "react-icons/fi";
 
@@ -80,7 +81,7 @@ const Navbar = () => {
         window.location.href = response.data.role === "student" ? "/studentDashboard" : "/dashboard";
       } catch (err) {
            if(err){
-            setError("incorrect username or password");
+            toast.error("incorrect username or password");
            }
         setError(err.response?.data?.error || 'Login failed. Please try again.');
         setIsLoading(false);
@@ -357,22 +358,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
-                <button
-                  onClick={() => {
-                    setIsLoginModalOpen(true);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="block w-full px-4 py-2 text-center rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center justify-center"
-                >
-                  <FiLogIn className="mr-2" /> Login
-                </button>
-                <Link
-                  to="/register"
-                  className="block w-full px-4 py-2 text-center rounded-md text-base font-medium text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Register
-                </Link>
+               
               </div>
             )}
           </div>

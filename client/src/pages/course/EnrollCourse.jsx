@@ -25,9 +25,6 @@ const EnrollCourse = () => {
             const response = await axios.post(`http://localhost:5000/api/courses/${id}/enroll`, formData, {
 
                 headers: { Authorization: `Bearer ${token}` },
-
-
-
             });
             setMessage(response.data.message);
 

@@ -14,6 +14,8 @@ const Login = ({ closeModal }) => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
+  
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
@@ -30,8 +32,8 @@ const Login = ({ closeModal }) => {
       localStorage.setItem("name", response.data.name);
       localStorage.setItem("email", response.data.email);
 
-      // Close modal before redirecting
-      closeModal();
+
+  ;
       
       // Use navigate instead of window.location for SPA behavior
       window.location.href = response.data.role === "student" 
@@ -197,5 +199,4 @@ const Login = ({ closeModal }) => {
     </AnimatePresence>
   );
 };
-
 export default Login;

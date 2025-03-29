@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import "flowbite";
 import './App.css';
 import React from 'react';
@@ -18,6 +20,10 @@ import ExamList from "./pages/examPage/ExamList";
 import ExamDetails from "./pages/examPage/ExamDetails";
 import EnrollCourse from "./pages/course/EnrollCourse";
 import { AuthProvider } from "../context/AuthContext"; // Fixed import path
+import AdminPanel from "./pages/Admin/Dashboards/AdminPanel";
+import UserManagement from "./pages/Users/UserManagement";
+import Page from "./pages/Page"
+import TostMessages from '../hooks/TostMessages';
 
 
 function App() {
@@ -25,9 +31,10 @@ function App() {
     <>
       <Router>
             <AuthProvider>
-
+           <TostMessages/>    {/* Messages in the Top success or failed */}
         <Navbar />
         <Routes>
+           <Route path ="/page" element={<Page/>} />
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
@@ -43,6 +50,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/exam-details/:id" element={<ExamDetails />} />
+            <Route path="/Users" element={<UserManagement/>} />
           </Route>
 
           {/* Student-specific routes */}
@@ -51,9 +59,14 @@ function App() {
             <Route path="/:id/enroll-course" element={<EnrollCourse />} />
           </Route>
 
+           {/* Admin Panel */}
+
+           <Route path="/AdminDashboard" element={<AdminPanel/>} />
+
+
           {/* Add more role-specific route groups as needed */}
         </Routes>
-        <Footer />
+        <Footer  />
         </AuthProvider>
       </Router>
    </>

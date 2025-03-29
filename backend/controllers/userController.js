@@ -28,5 +28,29 @@ const getUserProfile = async (req, res) => {
     }
 };
 
+//Get all users Profile with roles //
 
-module.exports = { getUserProfile };
+const UserProfile = async (req, res) => {
+    const user = await User.find().select('-password');
+    if (user) {
+        res.status(200).json(user);  
+    } else {
+        res.status(404).json({ message: "Unable to Find user", success: false });
+    }
+};
+
+ //delete a user //
+   
+    const UserDelete = async (req , res) => {
+           const deleteId = req.params.id;
+         const user = await User.findByIdAndDelete(deleteId)
+                if(user){
+                    res.json(user)
+                }
+                
+    }
+
+module.exports = { getUserProfile , 
+    UserProfile ,
+     UserDelete
+ };

@@ -17,7 +17,7 @@ const Register = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-    const navigate = useNavigate();
+   
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -35,7 +35,7 @@ const Register = () => {
             const response = await axios.post("http://localhost:5000/api/auth/register", formData);
                       if(response.success)
                 setMessage("Registration successful! Redirecting to login...");
-                setTimeout(() => navigate("/login"), 2000);
+                      window.location.href = response.data.role === "student" ? "/studentDashboard" : "/dashboard";
         } catch (err) {
               if(err.response?.status == 400){
                 setTimeout(() => {
@@ -49,7 +49,7 @@ const Register = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+        <div className=" mt-15 max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
             <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">Create Account</h2>
             
             {message && (
