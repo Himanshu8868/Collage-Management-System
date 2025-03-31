@@ -50,7 +50,7 @@ const Navbar = () => {
   const roleDashboard = () => {
     if (role === "admin") navigate("/AdminDashboard");
     else if (role === "student") navigate("/StudentDashboard");
-    else if (role === "faculty") navigate("/FacultyDash");
+    else if (role === "faculty") navigate("/dashboard");
     else navigate("/dashboard");
   };
 
@@ -193,7 +193,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed w-full top-0 z-40 transition-all duration-500 ${scrolled ? 'backdrop-blur-md bg-white/30 dark:bg-gray-900/30 shadow-sm' : 'backdrop-blur-sm bg-white/20 dark:bg-gray-900/20'}`}>
+      <nav className={`fixed w-full  top-0 z-40 transition-all duration-500 ${scrolled ? 'backdrop-blur-md bg-white/30 dark:bg-gray-900/30 shadow-sm' : 'backdrop-blur-sm bg-white/20 dark:bg-gray-900/20'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo and main nav */}
@@ -211,9 +211,9 @@ const Navbar = () => {
                 </div>
               </button>
 
-              <Link to="/" className="flex-shrink-0 flex items-center">
+              <Link to="/" className=" flex-shrink-0 flex items-center">
                 <img className="h-8 w-auto" src="https://flowbite.com/docs/images/logo.svg" alt="Logo" />
-                <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white">HDU</span>
+                <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white py-6">HDU</span>
               </Link>
 
               {/* Desktop Navigation */}

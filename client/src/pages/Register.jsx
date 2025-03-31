@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
+
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -34,16 +36,16 @@ const Register = () => {
         try {
             const response = await axios.post("http://localhost:5000/api/auth/register", formData);
                       if(response.success)
-                setMessage("Registration successful! Redirecting to login...");
+                toast.success("Registration successful! Redirecting to login...");
                       window.location.href = response.data.role === "student" ? "/studentDashboard" : "/dashboard";
         } catch (err) {
               if(err.response?.status == 400){
                 setTimeout(() => {
-                    setError("User already exits ! plese try different email or phone number")
+                      toast.error("User Alreday exits , Try different Email or Number")
                 }, 2000)
               } 
               else{
-                setError(err.response?.data?.message || "Registration Failed");
+                toast.error(err.response?.data?.message || "Registration Failed");
               }
         }
     };

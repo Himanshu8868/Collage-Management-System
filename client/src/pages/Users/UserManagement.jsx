@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { FiSearch, FiFilter, FiEdit2, FiTrash2, FiUserPlus } from "react-icons/fi";
 
 const UserManagement = () => {
+    const navigate = useNavigate()
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,11 +16,18 @@ const UserManagement = () => {
     const [usersPerPage] = useState(10);
     const [showModal, setShowModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+  
+   useEffect(() => {
+        const role = localStorage.getItem("role");
 
-    useEffect(() => {
+        
+        if (role === "student") {
+            navigate("/");
+            return; 
+        }
+
         const fetchUsers = async () => {
             try {
-                setLoading(true);
                 const token = localStorage.getItem("token");
                 const response = await axios.get("http://localhost:5000/api/users/users", {
                     headers: { Authorization: `Bearer ${token}` },
@@ -30,7 +39,6 @@ const UserManagement = () => {
                     throw new Error("Invalid API response format");
                 }
             } catch (err) {
-                setError("Failed to load users. Please try again.");
                 toast.error("Failed to load users");
             } finally {
                 setLoading(false);
@@ -38,8 +46,7 @@ const UserManagement = () => {
         };
 
         fetchUsers();
-    }, []);
-
+    }, [navigate]); 
     // Filter users based on search and role
     const filteredUsers = users.filter(user => {
         const matchesSearch = 
@@ -70,11 +77,21 @@ const UserManagement = () => {
         if (window.confirm("Are you sure you want to delete this user?")) {
             try {
                 const token = localStorage.getItem("token");
+                const role = localStorage.getItem("role")
+                 
+                if(role ==="faculty" || role ==="student"){
+                    toast.error("Unauthrized Access! not authenticate")
+                    return ;
+                }
+
                 await axios.delete(`http://localhost:5000/api/users/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setUsers(users.filter(user => user._id !== userId));
-                toast.success("User deleted successfully");
+
+                   if(role === "admin") {
+                    setUsers(users.filter(user => user._id !== userId));
+                    toast.success("User deleted successfully");
+                   } 
             } catch (err) {
                 toast.error("Failed to delete user");
             }

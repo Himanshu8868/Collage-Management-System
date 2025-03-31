@@ -21,9 +21,13 @@ import ExamDetails from "./pages/examPage/ExamDetails";
 import EnrollCourse from "./pages/course/EnrollCourse";
 import { AuthProvider } from "../context/AuthContext"; // Fixed import path
 import AdminPanel from "./pages/Admin/Dashboards/AdminPanel";
+import DeleteExam from "./pages/Admin/Dashboards/DeleteExam"
+
 import UserManagement from "./pages/Users/UserManagement";
 import Page from "./pages/Page"
 import TostMessages from '../hooks/TostMessages';
+import CreateExam from './pages/ExamManagemnt/CreateExam';
+import EditExam from './pages/ExamManagemnt/EditExam';
 
 
 function App() {
@@ -50,7 +54,11 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/exam-details/:id" element={<ExamDetails />} />
-            <Route path="/Users" element={<UserManagement/>} />
+            <Route path= "/exam/create-exam" element={<CreateExam/>} />
+            <Route path="/exam/edit-exam" element={<EditExam/>} />
+            <Route path ="/exam-deletaiton-approved" element={<DeleteExam/>} />
+
+            <Route  allowedRolespath={["admin", "faculty"]} path= "/users" element={<UserManagement/>} />
           </Route>
 
           {/* Student-specific routes */}
@@ -58,6 +66,10 @@ function App() {
             <Route path="/studentDashboard" element={<StudentDashBoard />} />
             <Route path="/:id/enroll-course" element={<EnrollCourse />} />
           </Route>
+
+          {/* <Route element = {<ProtectedRoute allowedRoles={["admin"]} />} >
+            <Route path ="/exam-deletaiton-approved" element={<DeleteExam/>} />
+          </Route> */}
 
            {/* Admin Panel */}
 

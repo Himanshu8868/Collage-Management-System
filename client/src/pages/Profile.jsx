@@ -71,7 +71,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="min-h-screen mt-15 bg-gray-100 dark:bg-gray-900">
             {/* Sidebar */}
             <motion.div
                 initial={{ x: -100 }}

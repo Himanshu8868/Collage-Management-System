@@ -23,7 +23,14 @@ const ExamSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-
+      
+    duration:{
+        type:String,
+    },
+    
+    deleteRequested: { type: Boolean, default: false },
+    deletedByAdmin: { type: Boolean, default: false }, // Will be set to true when admin deletes the exam
+    
     questions: [
         {
             questionText: { type: String, required: true },

@@ -1,17 +1,17 @@
 const Exam = require('../models/Exam');
 const Course = require('../models/Course');
-const Result = require('../models/Result'); 
+const Result = require('../models/Result');
 const User = require('../models/User');
 // const { validationResult } = require('express-validator');
 
-// Faculty creates an exam
 const createExam = async (req, res) => {
     try {
-        const { courseId, title, date, questions } = req.body;
+        const { code, title, date, duration, questions } = req.body;
 
-        const course = await Course.findById(courseId);
+        // Find the course using exam code instead of courseId
+        const course = await Course.findOne({ code });
         if (!course) {
-            return res.status(400).json({ message: "Invalid course ID" });
+            return res.status(400).json({ message: "Invalid exam code" });
         }
 
         // Ensure the faculty is assigned to this course
@@ -19,52 +19,186 @@ const createExam = async (req, res) => {
             return res.status(403).json({ message: "Not authorized to create exams for this course" });
         }
 
-        const exam = await Exam.create({ course: courseId, title, date, questions })
-          
+        // Create the exam without requiring courseId
+        const exam = await Exam.create({
+            course: course._id, // Store course reference
+            title,
+            date,
+            duration,
+            questions
+        });
 
-        res.status(201).json({success : true , message:"Exam created successfully" , exam});
+        res.status(201).json({ success: true, message: "Exam created successfully", exam });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Update exam // 
+
+const UpdateExam = async (req, res) => {
+    try {
+        const examId = req.params.id; // Extract exam ID from URL
+        const { title, date, questions } = req.body; // Extract updated data
+
+        // Find the exam and update it
+        const updatedExam = await Exam.findByIdAndUpdate(
+            examId,
+            { title, date, questions },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedExam) {
+            return res.status(404).json({ success: false, message: "Exam not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Exam updated successfully", exam: updatedExam });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+//: Instructor requests exam deletion By exam id
+ const RequestDelete = async (req, res) => {
+    const { examId } = req.params;
+    try {
+        const exam = await Exam.findById(examId);
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+
+        if (exam.deleteRequested) {
+            return res.status(400).json({ message: "Delete request has already been made" });
+        }
+
+        // Mark the exam as requested for deletion
+        exam.deleteRequested = true;
+        await exam.save();
+
+        return res.status(200).json({ message: "Exam deletion request submitted successfully" });
+
+    } catch (err) {
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
+//   Pending request for Exam Deletation //
+const GetPendingExams = async (req, res) => {
+    try {
+        // Fetch exams that have been requested for deletion
+        const pendingExams = await Exam.find({ deleteRequested: true, deletedByAdmin: { $ne: true } });
+        return res.status(200).json(pendingExams);
+    } catch (err) {
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+
+
+
+
+// Delate exam By Admin by exam id
+    const DeleteExam =  async (req, res) => {
+    const { examId } = req.params;
+
+    try {
+        // Check if the exam exists
+        const exam = await Exam.findById(examId);
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+
+        // Ensure the delete request was made by an instructor
+        if (!exam.deleteRequested) {
+            return res.status(400).json({ message: "Exam was not requested for deletion" });
+        }
+
+        // Admin approves the deletion and removes the exam
+        if (exam.deletedByAdmin) {
+            return res.status(400).json({ message: "Exam has already been deleted by admin" });
+        }
+
+        // Mark the exam as deleted by admin
+        exam.deletedByAdmin = true;
+
+        // Delete the exam
+        await exam.deleteOne();
+
+        return res.status(200).json({ message: "Exam deleted successfully" });
+
+    } catch (err) {
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};         
+
+// Exam can see only the techer and edit //
+
+const Details = async (req, res) => {
+    try {
+        // Get instructor ID from authenticated user
+        const facultyId = req.user.id;
+
+        // Find all courses that this instructor is teaching
+        const courses = await Course.find({ instructor: facultyId }).populate('instructor', 'name');
+
+        if (!courses.length) {
+            return res.status(200).json({ success: true, message: "No courses found for your faculty", exams: [] });
+        }
+
+        // Extract course IDs
+        const courseIds = courses.map(course => course._id);
+
+        // Find exams related to the courses taught by this instructor
+        const exams = await Exam.find({ course: { $in: courseIds } }).populate('course');
+
+        if (!exams.length) {
+            return res.status(200).json({ success: true, message: "No exams found for your courses", exams: [] });
+        }
+
+        // Return the exam details
+        res.status(200).json({ success: true, message: "Exam details fetched successfully", exams });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+};
+
+
+//Get all exam for a Course 
+
+const getExams = async (req, res) => {
+    const courseId = req.params.courseId;
+    try {
+        const exam = await Exam.find({ course: courseId }).populate("course", "name");
+        res.status(200).json({ success: true, exam });
+        if (!exam) {
+            return res.status(404).json({ message: "No exam found" });
+        }
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-};
- 
-   //Get all exam for a Course 
-   
-    const getExams = async (req, res) => {
-        const courseId = req.params.courseId;
-        try{
-            const exam = await Exam.find({course: courseId}).populate("course", "name");
-            res.status(200).json({success : true , exam});
-            if(!exam){
-                return res.status(404).json({message: "No exam found"});
-            }
-        }catch(error){
-            res.status(400).json({error: error.message});
-        }
-    }
+}
 
-  //get all exms details //
-       
-       const examDetails = async (req , res) => {
-               try{
-                const Exams = await Exam.find()
-                .populate("course", "name")
-                  if(Exams){
-                       res.status(200).json({success : true , Exams });
-                  }
-                  else{
-                    return res.status(404).json({message: "No exam found"});
-                  }
-               }catch(error){
-                res.status(500).json({error: error.message});
-               }
-       }
+//get all exms details //
+
+const examDetails = async (req, res) => {
+    try {
+        const Exams = await Exam.find()
+            .populate("course", "name")
+        if (Exams) {
+            res.status(200).json({ success: true, Exams });
+        }
+        else {
+            return res.status(404).json({ message: "No exam found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 // Get a specific exam
 const getExamById = async (req, res) => {
     try {
         const exam = await Exam.findById(req.params.id).populate("course", "name");
-        
+
         if (!exam) return res.status(404).json({ message: "Exam not found" });
 
         res.json(exam);
@@ -73,8 +207,8 @@ const getExamById = async (req, res) => {
     }
 };
 
-    
-    // Student submits exam answers
+
+// Student submits exam answers
 // const submitExam = async (req, res) => {
 //     try {
 //         const { answers } = req.body;
@@ -151,11 +285,11 @@ const submitExam = async (req, res) => {
         });
 
         // Send response with detailed info
-        res.status(201).json({ 
-            message: "Exam submitted successfully", 
-            student: student.name, 
-            score, 
-            result 
+        res.status(201).json({
+            message: "Exam submitted successfully",
+            student: student.name,
+            score,
+            result
         });
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -167,20 +301,20 @@ const submitExam = async (req, res) => {
 const getResultsByStudent = async (req, res) => {
     try {
         const results = await Result.find({ student: req.params.id })
-        .populate("exam", "title")
-        .populate("student", "name")
-          if(results.length === 0){
-            return res.status(404).json({message: " No result found for this student" });
+            .populate("exam", "title")
+            .populate("student", "name")
+        if (results.length === 0) {
+            return res.status(404).json({ message: " No result found for this student" });
         }
-         res.status(200).json({success : true , message: "result found " , results});
+        res.status(200).json({ success: true, message: "result found ", results });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
- //Get all results for an exam
+//Get all results for an exam
 
- const getResultsByExam = async (req, res) => {
+const getResultsByExam = async (req, res) => {
     try {
         const results = await Result.find({ exam: req.params.id })
             .populate("student", "name email")
@@ -196,7 +330,12 @@ const getResultsByStudent = async (req, res) => {
 
 module.exports = {
     createExam,
+    UpdateExam,
+    RequestDelete,
+    GetPendingExams,
+    DeleteExam,
     examDetails,
+    Details,  // filter instructor based on their sub
     getExams,
     getExamById,
     submitExam,

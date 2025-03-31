@@ -3,8 +3,10 @@ const User = require("../models/User");
 
 const protect = async (req, res, next) => {
     try {
-        let token = req.cookies.token || req.headers.authorization?.split(" ")[1]; //  Support both cookies & headers
-        
+        let token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.startsWith("Bearer") 
+                    ? req.headers.authorization.split(" ")[1] 
+                    : null);
+
         if (!token) {
             return res.status(401).json({ message: "Unauthorized access - No token provided" });
         }
@@ -19,7 +21,7 @@ const protect = async (req, res, next) => {
         next();
     } catch (error) {
         console.error("Auth Middleware Error:", error.message);
-        res.status(401).json({ message: "Invalid or expired token" });
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
 };
 
@@ -27,15 +29,21 @@ const isAdmin = (req, res, next) => {
     if (req.user && req.user.role === "admin") {
         next();
     } else {
-        res.status(403).json({ message: "Access denied, Admins only" });
+        return res.status(403).json({ message: "Access denied, Admins only" });
     }
 };
 
 const isFaculty = (req, res, next) => {
-    if (req.user && (req.user.role === "faculty" || req.user.role === "admin")) {
-        next();
+    if (req.user) {
+        if (req.user.role === "faculty") {
+            next();
+        } else if (req.user.role === "admin") {
+            next();
+        } else {
+            return res.status(403).json({ message: "Access denied, Faculty only" });
+        }
     } else {
-        res.status(403).json({ message: "Access denied, Faculty only" });
+        return res.status(401).json({ message: "Unauthorized access" });
     }
 };
 
@@ -43,7 +51,7 @@ const isStudent = (req, res, next) => {
     if (req.user && req.user.role === "student") {
         next();
     } else {
-        res.status(403).json({ message: "Access denied, Students only" });
+        return res.status(403).json({ message: "Access denied, Students only" });
     }
 };
 

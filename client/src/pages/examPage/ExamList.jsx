@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion"; // Importing Framer Motion for animations
-import { FiCalendar, FiBookOpen, FiAlertCircle } from "react-icons/fi"; // Importing icons
+import { motion } from "framer-motion"; 
+import { FiCalendar, FiBookOpen, FiAlertCircle } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 const ExamList = () => {
     const [exams, setExams] = useState([]);
@@ -10,13 +11,19 @@ const ExamList = () => {
 
     useEffect(() => {
         const fetchExams = async () => {
+             let token =  localStorage.getItem("token")
             try {
-                const response = await axios.get("http://localhost:5000/api/exams/exam-details");
+                const response = await axios.get("http://localhost:5000/api/exams/exam-details", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 
                 if (response.data.success) {
                     setExams(response.data.Exams);
                 } else {
                     setError("No exams found");
+                    toast.error("Not exams found")
                 }
             } catch (err) {
                 console.error("Error fetching exams:", err);

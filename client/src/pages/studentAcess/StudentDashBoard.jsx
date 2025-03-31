@@ -5,7 +5,7 @@ import { FaBook, FaCalendarAlt, FaBell } from "react-icons/fa";
 const StudentDashBoard = () => {
   return (
     
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="my-8 flex h-screen bg-gray-100 dark:bg-gray-900">
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -100, opacity: 0 }}
@@ -28,7 +28,7 @@ const StudentDashBoard = () => {
       </motion.aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="my-10 flex-1 p-6">
         <motion.h2
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
