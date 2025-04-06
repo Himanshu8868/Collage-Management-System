@@ -6,7 +6,7 @@ const ExamSchema = new mongoose.Schema({
         ref: "Course",
         required: true,
     },
-
+  
      student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -36,7 +36,7 @@ const CreateExam = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  if(!token || role !== "faculty"){
+  if(!token || role == "student"){
     window.location.href = "/home";
   }
 

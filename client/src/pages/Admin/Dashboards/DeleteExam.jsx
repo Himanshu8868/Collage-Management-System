@@ -75,10 +75,7 @@ const DeleteExam = () => {
         }
       );
       
-      toast.success(response.data.message, {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      toast.success(response.data.message)
       
       // Update state by filtering out the deleted exam
       setPendingExams(prev => prev.filter(exam => exam._id !== examId));
@@ -86,10 +83,7 @@ const DeleteExam = () => {
       console.error("Error deleting exam:", error);
       const errorMsg = error.response?.data?.message || 
                      "Failed to delete exam. Please try again.";
-      toast.error(errorMsg, {
-        position: "top-center",
-        autoClose: 5000,
-      });
+      toast.error(errorMsg);
     } finally {
       setDeletingId(null);
     }
@@ -140,7 +134,7 @@ const DeleteExam = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className=" mt-13 min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Debug mode toggle */}
         <div className="flex justify-end mb-2">
@@ -154,7 +148,7 @@ const DeleteExam = () => {
 
         {/* Debugging panel */}
         {debugMode && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="mt-15 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <h3 className="font-bold text-yellow-800 mb-3 flex items-center">
               <FiInfo className="mr-2" /> Debug Information
             </h3>
@@ -184,7 +178,7 @@ const DeleteExam = () => {
         )}
 
         {/* Main content */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="mt-15 bg-white shadow rounded-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -253,16 +247,17 @@ const DeleteExam = () => {
                         </p>
                         <div className="flex flex-wrap mt-1 gap-x-4 gap-y-1">
                           <p className="text-xs text-gray-500">
-                            <span className="font-semibold">Course:</span> {exam.courseId || "N/A"}
+                            <span className="font-semibold">Course:</span> {exam.course?.name || "N/A"}
                           </p>
                           <p className="text-xs text-gray-500">
                             <span className="font-semibold">Date:</span>{" "}
                             {exam.date ? new Date(exam.date).toLocaleDateString() : "N/A"}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            <span className="font-semibold">Created By:</span>{" "}
-                            {exam.createdBy?.name || exam.createdBy || "Unknown"}
-                          </p>
+                      <p className="text-xs text-gray-500">
+                        <span className="font-semibold">Created By:</span>{" "}
+                        {exam.instructor?.name || "Unknown"}
+                        </p>
+
                           <p className="text-xs text-gray-500">
                             <span className="font-semibold">ID:</span> {exam._id || "N/A"}
                           </p>

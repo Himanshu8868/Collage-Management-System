@@ -86,7 +86,13 @@ const UpdateExam = async (req, res) => {
 const GetPendingExams = async (req, res) => {
     try {
         // Fetch exams that have been requested for deletion
-        const pendingExams = await Exam.find({ deleteRequested: true, deletedByAdmin: { $ne: true } });
+        const pendingExams = await Exam.find({ deleteRequested: true, deletedByAdmin: { $ne: true } })
+        .populate({
+            path: 'course',
+            populate: {
+              path: 'instructor'
+            }
+          })          
         return res.status(200).json(pendingExams);
     } catch (err) {
         return res.status(500).json({ message: "Server error", error: err.message });
@@ -177,12 +183,18 @@ const getExams = async (req, res) => {
     }
 }
 
-//get all exms details //
+//get all exmas details //
 
 const examDetails = async (req, res) => {
     try {
         const Exams = await Exam.find()
-            .populate("course", "name")
+            .populate({
+                path:"course",
+                  populate:{
+                    path:"instructor",
+                    select:"name"
+                  }
+            })
         if (Exams) {
             res.status(200).json({ success: true, Exams });
         }

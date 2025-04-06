@@ -1,6 +1,7 @@
 const express = require("express");
 const {
     createCourse,
+    GetInstructors,
     getCourses,
     getCourseById,
     updateCourse,
@@ -14,6 +15,8 @@ const router = express.Router();
 // Admin creates a new course
 router.post("/create-course", protect, isAdmin, createCourse);
 
+// Get all Instructors for creating course//
+router.get("/instructors" , protect , isAdmin , GetInstructors)
 // Get all courses (for students and faculty)
 router.get("/",  getCourses);
 
@@ -21,7 +24,7 @@ router.get("/",  getCourses);
 router.get("/:id" , getCourseById);
 
 // Admin or faculty updates a course
-router.put("/:id", protect, isFaculty, updateCourse);
+router.put("/:id", protect, isAdmin, updateCourse);
 
 // Admin deletes a course
 router.delete("/:id", protect, isAdmin, deleteCourse);

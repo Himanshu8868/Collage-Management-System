@@ -19,9 +19,9 @@ router.post("/",  protect , isFaculty , createExam);
   router.delete('/delete-approved/:examId', protect , isAdmin, DeleteExam );
 
 //Get all exam details
-router.get("/exam-details"  , protect , examDetails);
+router.get("/all-exams"  , protect , examDetails);
 
-// Get Exam for a Speciic  techer //
+// Get Exam for a Speciic  teacher //
 
 router.get("/exam-specific", protect, isFaculty, Details); 
 

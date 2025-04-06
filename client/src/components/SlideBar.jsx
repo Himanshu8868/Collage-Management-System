@@ -43,7 +43,7 @@ const Sidebar = () => {
                         className="flex items-center gap-4 p-3 hover:bg-gray-700 rounded-lg w-full text-left"
                     >
                         <FaBook className="text-xl" />
-                        {isOpen && <span>Courses</span>}
+                        {isOpen && <span>Manage Courses</span>}
                         {isOpen && <FaChevronDown className={`ml-auto transition-transform ${isCoursesOpen ? "rotate-180" : ""}`} />}
                     </button>
                     {isCoursesOpen && (
@@ -53,10 +53,9 @@ const Sidebar = () => {
                             transition={{ duration: 0.3 }}
                             className="ml-6 mt-2 flex flex-col gap-2"
                         >
-                            <SidebarItem text="Computer Science" to="/courses/computer-science" isOpen={isOpen} />
-                            <SidebarItem text="Mechanical Engineering" to="/courses/mechanical" isOpen={isOpen} />
-                            <SidebarItem text="Electrical Engineering" to="/courses/electrical" isOpen={isOpen} />
-                        </motion.div>
+                           <SidebarItem text="Update-Course" to="/update-course" isOpen={isOpen} />
+                          <SidebarItem text="Create Course" to="/create-courses" isOpen={isOpen} /></motion.div> 
+                          
                     )}
                 </div>
 
