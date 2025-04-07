@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom"
 import { toast } from "react-toastify";
 import { FiBook, FiCode, FiEdit2, FiUser, FiLoader } from "react-icons/fi";
 
 const CreateCourse = () => {
+   const navigate = useNavigate()
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
+  
   const [courseData, setCourseData] = useState({
     name: "",
     code: "",
@@ -22,6 +26,19 @@ const CreateCourse = () => {
     instructorId: ""
   });
 
+  useEffect(() => {
+    if (role !== "admin") {
+      toast.error("Only admins can access this page.");
+    }
+     else if(role === "student"){
+      navigate("StudentDashboard")
+     }
+      if(role === "faculty"){
+        navigate("/dashboard")
+      }
+  }, [role]);
+  
+ console.log(role)
   useEffect(() => {
     const fetchInstructors = async () => {
       try {

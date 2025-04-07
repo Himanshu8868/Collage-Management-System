@@ -42,7 +42,6 @@ const EditExam = () => {
         if (window.confirm("Are you sure you want to send  delete  request for this exam?")) {
             try {
                 const token = localStorage.getItem("token");
-               
                 // Send PUT request to request deletion
                 const response = await axios.put(
                     `http://localhost:5000/api/exams/${examId}/request-delete`, 
@@ -51,9 +50,9 @@ const EditExam = () => {
                         headers: { Authorization: `Bearer ${token}` }  // Authorization header with token
                     }
                 );  
-                     toast.message("Your request send successFully for Deleting ,")
+                     toast.success("Your request send successFully for Deleting ,")
                 // Fetch the exams again
-                fetchExams();
+                     fetchExams();
             } catch (error) {
                 const errorMessage = error.response?.data?.message || 'Failed to Create request for Deleting.';
                         toast.error(errorMessage)

@@ -2,6 +2,8 @@ import SlideBar from "../components/SlideBar";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
+      localStorage.getItem("role");
+      localStorage.getItem("token")
     return (
         <div className="flex mt-15">
             {/* Sidebar */}

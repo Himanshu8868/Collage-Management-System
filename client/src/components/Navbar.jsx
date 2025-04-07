@@ -193,7 +193,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed w-full  top-0 z-40 transition-all duration-500 ${scrolled ? 'backdrop-blur-md bg-white/30 dark:bg-gray-900/30 shadow-sm' : 'backdrop-blur-sm bg-white/20 dark:bg-gray-900/20'}`}>
+      <nav className={`fixed  w-full  top-0 z-40 transition-all duration-500 ${scrolled ? 'backdrop-blur-md bg-white/30 dark:bg-gray-900/30 shadow-sm' : 'backdrop-blur-sm bg-white/20 dark:bg-gray-900/20'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo and main nav */}
@@ -282,7 +282,7 @@ const Navbar = () => {
                   )}
                 </div>
               ) : (
-                <div className="flex space-x-2">
+                <div className="flex  space-x-2">
                   <motion.button
                     onClick={() => setIsLoginModalOpen(true)}
                     whileHover={{ scale: 1.05 }}

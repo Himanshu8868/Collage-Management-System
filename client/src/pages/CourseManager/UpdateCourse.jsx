@@ -6,13 +6,26 @@ import { FiEdit, FiTrash2, FiPlusCircle, FiBook } from 'react-icons/fi';
 
 const UpdateCourse = () => {
 const navigate = useNavigate();
-
+const role = localStorage.getItem("role")
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [instructors, setInstructors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+    useEffect(() => {
+      if (role !== "admin") {
+        toast.error("Only admins can access this page.");
+      }
+       else if(role === "student"){
+        navigate("StudentDashboard")
+       }
+        if(role === "faculty"){
+          navigate("/dashboard")
+        }
+    }, [role]);
+    
 
   const fetchCourses = async () => {
     try {
@@ -105,7 +118,7 @@ const navigate = useNavigate();
   );
 
   if (error) return (
-    <div className="p-4 text-red-500 text-center">
+    <div className="mt-25 p-4 text-red-500 text-center">
       {error}
       <button 
         onClick={() => window.location.reload()}

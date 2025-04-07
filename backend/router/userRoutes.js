@@ -1,5 +1,5 @@
 const express = require("express");
-const { getUserProfile , UserProfile ,UserDelete  , UpdateUser} = require("../controllers/userController");
+const { getUserProfile , UserProfile ,UserDelete ,UpdateUser , UserStatus} = require("../controllers/userController");
 const { protect , isAdmin , isFaculty} = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -7,7 +7,7 @@ const router = express.Router();
 // Fetch logged-in user profile
 router.get("/profile", protect, getUserProfile);
 
-//Fech All users  Admin for all //
+//Fech All users  Admin for all or Student for instructor //
     router.get("/users" , protect , UserProfile   )
 
 //Delete a user by Id //
@@ -17,5 +17,8 @@ router.get("/profile", protect, getUserProfile);
  //update user by id
 
   router.put("/:id" , UpdateUser)
+
+  // Handle User status ( active  -inactive) //
+    router.put("/:id/status"  , isAdmin ,protect , UserStatus)
 
 module.exports = router;
