@@ -19,20 +19,59 @@ const createExam = async (req, res) => {
             return res.status(403).json({ message: "Not authorized to create exams for this course" });
         }
 
-        // Create the exam without requiring courseId
+        // Map the correctAnswer index to the actual option text
+        const formattedQuestions = questions.map((q) => ({
+            questionText: q.questionText,
+            options: q.options,
+            correctAnswer: q.options[parseInt(q.correctAnswer)] // convert "0" → "GET", etc.
+        }));
+
+        // Create the exam
         const exam = await Exam.create({
-            course: course._id, // Store course reference
+            course: course._id,
             title,
             date,
             duration,
-            questions
+            questions: formattedQuestions
         });
 
-        res.status(201).json({ success: true, message: "Exam created successfully", exam });
+        res.status(201).json({
+            success: true,
+            message: "Exam created successfully",
+            exam
+        });
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+// GET /api/exams/ for Student enrolled 
+const getStudentExams = async (req, res) => {
+    try {
+        const studentId = req.user.id; 
+
+        // Step 1: Find courses where this student is enrolled
+        const courses = await Course.find({ studentsEnrolled: studentId });
+
+        if (!courses || courses.length === 0) {
+            return res.status(404).json({ message: "You are not enrolled in any courses." });
+        }
+
+        const courseIds = courses.map(course => course._id);
+
+        // Step 2: Find exams linked to those courses
+        const exams = await Exam.find({ course: { $in: courseIds } })
+            .populate("course", "name code");
+
+        res.status(200).json({ success: true, exams });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
+
 
 // Update exam // 
 
@@ -98,8 +137,6 @@ const GetPendingExams = async (req, res) => {
         return res.status(500).json({ message: "Server error", error: err.message });
     }
 };
-
-
 
 
 // Delate exam By Admin by exam id
@@ -209,7 +246,14 @@ const examDetails = async (req, res) => {
 // Get a specific exam
 const getExamById = async (req, res) => {
     try {
-        const exam = await Exam.findById(req.params.id).populate("course", "name");
+        const exam = await Exam.findById(req.params.id)
+        .populate({
+            path:"course",
+              populate:{
+                path:"instructor",
+                select:"name"
+              }
+        })
 
         if (!exam) return res.status(404).json({ message: "Exam not found" });
 
@@ -221,108 +265,153 @@ const getExamById = async (req, res) => {
 
 
 // Student submits exam answers
+// controllers/examController.js
+
 // const submitExam = async (req, res) => {
 //     try {
+//         const studentId = req.user.id;
+//         const examId = req.params.id;
 //         const { answers } = req.body;
-//         const exam = await Exam.findById(req.params.id).populate("course" , "name") .populate("student" , "name");
-//         const user = await User.findById(req.user.id)
-//         if (!user) return res.status(404).json({ message: "student not found" });
 
-//         if (!exam) return res.status(404).json({ message: "Exam not found" });
+//         // Check if the student already submitted this exam
+//         const existingResult = await Result.findOne({ student: studentId, exam: examId });
+//         if (existingResult) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "You have already submitted this exam.",
+//                 result: existingResult,
+//             });
+//         }
+
+//         // Fetch the exam and questions
+//         const exam = await Exam.findById(examId).populate("questions");
+//         if (!exam) {
+//             return res.status(404).json({ success: false, message: "Exam not found" });
+//         }
 
 //         let score = 0;
-//         answers.forEach((ans) => {
-//             const question = exam.questions.find((q) => String(q._id) === ans.questionId);
+
+//         for (const ans of answers) {
+//             const question = exam.questions.find(
+//                 (q) => q._id.toString() === ans.questionId
+//             );
 //             if (question && question.correctAnswer === ans.selectedOption) {
 //                 score += 1;
 //             }
-//         });
+//         }
 
 //         const result = await Result.create({
-//             student: req.user.id,
-//             exam: req.params.id,
+//             student: studentId,
+//             exam: exam._id,
 //             course: exam.course,
 //             answers,
 //             score,
 //         });
 
-//         res.status(201).json({ message: "Exam submitted successfully", score , result });
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
+//         res.status(200).json({
+//             success: true,
+//             message: "Exam submitted successfully",
+//             student: req.user.name,
+//             score,
+//             result,
+//         });
+
+//     } catch (err) {
+//         console.error("Submit error:", err);
+//         res.status(500).json({ success: false, error: err.message });
 //     }
 // };
 const submitExam = async (req, res) => {
     try {
+        const studentId = req.user.id;
+        const examId = req.params.id;
         const { answers } = req.body;
 
-        // Fetch exam with course and student details
-        const exam = await Exam.findById(req.params.id)
-            .populate("course", "name")
-            .populate("student", "name");
+        // Check if exam exists
+        const exam = await Exam.findById(examId).populate("questions");
+        if (!exam) {
+            return res.status(404).json({ success: false, message: "Exam not found" });
+        }
 
-        if (!exam) return res.status(404).json({ message: "Exam not found" });
+        // Prevent resubmission
+        const existingResult = await Result.findOne({ student: studentId, exam: examId });
+        if (existingResult) {
+            return res.status(400).json({
+                success: false,
+                message: "You have already submitted this exam.",
+            });
+        }
 
-        // Fetch student (user)
-        const student = await User.findById(req.user.id).select("name");
-        if (!student) return res.status(404).json({ message: "Student not found" });
+        // Check if answers are provided
+        if (!answers || answers.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No answers provided.",
+            });
+        }
 
+        // Calculate score
         let score = 0;
-        let detailedAnswers = [];
-
-        // Loop through each answer and match with the correct answer
-        answers.forEach((ans) => {
-            const question = exam.questions.find((q) => String(q._id) === ans.questionId);
-            if (question) {
-                const isCorrect = question.correctAnswer === ans.selectedOption;
-                if (isCorrect) score += 1;
-
-                // Store detailed answer info
-                detailedAnswers.push({
-                    questionText: question.questionText,
-                    selectedOption: ans.selectedOption,
-                    correctAnswer: question.correctAnswer,
-                    isCorrect,
-                });
+        for (const ans of answers) {
+            const question = exam.questions.find(
+                q => q._id.toString() === ans.questionId
+            );
+            if (question && question.correctAnswer === ans.selectedOption) {
+                score += 1;
             }
-        });
+        }
 
-        // Save result in database
+        // Save result
         const result = await Result.create({
-            student: req.user.id,
-            studentName: student.name, // Save student name
-            exam: req.params.id,
+            student: studentId,
+            exam: exam._id,
             course: exam.course,
-            answers: detailedAnswers,
+            answers,
             score,
         });
 
-        // Send response with detailed info
-        res.status(201).json({
+        res.status(200).json({
+            success: true,
             message: "Exam submitted successfully",
-            student: student.name,
+            student: req.user.name,
             score,
-            result
+            result,
         });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+    } catch (err) {
+        console.error("Submit error:", err);
+        res.status(500).json({ success: false, error: err.message });
     }
 };
 
 
-// Get student results
+// Get student results by student id
 const getResultsByStudent = async (req, res) => {
     try {
-        const results = await Result.find({ student: req.params.id })
-            .populate("exam", "title")
-            .populate("student", "name")
-        if (results.length === 0) {
-            return res.status(404).json({ message: " No result found for this student" });
+        const studentId = req.params.id;
+
+        const results = await Result.find({ student: studentId })
+            .populate("exam", "title date")
+            .populate("student", "name email")
+            .populate("course", "name code");
+
+        if (!results || results.length === 0) {
+            return res.status(404).json({ success: false, message: "No results found for this student." });
         }
-        res.status(200).json({ success: true, message: "result found ", results });
+
+        res.status(200).json({
+            success: true,
+            message: "Results retrieved successfully.",
+            count: results.length,
+            results,
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error("Error fetching student results:", error);
+        res.status(500).json({ success: false, message: "Server error.", error: error.message });
     }
 };
+
+
+
 
 //Get all results for an exam
 
@@ -342,6 +431,7 @@ const getResultsByExam = async (req, res) => {
 
 module.exports = {
     createExam,
+    getStudentExams,
     UpdateExam,
     RequestDelete,
     GetPendingExams,

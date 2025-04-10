@@ -40,12 +40,13 @@ import EnrollCourse from "./pages/course/EnrollCourse";
 import CreateExam from './pages/ExamManagemnt/CreateExam';
 import EditExam from './pages/ExamManagemnt/EditExam';
 import AllExams from './pages/examPage/AllExams';
-import ExamDetails from "./pages/examPage/ExamDetails";
+import SubmitExam from "./pages/examPage/SubmitExam";
 import DeleteExam from "./pages/Admin/Dashboards/DeleteExam";
 
 // Admin Dashboard
 import AdminPanel from "./pages/Admin/Dashboards/AdminPanel";
 import UpdateCourse from "./pages/CourseManager/UpdateCourse"
+import StudentExams from './pages/studentAcess/StudentExams';
 function App() {
   return (
     <>
@@ -69,7 +70,6 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["admin", "faculty", "student"]} />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/exam-details/:id" element={<ExamDetails />} />
               <Route path="/exam/view-exams" element={<AllExams />} />
             </Route>
 
@@ -77,6 +77,8 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
               <Route path="/studentDashboard" element={<StudentDashBoard />} />
               <Route path="/:id/enroll-course" element={<EnrollCourse />} />
+              <Route path="/student-exam/:id" element={<SubmitExam/>} />     {/*student Attend the exam */}
+              <Route path ="/student-exam" element= {<StudentExams/>} />   {/*student see their exmas */}
             </Route>
 
             {/* Admin + Faculty Only */}

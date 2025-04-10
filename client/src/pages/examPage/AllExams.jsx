@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const AllExams = () => {
     const [exams, setExams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchExams = async () => {
@@ -65,7 +67,7 @@ const AllExams = () => {
                         <tbody>
                             {filteredExams.length > 0 ? (
                                 filteredExams.map((exam) => (
-                                    <tr key={exam._id} className="text-gray-700 dark:text-gray-300 p-5">
+                                    <tr key={exam._id} className="text-gray-700 dark:text-gray-300 p-5"  onClick={() => navigate(`/student-exam/${exam._id}`)}>
                                         <td className="py-2 px-4 border-b">{exam.title || "N/A"}</td>
                                         <td className="py-2 px-4 border-b">{exam.course?.name || "N/A"}</td>
                                         <td className="py-2 px-4 border-b">

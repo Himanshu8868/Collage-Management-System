@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
         },
         Department: { type: String },
         HOD: { type: String },
-
+        
         status: {
             type: String,
             enum: ['Active', 'Inactive'],

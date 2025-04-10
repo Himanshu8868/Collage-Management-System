@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { createExam , getExams , getExamById , submitExam  , getResultsByStudent ,  getResultsByExam ,examDetails ,UpdateExam ,Details  ,RequestDelete , GetPendingExams ,DeleteExam } = require('../controllers/ExamController');
+const { createExam  , getStudentExams, getExams , getExamById , submitExam  , getResultsByStudent ,  getResultsByExam ,examDetails ,UpdateExam ,Details  ,RequestDelete , GetPendingExams ,DeleteExam } = require('../controllers/ExamController');
 const { protect, isFaculty , isAdmin , isStudent} = require('../middleware/authMiddleware');
 
 // Faculty creates an exam
 router.post("/",  protect , isFaculty , createExam);
 
+// Attending exam for Students //
+     router.get("/my/exams"  ,protect , isStudent  ,getStudentExams)
 // Update exam //
   router.put("/:id" , isFaculty , isAdmin , UpdateExam) 
 
@@ -31,9 +33,12 @@ router.get("/:courseId", protect , getExams);
 //Get a Exam by ID //
 router.get("/id/:id" ,  protect , isStudent ,  getExamById);
 
-// Student submits exam answers
-router.post("/:id/submit", protect, isStudent, submitExam);
+// Student submits exam answers 
+router.post("/submit/:id",protect , isStudent ,  submitExam);
 
+ //Cheeck submition status //
+
+router.get("/:id/status", protect , isStudent ,  submitExam);
 // Get student results
 router.get("/student/:id", protect, isStudent , getResultsByStudent);
 

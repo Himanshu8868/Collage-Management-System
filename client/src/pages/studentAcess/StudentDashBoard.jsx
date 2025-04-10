@@ -1,11 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
+import {Link} from "react-router-dom"
 import { FaBook, FaCalendarAlt, FaBell } from "react-icons/fa";
 
 const StudentDashBoard = () => {
   return (
     
-    <div className="my-8 flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="mt-14 my-8 flex h-screen bg-gray-100 dark:bg-gray-900">
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -100, opacity: 0 }}
@@ -15,9 +16,13 @@ const StudentDashBoard = () => {
       >
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">Student Dashboard</h2>
         <ul className="mt-6 space-y-4">
-          <li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+          
+             
+             <Link to="/student-exam"><li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaBook /> <span>Courses</span>
-          </li>
+          </li></Link>
+          
+
           <li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaCalendarAlt /> <span>Schedule</span>
           </li>
