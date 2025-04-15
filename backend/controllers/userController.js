@@ -115,12 +115,53 @@ const UserStatus =  async (req, res) => {
     }
 }
 
+//get all students //
 
+const getStudents = async (req, res) => {
+    try {
+      const students = await User.find({ role: "student" }).select("-password"); 
+      if (!students || students.length === 0) {
+        return res.status(404).json({ success: false, message: "No students found" });
+      }
+  
+      res.status(200).json({ success: true, students });
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  };
+  
+
+  //  result Route: GET /api/students/by-exam/:examId
+const getStudentsByExam = async (req, res) => {
+    try {
+      const { examId } = req.params;
+  
+      // Find the exam and get the courseId
+      const exam = await Exam.findById(examId);
+      if (!exam) {
+        return res.status(404).json({ success: false, message: "Exam not found" });
+      }
+  
+      const courseId = exam.course;
+  
+      // Find students enrolled in that course
+      const students = await User.find({ courses: courseId });
+  
+      res.status(200).json({ success: true, students });
+    } catch (err) {
+      console.error("Error fetching students by exam:", err);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  };
+  
 
 module.exports = {
     getUserProfile,
     UserProfile,
     UserDelete,
     UpdateUser,
-   UserStatus
+   UserStatus,
+   getStudents,
+   
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {Link} from "react-router-dom"
-import { FaBook, FaCalendarAlt, FaBell } from "react-icons/fa";
+import { FaBook, FaCalendarAlt, FaBell , FaRegAngry} from "react-icons/fa";
 
 const StudentDashBoard = () => {
   return (
@@ -18,8 +18,12 @@ const StudentDashBoard = () => {
         <ul className="mt-6 space-y-4">
           
              
-             <Link to="/student-exam"><li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
-            <FaBook /> <span>Courses</span>
+             <Link to="/student-exam"><li className=" my-3 flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaBook /> <span>Exams</span>
+          </li></Link>
+          
+          <Link to="/my-results"><li className=" my-3 flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaRegAngry /> <span>Result</span>
           </li></Link>
           
 

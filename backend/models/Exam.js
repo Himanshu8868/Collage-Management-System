@@ -27,7 +27,10 @@ const ExamSchema = new mongoose.Schema({
     duration:{
         type:String,
     },
-    
+    instructor: {
+        type: mongoose.Schema.Types.ObjectId,  
+        ref: "User",  
+    },
     deleteRequested: { type: Boolean, default: false },
     deletedByAdmin: { type: Boolean, default: false }, // Will be set to true when admin deletes the exam
     

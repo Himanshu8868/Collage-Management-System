@@ -18,6 +18,8 @@ const ResultSchema = new mongoose.Schema({
         ref: "Course",
         required: true,
     },
+            instructor: { type: mongoose.Schema.Types.ObjectId, ref: "Course"},
+    
     answers: [
         {
             questionId: { type: mongoose.Schema.Types.ObjectId, required: true },

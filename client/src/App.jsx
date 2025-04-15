@@ -43,6 +43,13 @@ import AllExams from './pages/examPage/AllExams';
 import SubmitExam from "./pages/examPage/SubmitExam";
 import DeleteExam from "./pages/Admin/Dashboards/DeleteExam";
 
+//Result Routes //
+ import StudentResult from "./pages/Results/StudentResult"
+ import AdminResult from "./pages/Results/AdminResult"
+ import DeleteResult from "./pages/Results/DeleteResult"
+import UpdateResultPage from './pages/Results/UpdateResultPage';
+
+
 // Admin Dashboard
 import AdminPanel from "./pages/Admin/Dashboards/AdminPanel";
 import UpdateCourse from "./pages/CourseManager/UpdateCourse"
@@ -93,7 +100,15 @@ function App() {
 
             {/* Admin Only */}
             <Route path="/AdminDashboard" element={<AdminPanel />} />
-
+    
+             {/* Result Pages */}
+              <Route element={<ProtectedRoute allowedRoles={["student , admin", "faculty"]} />}>
+                      
+                </Route>
+                <Route path="/my-results" element={<StudentResult/>} />
+                <Route path="/all-results" element={<AdminResult/>} />
+                <Route path="/update-result" element={<UpdateResultPage/>} />
+                <Route path="/delete-result" element={<DeleteResult/>} />
           </Routes>
           <Footer />
         </AuthProvider>

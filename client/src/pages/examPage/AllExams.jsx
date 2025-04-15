@@ -19,7 +19,7 @@ const AllExams = () => {
                     },
                 });
 
-                console.log("Fetched Exams:", res.data.Exams);
+                // console.log("Fetched Exams:", res.data.Exams);
                 setExams(res.data.Exams || []);
             } catch (err) {
                 setError("Failed to load exams");
@@ -57,6 +57,7 @@ const AllExams = () => {
                     <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
                         <thead>
                             <tr className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white">
+                                <th className="py-2 px-4 border-b">Exam Code</th>
                                 <th className="py-2 px-4 border-b">Exam Title</th>
                                 <th className="py-2 px-4 border-b">Course</th>
                                 <th className="py-2 px-4 border-b">Date</th>
@@ -68,6 +69,7 @@ const AllExams = () => {
                             {filteredExams.length > 0 ? (
                                 filteredExams.map((exam) => (
                                     <tr key={exam._id} className="text-gray-700 dark:text-gray-300 p-5"  onClick={() => navigate(`/student-exam/${exam._id}`)}>
+                                        <td className="py-2 px-4 border-b">{exam.course?.code || "N/A"}</td>
                                         <td className="py-2 px-4 border-b">{exam.title || "N/A"}</td>
                                         <td className="py-2 px-4 border-b">{exam.course?.name || "N/A"}</td>
                                         <td className="py-2 px-4 border-b">

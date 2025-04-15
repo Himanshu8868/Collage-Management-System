@@ -71,8 +71,6 @@ const getStudentExams = async (req, res) => {
     }
 };
 
-
-
 // Update exam // 
 
 const UpdateExam = async (req, res) => {
@@ -357,7 +355,7 @@ const submitExam = async (req, res) => {
                 q => q._id.toString() === ans.questionId
             );
             if (question && question.correctAnswer === ans.selectedOption) {
-                score += 1;
+                score += 20;
             }
         }
 
@@ -401,8 +399,7 @@ const getResultsByStudent = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Results retrieved successfully.",
-            count: results.length,
-            results,
+            data: results // <-- Add this line to include the results
         });
     } catch (error) {
         console.error("Error fetching student results:", error);
@@ -412,7 +409,48 @@ const getResultsByStudent = async (req, res) => {
 
 
 
+//Delete result by  Course  Id //
+const ResultDelete = async (req, res) => {
+  try {
+    const resultId  = req.params.id;
 
+    const deletedResult = await Result.findOneAndDelete({ result: resultId });
+
+    if (!deletedResult) {
+      return res.status(404).json({ success: false, message: "Result not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Result deleted successfully",
+      deletedResult, // Optional: remove or trim if not needed
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+ // Delete All results by course Id //
+
+ const ResultDeleteByCourse = async (req, res) => {
+    try {
+      const studentId = req.params.id;
+  
+      const result = await Result.deleteMany({ student: studentId });
+  
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ success: false, message: "No results found for this course." });
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: `${result.deletedCount} result(s) deleted for course.`,
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+  };
+  
 //Get all results for an exam
 
 const getResultsByExam = async (req, res) => {
@@ -436,11 +474,13 @@ module.exports = {
     RequestDelete,
     GetPendingExams,
     DeleteExam,
+    ResultDeleteByCourse,
     examDetails,
     Details,  // filter instructor based on their sub
     getExams,
     getExamById,
     submitExam,
     getResultsByStudent,
+    ResultDelete,
     getResultsByExam
 }
