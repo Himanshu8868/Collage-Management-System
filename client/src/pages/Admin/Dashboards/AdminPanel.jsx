@@ -6,7 +6,7 @@ const AdminPanel = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className=" mt-14 flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <div
         className={`${

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaBook, FaClipboardList, FaMoneyBill, FaBell, FaSignOutAlt, FaChevronDown, FaUser } from "react-icons/fa";
+import { FaHome, FaBook, FaClipboardList, FaMoneyBill, FaBell, FaSignOutAlt, FaChevronDown, FaUser, FaDeaf } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -116,8 +116,17 @@ const Sidebar = () => {
 
                 {/* Other Sidebar Items */}
                 <SidebarItem icon={<FaUser />} text="User" to="/users" isOpen={isOpen} />
+                <SidebarItem icon={<FaDeaf />} text="Delete user Request" to="/exam-deletaiton-approved-page" isOpen={isOpen} />
+
                 <SidebarItem icon={<FaMoneyBill />} text="Payments" to="/payments" isOpen={isOpen} />
+
                 <SidebarItem icon={<FaBell />} text="Notifications" to="/notifications" isOpen={isOpen} />
+                <SidebarItem icon={<FaBell />} text="self-attendance" to="/self-attendance" isOpen={isOpen} />
+                <SidebarItem icon={<FaBell />} text="Attendance Requests" to="/attendance-request" isOpen={isOpen} />
+                <SidebarItem icon={<FaBell />} text="Attendance record" to="/attendance-record" isOpen={isOpen} />
+                <SidebarItem icon={<FaBell />} text="Attendance record for studnet" to="/instructor-courses" isOpen={isOpen} />
+                
+
                 <SidebarItem icon={<FaSignOutAlt />} text="Logout" isOpen={isOpen} onClick={handleLogout} />
             </nav>
         </motion.div>

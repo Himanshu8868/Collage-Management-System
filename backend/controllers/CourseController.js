@@ -191,6 +191,49 @@ const enrollInCourse = async (req, res) => {
     }
 };
 
+// Get courses the logged-in student is enrolled in
+const getEnrolledCourses = async (req, res) => {
+    try {
+      const studentId = req.user._id;
+  
+      const courses = await Course.find({
+        studentsEnrolled: studentId
+      }).populate("instructor", "name email");
+  
+      res.status(200).json({ success: true, data: courses });
+    } catch (error) {
+      console.error("Error fetching enrolled courses:", error);
+      res.status(500).json({ success: false, message: "Server error", error: error.message });
+    }
+  };
+
+  //Faculty get all courses they are teaching
+  const getMyCourses = async (req, res) => {
+    try {
+      const instructorId = req.user._id;  
+      const courses = await Course.find({ instructor: instructorId })
+        .populate("studentsEnrolled", "name email");
+  
+      if (courses.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No courses found for this instructor",
+        });
+      }
+  
+      res.status(200).json({ success: true, data: courses });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch your courses",
+        error: error.message,
+      });
+    }
+  };
+  
+  
+  
+  
 
 module.exports = {
     createCourse,
@@ -199,5 +242,7 @@ module.exports = {
     getCourseById,
     updateCourse,
     deleteCourse,
-    enrollInCourse
+    enrollInCourse,
+    getEnrolledCourses,
+    getMyCourses // Faculty get all courses they are teaching
 };

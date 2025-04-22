@@ -54,6 +54,15 @@ import UpdateResultPage from './pages/Results/UpdateResultPage';
 import AdminPanel from "./pages/Admin/Dashboards/AdminPanel";
 import UpdateCourse from "./pages/CourseManager/UpdateCourse"
 import StudentExams from './pages/studentAcess/StudentExams';
+
+//Attendance  Routes //
+ import MarkAttendance from './pages/attendance/MarkAttendance';
+ import AttendanceRequest from './pages/attendance/AttendanceRequest';  
+import AttendanceChart from './pages/attendance/AttendanceChart';
+import MarkSelfAttendance from './pages/attendance/AdminOrFaculty/MarkSelfAttendance ';
+import InstructorAttendanceSummary from './pages/attendance/AdminOrFaculty/InstructorAttendanceSummary';
+import MyCourses from './pages/attendance/instructor/MyCourses';
+
 function App() {
   return (
     <>
@@ -93,7 +102,7 @@ function App() {
               <Route path="/users" element={<UserManagement />} />
               <Route path="/exam/create-exam" element={<CreateExam />} />
               <Route path="/exam/edit-exam" element={<EditExam />} />
-              <Route path="/exam-deletaiton-approved" element={<DeleteExam />} />
+              <Route path="/exam-deletaiton-approved-page" element={<DeleteExam />} />
               <Route path="/create-courses" element={<CreateCourse />} />
               <Route path="/update-course" element={<UpdateCourse />} />
             </Route>
@@ -103,12 +112,19 @@ function App() {
     
              {/* Result Pages */}
               <Route element={<ProtectedRoute allowedRoles={["student , admin", "faculty"]} />}>
-                      
-                </Route>
-                <Route path="/my-results" element={<StudentResult/>} />
+           
                 <Route path="/all-results" element={<AdminResult/>} />
                 <Route path="/update-result" element={<UpdateResultPage/>} />
                 <Route path="/delete-result" element={<DeleteResult/>} />
+                </Route>
+                <Route path="/my-results" element={<StudentResult/>} />
+               {/* Attendance pages */}
+               <Route path="/attendance" element={<MarkAttendance />} />
+               <Route path="/attendance-request" element={<AttendanceRequest />} />
+               <Route path="/attendance-record" element={<AttendanceChart />} />
+               <Route path="/self-attendance" element={<MarkSelfAttendance />} />
+               <Route path="/students-attendance-summary/:courseId" element={<InstructorAttendanceSummary/>} />
+               <Route path="/instructor-courses" element={<MyCourses/>} />
           </Routes>
           <Footer />
         </AuthProvider>

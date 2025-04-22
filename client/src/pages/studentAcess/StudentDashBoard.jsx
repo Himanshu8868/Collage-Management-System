@@ -26,6 +26,16 @@ const StudentDashBoard = () => {
             <FaRegAngry /> <span>Result</span>
           </li></Link>
           
+          <Link to="/attendance"><li className=" my-3 flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaRegAngry /> <span>Attendance</span>
+          </li></Link>
+          
+            
+          <Link to="/attendance-record"><li className=" my-3 flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaRegAngry /> <span>view Attendance</span>
+          </li></Link>
+
+
 
           <li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaCalendarAlt /> <span>Schedule</span>

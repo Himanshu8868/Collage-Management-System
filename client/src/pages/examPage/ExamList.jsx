@@ -70,7 +70,7 @@ const ExamList = () => {
             >
                 📝 Available <span className="text-blue-500">Exams</span>
             </motion.h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            <p className=" my-3 text-xl text-gray-600 dark:text-blue-600 max-w-2xl mx-auto">
                     {exams.length === 0 
                         ? "No exams scheduled yet" 
                         : ` ${exams.length} exam${exams.length !== 1 ? 's' : ''} coming up`}

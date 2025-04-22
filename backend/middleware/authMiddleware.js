@@ -55,4 +55,12 @@ const isStudent = (req, res, next) => {
     }
 };
 
-module.exports = { protect, isAdmin, isFaculty, isStudent };
+const isAdminOrFaculty = (req, res, next) => {
+    if (req.user && (req.user.role === "admin" || req.user.role === "faculty")) {
+        next();
+    } else {
+        return res.status(403).json({ message: "Access denied, Admins or Faculty only" });
+    }
+};
+
+module.exports = { protect, isAdmin, isFaculty, isStudent ,isAdminOrFaculty };

@@ -19,7 +19,11 @@
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.10.2",
     "framer-motion": "^12.5.0",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.483.0",
+    "papaparse": "^5.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
@@ -28,7 +32,9 @@
     "react-router-dom": "^7.4.0",
     "react-spinners": "^0.15.0",
     "react-toastify": "^11.0.5",
-    "react-typewriter-effect": "^1.1.0"
+    "react-typewriter-effect": "^1.1.0",
+    "recharts": "^2.15.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
