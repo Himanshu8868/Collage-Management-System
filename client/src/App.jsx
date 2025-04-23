@@ -63,6 +63,9 @@ import MarkSelfAttendance from './pages/attendance/AdminOrFaculty/MarkSelfAttend
 import InstructorAttendanceSummary from './pages/attendance/AdminOrFaculty/InstructorAttendanceSummary';
 import MyCourses from './pages/attendance/instructor/MyCourses';
 
+  //Notification Routes //
+import NotificationPage from './pages/Notifications/NotificationPage';
+
 function App() {
   return (
     <>
@@ -125,6 +128,12 @@ function App() {
                <Route path="/self-attendance" element={<MarkSelfAttendance />} />
                <Route path="/students-attendance-summary/:courseId" element={<InstructorAttendanceSummary/>} />
                <Route path="/instructor-courses" element={<MyCourses/>} />
+
+                 
+                 {/* NOTIFICATION PAGES */}
+                  
+                  <Route path="/notifications" element={<NotificationPage />} />
+                
           </Routes>
           <Footer />
         </AuthProvider>

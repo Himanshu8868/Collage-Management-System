@@ -3,6 +3,7 @@ const Attendance = require('../models/Attandance');
 const User = require('../models/User');
 const Course = require('../models/Course');
 const geolib = require('geolib');
+const Notification = require('../models/Notification');
 const {ALLOWED_LOCATION, ALLOWED_RADIUS } = require('../config');
 
 
@@ -55,8 +56,6 @@ const markSelfAttendance = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };
-
-
 
 // Mark attendance directly with geo-location (auto Present)
 const markGeoAttendance = async (req, res) => {
@@ -122,14 +121,13 @@ const markGeoAttendance = async (req, res) => {
 const markAttendanceRequest = async (req, res) => {
   try {
     const studentId = req.user._id;
-    const role = req.user.role; // should be 'student'
+    const role = req.user.role;
     const { courseId, latitude, longitude } = req.body;
 
     if (!latitude || !longitude || !courseId) {
       return res.status(400).json({ success: false, message: "Latitude, longitude, and courseId are required." });
     }
 
-    // Location check
     const isInside = geolib.isPointWithinRadius(
       { latitude, longitude },
       ALLOWED_LOCATION,
@@ -140,13 +138,11 @@ const markAttendanceRequest = async (req, res) => {
       return res.status(403).json({ success: false, message: "You are outside the allowed location." });
     }
 
-    // Course check
     const course = await Course.findById(courseId);
     if (!course) {
       return res.status(404).json({ success: false, message: "Course not found." });
     }
 
-    // Check if attendance already requested today
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
@@ -162,7 +158,6 @@ const markAttendanceRequest = async (req, res) => {
       return res.status(409).json({ success: false, message: "Attendance already requested today." });
     }
 
-    // Create attendance request
     const attendance = new Attendance({
       student: studentId,
       user: studentId,
@@ -175,6 +170,14 @@ const markAttendanceRequest = async (req, res) => {
     });
 
     await attendance.save();
+
+    //  Notify the instructor
+    await Notification.create({
+      userId: course.instructor,
+      title: "New Attendance Request",
+      message: `Student has requested attendance for ${new Date().toDateString()}.`,
+      link: `/attendance-request`, // or wherever the instructor sees requests
+    });
 
     res.status(200).json({
       success: true,
@@ -248,15 +251,18 @@ const respondToAttendanceRequest = async (req, res) => {
     attendance.status = action;
     await attendance.save();
 
-    res.status(200).json({
-      success: true,
-      message: `Attendance ${action} successfully`,
-      attendance
+    await Notification.create({
+      userId: attendance.student,
+      title: `Attendance ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+      message: `Your attendance request for ${attendance.course.name} has been ${action}.`,
+      link: `/attendance-record`,
     });
 
-  } catch (err) {
-    console.error("Respond Error:", err);
-    res.status(500).json({ success: false, message: "Server error", error: err.message });
+    res.status(200).json({ message: `Attendance ${action} successfully` });
+
+  } catch (error) {
+    console.error("Error in respondToAttendanceRequest:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

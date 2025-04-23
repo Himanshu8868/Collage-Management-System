@@ -15,6 +15,7 @@ const attendacneRoutes = require("./router/attendanceRoutes");
 const examRoutes = require("./router/ExamRoutes");
 const userRoutes = require("./router/userRoutes");
 const ResultRoutes = require("./router/ResultRouter");
+const Notifications = require("./router/notificationRoutes");
 
 const app = express();
 
@@ -31,7 +32,7 @@ app.use("/api/attendance", attendacneRoutes);
 app.use("/api/exams", examRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/result" , ResultRoutes);
-
+app.use("/api/notifications", Notifications);
 
 // Server Listening
 const PORT = process.env.PORT || 5000;
