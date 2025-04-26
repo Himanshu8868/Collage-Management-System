@@ -71,7 +71,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="min-h-screen mt-15 bg-gray-100 dark:bg-gray-900">
+        <div className=" min-h-screen mt-15 bg-gray-100 dark:bg-gray-900">
             {/* Sidebar */}
             <motion.div
                 initial={{ x: -100 }}
@@ -79,18 +79,18 @@ const Profile = () => {
                 transition={{ duration: 0.5 }}
                 className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg"
             >
-                <div className="p-6">
+                <div className="p-6 mt-14 ">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white">CollegeSync</h2>
                     <nav className="mt-6">
                         <ul className="space-y-2">
                             <li>
 
-                                <Link
+                                {/* <Link
                                     to="/dashboard"
                                     className="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg"
                                 >
                                     <span>Dashboard</span>
-                                </Link>
+                                </Link> */}
 
                             </li>
                             <li>

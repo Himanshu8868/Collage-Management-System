@@ -31,6 +31,8 @@ import Profile from "./pages/Profile";
 // Admin + Faculty Pages
 import UserManagement from "./pages/Users/UserManagement";
 import CreateCourse from "./pages/CourseManager/CreateCourse";
+import FacultyRequestCourse from "./pages/CourseManager/FacultyRequestCourse";
+import PendingCourseRequest from "./pages/CourseManager/PendingCourseRequests";
 
 // Student Pages
 import StudentDashBoard from "./pages/studentAcess/StudentDashBoard";
@@ -65,6 +67,9 @@ import MyCourses from './pages/attendance/instructor/MyCourses';
 
   //Notification Routes //
 import NotificationPage from './pages/Notifications/NotificationPage';
+import CreateNotification from './pages/Notifications/CreateNotification'
+import FacultyDashboard from './pages/Dashboards/FacultyDashboard';
+import FacultyDashboardPage from './pages/Dashboards/FacultyDashboardPage';
 
 function App() {
   return (
@@ -107,6 +112,7 @@ function App() {
               <Route path="/exam/edit-exam" element={<EditExam />} />
               <Route path="/exam-deletaiton-approved-page" element={<DeleteExam />} />
               <Route path="/create-courses" element={<CreateCourse />} />
+              <Route path="/request-course" element={<FacultyRequestCourse />} />
               <Route path="/update-course" element={<UpdateCourse />} />
             </Route>
 
@@ -133,6 +139,11 @@ function App() {
                  {/* NOTIFICATION PAGES */}
                   
                   <Route path="/notifications" element={<NotificationPage />} />
+                  <Route path="/create-notification" element={<CreateNotification />} />
+                  {/* <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> */}
+                  <Route path="/faculty-portal" element={<FacultyDashboardPage />} />
+                  <Route path="/course-pending-requests" element={<PendingCourseRequest />} />
+
                 
           </Routes>
           <Footer />

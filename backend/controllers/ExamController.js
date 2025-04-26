@@ -2,6 +2,8 @@ const Exam = require('../models/Exam');
 const Course = require('../models/Course');
 const Result = require('../models/Result');
 const User = require('../models/User');
+const Notification = require('../models/Notification');
+
 // const { validationResult } = require('express-validator');
 
 const createExam = async (req, res) => {
@@ -112,6 +114,19 @@ const UpdateExam = async (req, res) => {
         exam.deleteRequested = true;
         await exam.save();
 
+         // Notify the admin about the deletion request
+         const admins = await User.find({ role: 'admin' }); // adjust role field as per your schema
+         const adminIds = admins.map(admin => admin._id);
+
+         
+            await Notification.create({
+            userId: req.user._id,
+            receiverIds: adminIds, // Assuming the admin is the one who created the exam
+            title: "Exam Deletion Request",
+            message: `Instructor ${req.user.name} has requested to delete the exam "${exam.title}".`,
+            link: `/exam-deletaiton-approved-page` // Link to the admin panel for exam management
+        });
+         
         return res.status(200).json({ message: "Exam deletion request submitted successfully" });
 
     } catch (err) {
@@ -129,7 +144,18 @@ const GetPendingExams = async (req, res) => {
             populate: {
               path: 'instructor'
             }
-          })          
+          })      
+
+          // Notification For faculty //
+           
+          await Notification.create({
+            userId: req.user._id,
+            receiverIds: pendingExams.map(exam => exam.course.instructor._id), // Assuming the instructor is the one who created the exam
+            title: "Compleated Exam Deletion Request",
+            message: `The following exams have been requested for deletion was approved by ${req.user.name}: ${pendingExams.map(exam => exam.title).join(", ")}`,
+            link: `/exam-deletion-pending-page` // Link to the admin panel for exam management
+          })
+          
         return res.status(200).json(pendingExams);
     } catch (err) {
         return res.status(500).json({ message: "Server error", error: err.message });

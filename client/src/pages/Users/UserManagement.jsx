@@ -133,7 +133,7 @@ const UserManagement = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     const role = localStorage.getItem("role");
-    if (role === "faculty" || role === "student") {
+    if (role === "student") {
       toast.error("You don't have permission to delete users");
       return;
     }

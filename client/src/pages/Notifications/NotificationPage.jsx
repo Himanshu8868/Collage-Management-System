@@ -15,7 +15,14 @@ const FacultyNotifications = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setNotifications(res.data.data);
+
+      const allNotifications = [
+        ...res.data.receivedNotifications,
+        ...res.data.createdNotifications,
+      ];
+
+      allNotifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setNotifications(allNotifications);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {
@@ -46,32 +53,42 @@ const FacultyNotifications = () => {
   }, []);
 
   return (
-    <div className=" mt-15 p-6">
-      <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><Bell /> Notifications</h2>
+    <div className="mt-14 min-h-screen bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-orange-600">
+          <Bell className="text-orange-500" /> Notifications
+        </h2>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-40"><Loader2 className="animate-spin" /></div>
-      ) : (
-        <div className="space-y-4">
-          {notifications.length === 0 ? (
-            <p className="text-gray-500">No notifications found.</p>
-          ) : (
-            notifications.map((notification) => (
-              <div
-                key={notification._id}
-                className={`p-4 rounded-xl shadow-sm border cursor-pointer transition hover:shadow-md ${
-                  notification.isRead ? 'bg-gray-100' : 'bg-blue-50'
-                }`}
-                onClick={() => handleNotificationClick(notification)}
-              >
-                <p className="font-semibold">{notification.title}</p>
-                <p>{notification.message}</p>
-                <p className="text-sm text-gray-500">{new Date(notification.createdAt).toLocaleString()}</p>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <Loader2 className="animate-spin w-8 h-8 text-orange-600" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {notifications.length === 0 ? (
+              <p className="text-gray-600 text-center">No notifications found.</p>
+            ) : (
+              notifications.map((notification) => (
+                <div
+                  key={notification._id}
+                  onClick={() => handleNotificationClick(notification)}
+                  className={`p-5 rounded-xl border-l-4 cursor-pointer transition-all duration-200 ${
+                    notification.isRead
+                      ? 'bg-gray-100 border-gray-400 hover:bg-gray-200'
+                      : 'bg-orange-50 border-orange-500 hover:bg-orange-100'
+                  }`}
+                >
+                  <p className="font-semibold text-lg text-gray-800">{notification.title}</p>
+                  <p className="text-gray-700">{notification.message}</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

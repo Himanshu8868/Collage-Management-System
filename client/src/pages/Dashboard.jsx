@@ -2,8 +2,13 @@ import SlideBar from "../components/SlideBar";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-      localStorage.getItem("role");
-      localStorage.getItem("token")
+const role = localStorage.getItem("role");
+      const token = localStorage.getItem("token")
+
+       if (role !== "admin") {
+        window.href("/not", "_blank");
+
+       }
     return (
         <div className="flex mt-15">
             {/* Sidebar */}

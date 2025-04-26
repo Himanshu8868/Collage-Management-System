@@ -1,74 +1,219 @@
 const Course = require("../models/Course");
 const User = require("../models/User");
+const Notification = require("../models/Notification");
+
+// validateCourseCode.js
+function validateCourseCode(code) {
+    const courseCodeRegex = /^[A-Z]{2,5}[0-9]{2,4}$/;
+    return courseCodeRegex.test(code);
+}
+
 
 // Create a new course (Admin Only)
 const createCourse = async (req, res) => {
     try {
-        const { name, code, description, instructorId } = req.body;
+        const { name, code, description } = req.body;
 
-        // Validate required fields
+        // If role is faculty, set instructorId to the logged-in user's ID
+        let instructorId = req.body.instructorId;
+        if (req.user.role === "faculty") {
+            instructorId = req.user._id; // Faculty gets their own ID automatically
+        }
+
         if (!name || !code || !description || !instructorId) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 success: false,
-                message: "All fields are required" 
+                message: "All fields are required"
             });
         }
 
-        // Check if instructor exists and is faculty
+        if (!validateCourseCode(code)) {
+            return res.status(400).json({ message: "Invalid course code format. Example: CS101, MATH202." });
+        }
+
         const instructor = await User.findById(instructorId);
         if (!instructor) {
-            return res.status(404).json({ 
+            return res.status(404).json({
                 success: false,
-                message: "Instructor not found" 
-            });
-        }
-        if (instructor.role !== "faculty") {
-            return res.status(400).json({ 
-                success: false,
-                message: "Selected user is not a faculty member" 
+                message: "Instructor not found"
             });
         }
 
-        // Check if course code already exists
+
         const existingCourse = await Course.findOne({ code });
         if (existingCourse) {
-            return res.status(409).json({ 
+            return res.status(409).json({
                 success: false,
-                message: "Course with this code already exists" 
+                message: "Course with this code already exists"
             });
         }
 
-        // Create course
-        const course = await Course.create({ 
-            name, 
-            code, 
-            description, 
-            instructor: instructorId 
+        let status = "active";
+        let approveRequest = false;
+        let approvedByAdmin = false; // Default to false
+
+        // Check if the user is admin or faculty
+        if (req.user.role === "admin") {
+            status = "active";
+            approveRequest = false;
+            approvedByAdmin = true; // Admin-created courses are automatically approved
+        } else if (req.user.role === "faculty") {
+            status = "pending";
+            approveRequest = true;
+        } else {
+            return res.status(403).json({
+                success: false,
+                message: "Students cannot create courses"
+            });
+        }
+        console.log(req.user.role)
+
+        const course = await Course.create({
+            name,
+            code,
+            description,
+            instructor: instructorId,
+            status,
+            approveRequest,
+            approvedByAdmin // Set for admin-created courses
         });
 
-        if (!course) {
-            return res.status(400).json({ 
-                success: false,
-                message: "Failed to create course" 
+        // If it's a faculty, notify admins for approval
+        if (req.user.role === "faculty") {
+            const admins = await User.find({ role: "admin" });
+            const adminIds = admins.map(admin => admin._id);
+
+            await Notification.create({
+                userId: req.user.id,
+                receiverIds: adminIds,
+                title: "Course Creation Request",
+                message: `Instructor ${req.user.name} has requested to create the course "${course.name}".`,
+                link: "/course-pending-requests"
             });
         }
 
-        res.status(201).json({ 
+        return res.status(201).json({
             success: true,
-            message: "Course created successfully",
-            course 
+            message: req.user.role === "faculty" ? "Course submitted for approval" : "Course created successfully",
+            course
         });
 
     } catch (error) {
         console.error("Course creation error:", error);
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
             message: "Internal server error",
-            error: error.message 
+            error: error.message
         });
     }
 };
-   
+
+
+
+
+
+// admin can action course or view pending //
+const getPendingCourseRequests = async (req, res) => {
+    try {
+        const pendingCourses = await Course.find({
+            approveRequest: true,
+            approvedByAdmin: { $ne: true }
+        })
+        .populate("instructor", "name email")
+        .populate("studentsEnrolled", "name email");
+
+        if (pendingCourses.length ===0 ) {
+            return res.status(404).json({ message: "No pending course requests found." });
+        }
+
+        return res.status(200).json({
+            success: true,
+            pendingCourses
+        });
+
+    } catch (err) {
+        // console.error("Fetch Pending Requests Error:", err);
+        return res.status(500).json({ message: "Server Error", error: err.message });
+    }
+};
+
+
+//  Requst aprrove couse //
+const approveCourseById = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+
+        const course = await Course.findById(courseId).populate("instructor", "name email");
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        if (course.status !== "pending" || !course.approveRequest) {
+            return res.status(400).json({ message: "This course does not need approval" });
+        }
+
+        course.status = "active";
+        course.approvedByAdmin = true;
+        await course.save();
+
+        // Notify instructor
+        await Notification.create({
+            userId: req.user._id,
+            receiverIds: [course.instructor._id],
+            title: "Course Approved",
+            message: `Your course "${course.name}" has been approved by ${req.user.name}.`
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Course approved successfully",
+            course
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server Error", error: err.message });
+    }
+};
+
+//Reject course by ID (Admin Only)
+
+const rejectCourseById = async (req, res) => {
+    try {
+        const courseId = req.params.id;
+
+        const course = await Course.findById(courseId).populate("instructor", "name email");
+        if (!course) {
+            return res.status(404).json({ message: "Course not found" });
+        }
+
+        if (course.status !== "pending" || !course.approveRequest) {
+            return res.status(400).json({ message: "This course is not pending for approval" });
+        }
+
+        course.status = "rejected";
+        course.approveByAdmin = false;
+        await course.save();
+
+        // Notify instructor
+        await Notification.create({
+            userId: req.user._id,
+            receiverIds: [course.instructor._id],
+            title: "Course Rejected",
+            message: `Your course "${course.name}" has been rejected by ${req.user.name}.`
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Course rejected successfully",
+            course
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server Error", error: err.message });
+    }
+};
+
+
 // Get all Instructors//
 
       const GetInstructors = async(req , res) => {
@@ -88,12 +233,16 @@ const createCourse = async (req, res) => {
 // Get all courses
 const getCourses = async (req, res) => {
     try {
-        const courses = await Course.find().populate("instructor", "name email").populate("studentsEnrolled", "name email");  
+        const courses = await Course.find({ approvedByAdmin: true })
+            .populate("instructor", "name email")
+            .populate("studentsEnrolled", "name email");
+
         res.json(courses);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Get course by ID
 const getCourseById = async (req, res) => {
@@ -237,6 +386,9 @@ const getEnrolledCourses = async (req, res) => {
 
 module.exports = {
     createCourse,
+    getPendingCourseRequests,
+    approveCourseById,
+    rejectCourseById,
     getCourses,
     GetInstructors, // Get all Instructors
     getCourseById,

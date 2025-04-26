@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { createNotification ,getUserNotifications ,markAsRead ,deleteNotfication ,deleteAllNotifications} = require('../controllers/NotificationController');
-const { protect , isFaculty , isAdmin  , isStudent } = require('../middleware/authMiddleware');
+const { protect , isFaculty , isAdmin  , isStudent, isAdminOrFaculty} = require('../middleware/authMiddleware');
 
 //create a new notification
-router.post('/', protect, createNotification);
+router.post('/create-notification', protect, isAdminOrFaculty , createNotification);
 
 //get all notifications for a user
 router.get('/all-notifications', protect, getUserNotifications);

@@ -50,8 +50,8 @@ const Navbar = () => {
   const roleDashboard = () => {
     if (role === "admin") navigate("/AdminDashboard");
     else if (role === "student") navigate("/StudentDashboard");
-    else if (role === "faculty") navigate("/dashboard");
-    else navigate("/dashboard");
+    else if (role === "faculty") navigate("/faculty-portal");
+    
   };
 
   const LoginModal = ({ closeModal }) => {
@@ -78,7 +78,9 @@ const Navbar = () => {
 
         setIsLoggedIn(true);
         closeModal();
-        window.location.href = response.data.role === "student" ? "/studentDashboard" : "/dashboard";
+        if (role === "admin") navigate("/AdminDashboard");
+    else if (role === "student") navigate("/StudentDashboard");
+    else if (role === "faculty") navigate("/faculty-portal");
       } catch (err) {
            if(err){
             toast.error("incorrect username or password");

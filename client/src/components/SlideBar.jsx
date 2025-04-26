@@ -1,14 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaBook, FaClipboardList, FaMoneyBill, FaBell, FaSignOutAlt, FaChevronDown, FaUser, FaDeaf } from "react-icons/fa";
+import {
+    FaHome,
+    FaBook,
+    FaClipboardList,
+    FaMoneyBill,
+    FaBell,
+    FaSignOutAlt,
+    FaChevronDown,
+    FaUser,
+    FaTrashAlt,
+    FaCheckCircle,
+    FaClipboardCheck,
+    FaCalendarCheck,
+    FaUserCheck
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [isCoursesOpen, setIsCoursesOpen] = useState(false);
-    const [isExamsOpen, setIsExamsOpen] = useState(false); 
-    const [isResultOpen, setIsResultOpen] = useState(false); 
+    const [isExamsOpen, setIsExamsOpen] = useState(false);
+    const [isResultOpen, setIsResultOpen] = useState(false);
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (token !== "admin"  ) {
+        window.location.href = "/"; // Redirect to student dashboard
+    }
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -34,10 +54,10 @@ const Sidebar = () => {
             </button>
 
             <nav className="flex flex-col gap-4">
-                {/* Sidebar Items */}
+                {/* Dashboard */}
                 <SidebarItem icon={<FaHome />} text="Dashboard" to="/dashboard" isOpen={isOpen} />
 
-                {/* Courses Dropdown */}
+                {/* Manage Courses Dropdown */}
                 <div className="relative group">
                     <button
                         onClick={() => setIsCoursesOpen(!isCoursesOpen)}
@@ -58,6 +78,7 @@ const Sidebar = () => {
                         >
                             <SidebarItem text="Update Course" to="/update-course" isOpen={isOpen} />
                             <SidebarItem text="Create Course" to="/create-courses" isOpen={isOpen} />
+                            <SidebarItem text="Pendng Courses request" to="/course-pending-requests" isOpen={isOpen} />
                         </motion.div>
                     )}
                 </div>
@@ -83,12 +104,12 @@ const Sidebar = () => {
                         >
                             <SidebarItem text="Create Exam" to="/exam/create-exam" isOpen={isOpen} />
                             <SidebarItem text="Edit Exam" to="/exam/edit-exam" isOpen={isOpen} />
-                            <SidebarItem text="View Exams" to="/exam/view-exams" isOpen={isOpen} />
+                            <SidebarItem icon={<FaClipboardCheck />} text="View Exams" to="/exam/view-exams" isOpen={isOpen} />
                         </motion.div>
                     )}
                 </div>
 
-                {/* Result Dropdown */}
+                {/* Manage Results Dropdown */}
                 <div className="relative group">
                     <button
                         onClick={() => setIsResultOpen(!isResultOpen)}
@@ -107,26 +128,23 @@ const Sidebar = () => {
                             transition={{ duration: 0.3 }}
                             className="ml-6 mt-2 flex flex-col gap-2"
                         >
-                            <SidebarItem text="See Results" to="/all-results" isOpen={isOpen} />
-                            <SidebarItem text="Update Result" to="/update-result" isOpen={isOpen} />
-                            <SidebarItem text="Delete Result" to="/delete-result" isOpen={isOpen} />
+                            <SidebarItem icon={<FaCheckCircle />} text="See Results" to="/all-results" isOpen={isOpen} />
+                            <SidebarItem icon={<FaClipboardCheck />} text="Update Result" to="/update-result" isOpen={isOpen} />
+                            <SidebarItem icon={<FaTrashAlt />} text="Delete Result" to="/delete-result" isOpen={isOpen} />
                         </motion.div>
                     )}
                 </div>
 
                 {/* Other Sidebar Items */}
                 <SidebarItem icon={<FaUser />} text="User" to="/users" isOpen={isOpen} />
-                <SidebarItem icon={<FaDeaf />} text="Delete user Request" to="/exam-deletaiton-approved-page" isOpen={isOpen} />
-
+                <SidebarItem icon={<FaTrashAlt />} text="Exam Delete Request" to="/exam-deletaiton-approved-page" isOpen={isOpen} />
                 <SidebarItem icon={<FaMoneyBill />} text="Payments" to="/payments" isOpen={isOpen} />
-
                 <SidebarItem icon={<FaBell />} text="Notifications" to="/notifications" isOpen={isOpen} />
-                <SidebarItem icon={<FaBell />} text="self-attendance" to="/self-attendance" isOpen={isOpen} />
-                <SidebarItem icon={<FaBell />} text="Attendance Requests" to="/attendance-request" isOpen={isOpen} />
-                <SidebarItem icon={<FaBell />} text="Attendance record" to="/attendance-record" isOpen={isOpen} />
-                <SidebarItem icon={<FaBell />} text="Attendance record for studnet" to="/instructor-courses" isOpen={isOpen} />
-                
-
+                <SidebarItem icon={<FaBell />} text="Create Notification" to="/create-notification" isOpen={isOpen} />
+                <SidebarItem icon={<FaCalendarCheck />} text="Self-Attendance" to="/self-attendance" isOpen={isOpen} />4
+                <SidebarItem icon={<FaClipboardCheck />} text="Attendance Requests" to="/attendance-request" isOpen={isOpen} />
+                <SidebarItem icon={<FaClipboardList />} text="Attendance Record" to="/attendance-record" isOpen={isOpen} />
+                <SidebarItem icon={<FaUserCheck />} text="Student Attendance" to="/instructor-courses" isOpen={isOpen} />
                 <SidebarItem icon={<FaSignOutAlt />} text="Logout" isOpen={isOpen} onClick={handleLogout} />
             </nav>
         </motion.div>

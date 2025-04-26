@@ -27,15 +27,13 @@ const CreateCourse = () => {
   });
 
   useEffect(() => {
-    if (role !== "admin") {
+    if (role !== "admin" && role !== "faculty") {
       toast.error("Only admins can access this page.");
     }
      else if(role === "student"){
       navigate("StudentDashboard")
      }
-      if(role === "faculty"){
-        navigate("/dashboard")
-      }
+     
   }, [role]);
   
  console.log(role)

@@ -38,7 +38,7 @@ const Login = ({ closeModal }) => {
       // Use navigate instead of window.location for SPA behavior
       window.location.href = response.data.role === "student" 
         ? "/studentDashboard" 
-        : "/dashboard";
+        : "/faculty-portal";
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please check your credentials and try again.');
       setIsLoading(false);

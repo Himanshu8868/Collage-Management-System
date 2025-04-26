@@ -1,6 +1,9 @@
 const express = require("express");
 const {
     createCourse,
+    getPendingCourseRequests , //Admins Can ApproverejectCourse
+    approveCourseById,
+    rejectCourseById,
     GetInstructors,
     getCourses,
     getCourseById,
@@ -10,12 +13,21 @@ const {
     getEnrolledCourses,
     getMyCourses
 } = require("../controllers/CourseController");
-const { protect, isAdmin, isFaculty, isStudent } = require("../middleware/authMiddleware");
+const { protect, isAdmin, isFaculty, isStudent , isAdminOrFaculty } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Admin creates a new course
-router.post("/create-course", protect, isAdmin, createCourse);
+router.post("/create-course", protect, isAdminOrFaculty, createCourse);
+
+router.get("/pending-requests" , protect , isAdmin , getPendingCourseRequests)
+
+// Admin approves a course request
+    router.patch("/approve-course/:id", protect, isAdmin, approveCourseById);
+
+// Reject course By course Id
+router.patch("/reject-course/:id", protect, isAdmin, rejectCourseById);
+
 
 // Get all Instructors for creating course
 router.get("/instructors", protect, isAdmin, GetInstructors);
