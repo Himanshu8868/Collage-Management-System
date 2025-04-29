@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { 
   FaBook, FaClipboardList, FaCheckCircle, 
   FaClipboardCheck, FaCalendarCheck, FaBars, FaTimes,
-  FaChalkboardTeacher, FaUserGraduate, FaChartLine
+  FaChalkboardTeacher, FaUserGraduate, FaChartLine,
+  FaRegSquare
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -82,6 +83,14 @@ const FacultyDashboard = () => {
        ]
     },
 
+    {
+       title : "Leave",
+       icon : <FaRegSquare />,
+       items: [
+         {icon : <FaRegSquare /> , text: "Create leave application" , to : "/submit-leave-request" },
+         {icon : <FaRegSquare /> , text: "View leave application" , to : "/my-leaves" },
+       ]
+    },
     // {
     //   title: "Students",
     //   icon: <FaUserGraduate />,

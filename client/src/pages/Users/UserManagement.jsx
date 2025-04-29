@@ -62,7 +62,7 @@ const UserManagement = () => {
         const res = await axios.get("http://localhost:5000/api/users/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUsers(Array.isArray(res.data) ? res.data : []);
+        setUsers(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
         toast.error(err.response?.data?.message || "Failed to load users");
       } finally {

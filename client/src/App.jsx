@@ -71,6 +71,16 @@ import CreateNotification from './pages/Notifications/CreateNotification'
 import FacultyDashboard from './pages/Dashboards/FacultyDashboard';
 import FacultyDashboardPage from './pages/Dashboards/FacultyDashboardPage';
 
+//Pending requests //
+import FacultyRegistration from './pages/panding/FacultyRegistration';
+
+//Leave Routes //
+import CreateLeaverequests from './pages/Requests/CreateLeaverequest';
+import PendingLeaveRequests from './pages/Panding/Admin/PendingLeaveRequest';
+import AllLeaves from './pages/Leave/AllLeaves';
+import MyLeaves from './pages/Leave/MyLeaves';
+
+
 function App() {
   return (
     <>
@@ -144,7 +154,19 @@ function App() {
                   <Route path="/faculty-portal" element={<FacultyDashboardPage />} />
                   <Route path="/course-pending-requests" element={<PendingCourseRequest />} />
 
+                     <Route path="/account-requests" element={<FacultyRegistration/>} />
+
+
+                     {/* LEAVES PAGES */}
                 
+                <Route element={<ProtectedRoute allowedRoles={["faculty , student"]} />}>
+                  
+                  </Route>
+
+                  <Route path ="/submit-leave-request" element={<CreateLeaverequests/>} />
+                  <Route path ="/pending-request" element={<PendingLeaveRequests/>} />
+                  <Route path="/all-leave-record"  element={<AllLeaves/>} />
+                  <Route path= "/my-leaves" element={<MyLeaves/>} />
           </Routes>
           <Footer />
         </AuthProvider>
@@ -152,5 +174,4 @@ function App() {
     </>
   );
 }
-
 export default App;

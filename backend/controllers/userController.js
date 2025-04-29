@@ -32,30 +32,32 @@ const getUserProfile = async (req, res) => {
 
 const UserProfile = async (req, res) => {
     try {
-        let query = {};
+        let query = { status: "Active" }; // 👈 Only Active users will be fetched
 
-      
         if (req.user.role === "faculty") {
-            query = { role: "student" };
+            // Faculty can only view Active students
+            query.role = "student";
         }
-        else if(req.user.role === "admin"){
-            query = {} //admin can see all users 
+        else if (req.user.role === "admin") {
+          
         }
         else {
-        return res.status(403).json({ message: "Access Denied" });
+            return res.status(403).json({ message: "Access Denied" });
         }
 
         const users = await User.find(query).select("-password");
 
         if (users.length > 0) {
-            res.status(200).json(users);
+            res.status(200).json({ success: true, data: users });
         } else {
-            res.status(404).json({ message: " User not found", success: false });
+            res.status(404).json({ success: false, message: "No users found" });
         }
+
     } catch (error) {
-        res.status(500).json({ message: "server error", error });
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
 };
+
 
 
 //delete a user //
@@ -156,6 +158,84 @@ const getStudentsByExam = async (req, res) => {
   };
   
 
+  //Get Pending Requests for Faculty Approval
+  const getPendingFaculties = async (req, res) => {
+    try {
+        if (req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access Denied" });
+        }
+
+        const pendingFaculties = await User.find({ role: "faculty", status: "Inactive" , approvalStatus : "pending" }).select("-password");
+           
+        if (!pendingFaculties || pendingFaculties.length === 0) {
+            return res.status(404).json({ success: false, message: "No pending faculty requests found" });
+        }
+        res.status(200).json({ success: true, pendingFaculties });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
+
+//Approve Faculty Registration Request
+
+const approveFaculty = async (req, res) => {
+    try {
+        if (req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access Denied" });
+        }
+
+        const { facultyId } = req.params;
+
+        const faculty = await User.findById(facultyId);
+
+        if (!faculty || faculty.role !== "faculty") {
+            return res.status(404).json({ message: "Faculty not found" });
+        }
+
+        faculty.status = "Active"; 
+        faculty.approvalStatus="approved"
+        await faculty.save();
+
+        res.status(200).json({ success: true, message: "Faculty approved successfully."  ,faculty });
+
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+};
+
+// Reject approval request //
+
+const rejectFacultyRequest = async (req, res) => {
+    try {
+        if (req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access Denied" });
+        }
+
+        const { facultyId } = req.params;
+        const faculty = await User.findById(facultyId);
+
+        if (!faculty) {
+            return res.status(404).json({ message: "Faculty not found" });
+        }
+
+        if (faculty.role !== "faculty") {
+            return res.status(400).json({ message: "The user is not a faculty member" });
+        }
+
+        faculty.status = "Inactive";
+        faculty.approvalStatus = "rejected"; // important!
+        await faculty.save();
+
+        res.status(200).json({ success: true, message: "Faculty request rejected" , faculty});
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
+
+
 module.exports = {
     getUserProfile,
     UserProfile,
@@ -163,5 +243,7 @@ module.exports = {
     UpdateUser,
    UserStatus,
    getStudents,
-   
-};
+   getPendingFaculties,
+   approveFaculty,
+   rejectFacultyRequest,
+  };

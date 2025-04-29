@@ -23,10 +23,11 @@ const Sidebar = () => {
     const [isCoursesOpen, setIsCoursesOpen] = useState(false);
     const [isExamsOpen, setIsExamsOpen] = useState(false);
     const [isResultOpen, setIsResultOpen] = useState(false);
-    const token = localStorage.getItem("token");
+    const [isRequestOpen , setIsRequestOpen] = useState(false);
+     localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    if (token !== "admin"  ) {
+    if (role !== "admin"  ) {
         window.location.href = "/"; // Redirect to student dashboard
     }
 
@@ -128,6 +129,8 @@ const Sidebar = () => {
                             transition={{ duration: 0.3 }}
                             className="ml-6 mt-2 flex flex-col gap-2"
                         >
+
+                            
                             <SidebarItem icon={<FaCheckCircle />} text="See Results" to="/all-results" isOpen={isOpen} />
                             <SidebarItem icon={<FaClipboardCheck />} text="Update Result" to="/update-result" isOpen={isOpen} />
                             <SidebarItem icon={<FaTrashAlt />} text="Delete Result" to="/delete-result" isOpen={isOpen} />
@@ -135,8 +138,35 @@ const Sidebar = () => {
                     )}
                 </div>
 
+                 {/* Requests  Dropdown */}
+                <div className="relative group">
+                    <button
+                        onClick={() => setIsRequestOpen(!isRequestOpen)}
+                        className="flex items-center gap-4 p-3 hover:bg-gray-700 rounded-lg w-full text-left"
+                    >
+                        <FaClipboardList className="text-xl" />
+                        <span className={`${!isOpen && "opacity-0"} transition-opacity duration-200`}>
+                            Requests 
+                        </span>
+                        {isOpen && <FaChevronDown className={`ml-auto transition-transform ${isRequestOpen ? "rotate-180" : ""}`} />}
+                    </button>
+                    {isRequestOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            transition={{ duration: 0.3 }}
+                            className="ml-6 mt-2 flex flex-col gap-2"
+                        >
+                            <SidebarItem icon={<FaTrashAlt />} text="Leave Request" to="/pending-request" isOpen={isOpen} />
+                            <SidebarItem icon={<FaTrashAlt />} text="Leave record" to="/all-leave-record" isOpen={isOpen} />
+                        </motion.div>
+                    )}
+                </div>
+
+
                 {/* Other Sidebar Items */}
                 <SidebarItem icon={<FaUser />} text="User" to="/users" isOpen={isOpen} />
+                <SidebarItem icon={<FaUser />} text="account Requests" to="/account-requests" isOpen={isOpen} />
                 <SidebarItem icon={<FaTrashAlt />} text="Exam Delete Request" to="/exam-deletaiton-approved-page" isOpen={isOpen} />
                 <SidebarItem icon={<FaMoneyBill />} text="Payments" to="/payments" isOpen={isOpen} />
                 <SidebarItem icon={<FaBell />} text="Notifications" to="/notifications" isOpen={isOpen} />
