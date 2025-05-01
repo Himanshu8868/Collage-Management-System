@@ -1,0 +1,4 @@
+Student,Course,Exam,Score,Status,Date
+"Student 2","course 1","even semester exams",15,Failed,4/11/2025, 11:14:01 PM
+"Student 2","course 1","Test  1",2,Failed,4/11/2025, 8:25:37 PM
+"Student 2","course 1","test 4",0,Failed,4/11/2025, 8:24:45 PM

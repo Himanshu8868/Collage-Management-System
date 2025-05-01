@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Notification = require("../models/Notification");
+const Activity = require("../models/Activity");
 
 const registerUser = async (req, res) => {
     try {
@@ -43,7 +44,15 @@ const registerUser = async (req, res) => {
             message: `New user "${user.name}" has registered with role "${user.role}".`,
             link: "/account-requests" // Update the link properly
         });
+  
+         // create activity for the new user
 
+        await Activity.create({
+            user: user._id,
+            action: `New ${user.role} has registered : ${user.name}.`,
+            type: "user"
+        });
+        
         res.status(201).json({ message: "User registered successfully", user });
 
     } catch (error) {

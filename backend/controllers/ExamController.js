@@ -3,6 +3,7 @@ const Course = require('../models/Course');
 const Result = require('../models/Result');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
+const Activity = require('../models/Activity');
 
 // const { validationResult } = require('express-validator');
 
@@ -35,6 +36,16 @@ const createExam = async (req, res) => {
             date,
             duration,
             questions: formattedQuestions
+        });
+
+         
+        // Notify the admin about the new exam creation
+         const user = await User.findById(req.user._id);
+
+        await Activity.create({
+            user: req.user._id,
+            action: `New exam ${exam.title} has been created for course ${course.name} by : ${user.name}.`,
+            type: "exam"
         });
 
         res.status(201).json({

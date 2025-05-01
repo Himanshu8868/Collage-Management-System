@@ -175,6 +175,10 @@ const Sidebar = () => {
                 <SidebarItem icon={<FaClipboardCheck />} text="Attendance Requests" to="/attendance-request" isOpen={isOpen} />
                 <SidebarItem icon={<FaClipboardList />} text="Attendance Record" to="/attendance-record" isOpen={isOpen} />
                 <SidebarItem icon={<FaUserCheck />} text="Student Attendance" to="/instructor-courses" isOpen={isOpen} />
+
+                😪
+                <SidebarItem icon={<FaUserCheck />} text="Upload Document" to="/upload-document" isOpen={isOpen} />
+
                 <SidebarItem icon={<FaSignOutAlt />} text="Logout" isOpen={isOpen} onClick={handleLogout} />
             </nav>
         </motion.div>

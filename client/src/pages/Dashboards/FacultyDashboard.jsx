@@ -62,7 +62,6 @@ const FacultyDashboard = () => {
       icon: <FaBook />,
       items: [
         { icon: <FaClipboardList />, text: "Create Course", to: "/request-course" },
-        { icon: <FaCheckCircle />, text: "Update Course", to: "/update-course" }
       ]
     },
     {
@@ -104,6 +103,13 @@ const FacultyDashboard = () => {
     icon: <FaClipboardList />,
     items: [
       { icon: <FaCheckCircle />, text: " Notification", to: "/notifications" },
+    ]
+       },
+       {
+    title: "document",
+    icon: <FaClipboardList />,
+    items: [
+      { icon: <FaCheckCircle />, text: " documnet", to: "/upload-document" },
     ]
        }
       ];

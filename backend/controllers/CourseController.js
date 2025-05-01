@@ -380,6 +380,19 @@ const getEnrolledCourses = async (req, res) => {
     }
   };
   
+  //Delete All courses (Admin Only)
+
+
+const deleteAllCourses = async () => {
+  try {
+    const result = await Course.deleteMany({});
+    console.log(`Deleted ${result.deletedCount} courses`);
+  } catch (error) {
+    console.error('Error deleting courses:', error);
+  }
+};
+
+
   
   
   
@@ -396,5 +409,6 @@ module.exports = {
     deleteCourse,
     enrollInCourse,
     getEnrolledCourses,
-    getMyCourses // Faculty get all courses they are teaching
+    getMyCourses ,// Faculty get all courses they are teaching
+    deleteAllCourses
 };

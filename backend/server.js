@@ -17,6 +17,8 @@ const userRoutes = require("./router/userRoutes");
 const ResultRoutes = require("./router/ResultRouter");
 const Notifications = require("./router/notificationRoutes");
 const LeateRouter = require("./router/LeaveRouter");
+const activityRouter = require("./router/ActivityRouter");
+const DocumentRouter = require("./router/documentRouter");
 
 const app = express();
 
@@ -35,6 +37,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/result" , ResultRoutes);
 app.use("/api/notifications", Notifications);
 app.use("/api/leave" , LeateRouter);
+app.use("/api/activity" , activityRouter)
+app.use("/api/documents", DocumentRouter);
 
 // Server Listening
 const PORT = process.env.PORT || 5000;

@@ -40,6 +40,13 @@ const StudentDashBoard = () => {
           <Link to ="/notifications" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaBell /> <span>Notification</span>
           </Link>
+
+          <Link to ="/assignment" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaBell /> <span>Course Materials</span>
+          </Link>
+
+
+          
           <li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaCalendarAlt /> <span>Schedule</span>
           </li>

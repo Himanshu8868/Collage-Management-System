@@ -80,6 +80,12 @@ import PendingLeaveRequests from './pages/Panding/Admin/PendingLeaveRequest';
 import AllLeaves from './pages/Leave/AllLeaves';
 import MyLeaves from './pages/Leave/MyLeaves';
 
+// Activity Routes //
+import ActivityList from './pages/Activity/ActivityList';
+
+// Document Routes //
+import UploadDocuments from './pages/Document/UploadDocuments';
+import DocumentViewer from './pages/Document/DocumentViewer'; 
 
 function App() {
   return (
@@ -109,11 +115,12 @@ function App() {
 
             {/* Student Routes */}
             <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
-              <Route path="/studentDashboard" element={<StudentDashBoard />} />
               <Route path="/:id/enroll-course" element={<EnrollCourse />} />
               <Route path="/student-exam/:id" element={<SubmitExam/>} />     {/*student Attend the exam */}
               <Route path ="/student-exam" element= {<StudentExams/>} />   {/*student see their exmas */}
             </Route>
+            <Route path="/studentDashboard" element={<StudentDashBoard />} />
+
 
             {/* Admin + Faculty Only */}
             <Route element={<ProtectedRoute allowedRoles={["admin", "faculty"]} />}>
@@ -167,10 +174,17 @@ function App() {
                   <Route path ="/pending-request" element={<PendingLeaveRequests/>} />
                   <Route path="/all-leave-record"  element={<AllLeaves/>} />
                   <Route path= "/my-leaves" element={<MyLeaves/>} />
+
+                  {/* Activity page */}
+                  <Route path="/activities" element={<ActivityList />} />
+
+                  {/* Documnet pages */}
+                  <Route path="/upload-document" element={<UploadDocuments />} />
+                  <Route path="/assignment" element={<DocumentViewer/>} />
           </Routes>
           <Footer />
         </AuthProvider>
-      </Router>
+      </Router>s
     </>
   );
 }

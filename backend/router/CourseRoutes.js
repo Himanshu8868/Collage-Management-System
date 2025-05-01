@@ -11,7 +11,8 @@ const {
     deleteCourse,
     enrollInCourse,
     getEnrolledCourses,
-    getMyCourses
+    getMyCourses,
+    deleteAllCourses
 } = require("../controllers/CourseController");
 const { protect, isAdmin, isFaculty, isStudent , isAdminOrFaculty } = require("../middleware/authMiddleware");
 
@@ -35,6 +36,11 @@ router.get("/instructors", protect, isAdmin, GetInstructors);
 // Faculty get all courses they are teaching
 router.get("/my-courses", protect, isFaculty, getMyCourses);
 
+router.delete("/delete-all", protect, isAdmin, deleteAllCourses);
+
+// Get enrolled courses for a student 
+router.get("/enrolled", protect, isStudent, getEnrolledCourses);
+
 // Get all courses (for students and faculty)
 router.get("/", getCourses);
 
@@ -50,7 +56,8 @@ router.delete("/:id", protect, isAdmin, deleteCourse);
 // Student enrolls in a course
 router.post("/:id/enroll", protect, isStudent, enrollInCourse);
 
-// Get enrolled courses for a student 
-router.get("/:id/enrolled", protect, isStudent, getEnrolledCourses);
+
+
+// Delete all courses (Admin only)
 
 module.exports = router;

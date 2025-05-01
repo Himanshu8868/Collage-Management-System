@@ -12,12 +12,16 @@ const Dashboard = () => {
   const [pendingLeaves, setPendingLeaves] = useState(0);
   const [loadingPending, setLoadingPending] = useState(true);
 
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+
   useEffect(() => {
     if (role !== "admin") {
       window.location.href = "/not";
       return;
     }
 
+    // Fetch pending counts
     const fetchPendingCounts = async () => {
       try {
         const [courseRes, facultyRes, leaveRes] = await Promise.all([
@@ -35,7 +39,6 @@ const Dashboard = () => {
         setPendingCourses(courseRes?.data?.pendingCourses?.length || 0);
         setPendingFaculties(facultyRes?.data?.pendingFaculties?.length || 0);
         setPendingLeaves(leaveRes?.data?.pendingLeaves?.length || 0);
-
       } catch (error) {
         console.error("Failed to fetch pending approvals:", error);
       } finally {
@@ -43,7 +46,25 @@ const Dashboard = () => {
       }
     };
 
+    // Fetch 5 recent activities
+    const fetchRecentActivities = async () => {
+      try {
+        const activityRes = await axios.get(
+          `http://localhost:5000/api/activity/recent?limit=5`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setRecentActivities(activityRes?.data?.activities || []);
+      } catch (error) {
+        console.error("Failed to fetch recent activities:", error);
+      } finally {
+        setLoadingActivities(false);
+      }
+    };
+
     fetchPendingCounts();
+    fetchRecentActivities();
   }, [token, role]);
 
   const quickActions = [
@@ -57,12 +78,6 @@ const Dashboard = () => {
     { title: "Total Students", value: "5,432" },
     { title: "Total Teachers", value: "234" },
     { title: "Courses Offered", value: "45" },
-  ];
-
-  const recentActivities = [
-    "New student registration: John Doe",
-    "Professor Smith uploaded new assignments",
-    "Admin approved course curriculum update",
   ];
 
   return (
@@ -150,21 +165,38 @@ const Dashboard = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <h2 className="text-lg font-semibold mb-3 text-gray-700">Recent Activity</h2>
-          <ul className="space-y-2">
-            {recentActivities.map((activity, index) => (
-              <motion.li
-                key={index}
-                className="border-b py-2 text-gray-600"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.3 }}
-              >
-                {activity}
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
+          {loadingActivities ? (
+            <p className="text-gray-500">Loading recent activities...</p>
+          ) : (
+            <>
+              <ul className="space-y-2">
+                {recentActivities.map((activity, index) => (
+                  <motion.li
+                    key={activity._id}
+                    className="border-b py-2 text-gray-600"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.3 }}
+                  >
+                    <strong>{activity.user.name}</strong> : {activity.action}{" "}
+                    <span className="text-sm text-gray-500">
+                      {new Date(activity.timestamp).toLocaleString()}
+                    </span>
+                  </motion.li>
+                ))}
+              </ul>
 
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => window.location.href = "/activities"}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                >
+                  See All
+                </button>
+              </div>
+            </>
+          )}
+        </motion.div>
       </div>
     </div>
   );

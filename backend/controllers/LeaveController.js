@@ -6,6 +6,7 @@ const Notification = require('../models/Notification');
  const submitLeave = async (req, res) => {
   try {
     const { fromDate, toDate, reason, leaveType } = req.body;
+  
 
     if (req.user.role !== "faculty" && req.user.role !== "student") {
       return res.status(400).json({ message: 'Only students or faculty can submit leave' });

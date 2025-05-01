@@ -16,7 +16,7 @@ const MarkAttendance = () => {
   useEffect(() => {
     const fetchEnrolledCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/courses/${studentId}/enrolled`, {
+        const res = await axios.get(`http://localhost:5000/api/courses/enrolled`, {
           headers: { Authorization: `Bearer ${token}` },
         });
     
