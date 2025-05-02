@@ -19,6 +19,7 @@ const Notifications = require("./router/notificationRoutes");
 const LeateRouter = require("./router/LeaveRouter");
 const activityRouter = require("./router/ActivityRouter");
 const DocumentRouter = require("./router/documentRouter");
+const noticeRouter = require("./router/noticeRouter");
 
 const app = express();
 
@@ -34,11 +35,12 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/attendance", attendacneRoutes);
 app.use("/api/exams", examRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/result" , ResultRoutes);
+app.use("/api/result", ResultRoutes);
 app.use("/api/notifications", Notifications);
-app.use("/api/leave" , LeateRouter);
-app.use("/api/activity" , activityRouter)
+app.use("/api/leave", LeateRouter);
+app.use("/api/activity", activityRouter)
 app.use("/api/documents", DocumentRouter);
+app.use("/api/notice", noticeRouter);
 
 // Server Listening
 const PORT = process.env.PORT || 5000;

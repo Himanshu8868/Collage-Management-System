@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import SlideBar from "../../../components/SlideBar";
 import { motion } from "framer-motion";
+import { useNotice } from "../../../../context/NoticeContext";
 import axios from "axios";
 
 const Dashboard = () => {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
-
+  const { notices } = useNotice();
   const [pendingCourses, setPendingCourses] = useState(0);
   const [pendingFaculties, setPendingFaculties] = useState(0);
   const [pendingLeaves, setPendingLeaves] = useState(0);
@@ -79,6 +80,7 @@ const Dashboard = () => {
     { title: "Total Teachers", value: "234" },
     { title: "Courses Offered", value: "45" },
   ];
+  
 
   return (
     <div className="flex mt-15">
@@ -97,14 +99,57 @@ const Dashboard = () => {
           College Management Admin Dashboard
         </motion.h1>
 
-        {/* System Announcement */}
+        {/* Notice Announcement */}
+        
         <motion.div
-          className="bg-yellow-100 p-4 rounded-lg shadow text-yellow-800 mb-6"
+  className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 shadow-sm mb-6"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.3 }}
+>
+  <div className="flex items-center gap-2 mb-3">
+    <svg 
+      className="w-5 h-5 text-yellow-600" 
+      fill="none" 
+      stroke="currentColor" 
+      viewBox="0 0 24 24"
+    >
+      <path 
+        strokeLinecap="round" 
+        strokeLinejoin="round" 
+        strokeWidth={2} 
+        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
+      />
+
+                {/* NOTICE */}
+    </svg>
+    <h3 className="font-semibold text-yellow-800">Notices</h3>
+  </div>
+
+  {notices.length === 0 ? (
+    <p className="text-sm text-yellow-600 py-2">No notices available</p>
+  ) : (
+    <div className="space-y-3">
+      {notices.map((notice) => (
+        <motion.div
+          key={notice._id}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="p-3 bg-white rounded border border-yellow-100 shadow-xs"
+          whileHover={{ scale: 1.01 }}
         >
-          <strong>Notice:</strong> Upcoming system maintenance on Saturday at 11:00 PM.
+          <h4 className="font-medium text-gray-800 text-sm">{notice.title}</h4>
+          <p className="text-gray-600 text-sm mt-1">{notice.content}</p>
+          {notice.expiresAt && (
+            <p className="text-xs text-gray-500 mt-2">
+              Expires: {new Date(notice.expiresAt).toLocaleDateString()}
+            </p>
+          )}
         </motion.div>
+      ))}
+    </div>
+  )}
+</motion.div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">

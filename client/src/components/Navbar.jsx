@@ -64,31 +64,34 @@ const Navbar = () => {
       e.preventDefault();
       setError(null);
       setIsLoading(true);
-
+    
       try {
         const response = await axios.post("http://localhost:5000/api/auth/login", { 
           email, 
           password 
         });
-
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("name", response.data.name);
-        localStorage.setItem("email", response.data.email);
-
+    
+        const { token, role, name, email: userEmail } = response.data;
+    
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+        localStorage.setItem("name", name);
+        localStorage.setItem("email", userEmail);
+    
         setIsLoggedIn(true);
         closeModal();
-        if (role === "admin") navigate("/AdminDashboard");
-    else if (role === "student") navigate("/StudentDashboard");
-    else if (role === "faculty") navigate("/faculty-portal");
+    
+        if (role === "admin") window.location.href = "/AdminDashboard";
+        else if (role === "student") window.location.href = "/StudentDashboard";
+        else if (role === "faculty") window.location.href = "/faculty-portal";
+    
       } catch (err) {
-           if(err){
-            toast.error("incorrect username or password");
-           }
-        setError(err.response?.data?.error || 'Login failed. Please try again.');
+        toast.error("Incorrect username or password");
+        setError(err.response?.data?.error || "Login failed. Please try again.");
         setIsLoading(false);
       }
     };
+    
 
     return (
       <motion.div

@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
       setUser(user);
 
       // Redirect to the previous page or dashboard
-      const origin = location.state?.from?.pathname || '/dashboard';
+      const origin = location.state?.from?.pathname || '/';
       navigate(origin);
     } catch (error) {
       console.error('Login failed:', error);

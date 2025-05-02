@@ -178,6 +178,8 @@ const Sidebar = () => {
 
                 😪
                 <SidebarItem icon={<FaUserCheck />} text="Upload Document" to="/upload-document" isOpen={isOpen} />
+                <SidebarItem icon={<FaUserCheck />} text="Create Notice " to="/create-notice" isOpen={isOpen} />
+                
 
                 <SidebarItem icon={<FaSignOutAlt />} text="Logout" isOpen={isOpen} onClick={handleLogout} />
             </nav>

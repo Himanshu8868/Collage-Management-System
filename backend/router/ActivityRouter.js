@@ -11,6 +11,6 @@ router.post('/create', protect, CreateActivity);
 router.get('/all', protect, isAdmin, AllActivities);
 
 //Fetch recent Activeiy 
-router.get('/recent' , protect , recentActivity);
+router.get('/recent' , protect , recentActivity); // fetch recent activity that is not older than 7 days or just creaeted 
 
 module.exports = router;

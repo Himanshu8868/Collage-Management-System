@@ -10,6 +10,7 @@ const createNotification = async (req, res) => {
 
     // Only admin is allowed
     if (sender.role !== "admin") {
+      
       return res.status(403).json({ success: false, message: "Only admin can send notifications" });
     }
 
@@ -100,7 +101,7 @@ const createNotification = async (req, res) => {
   // Delete notification //
     const deleteNotfication = async (req , res ) => {
        const notificationId = req.params.id;
-        const deletedNotification = await Notification.findByIdAndDelete(notificationId);
+        const deletedNotification = await Notification.findByIdAndDelete({notificationId});
         if (!deletedNotification) {
             return res.status(404).json({ success: false, message: "Notification not found" });
         }

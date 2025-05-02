@@ -11,8 +11,9 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TostMessages from '../hooks/TostMessages';
 
-// Auth Context
+//  Context
 import { AuthProvider } from "../context/AuthContext";
+import { NoticeProvider } from '../context/NoticeContext';
 
 // Public Pages
 import HomePage from './pages/HomePage';
@@ -87,11 +88,15 @@ import ActivityList from './pages/Activity/ActivityList';
 import UploadDocuments from './pages/Document/UploadDocuments';
 import DocumentViewer from './pages/Document/DocumentViewer'; 
 
+// NOTICE ROUTES //
+import CreateNotice from './pages/Notice/CreateNotice';
+
 function App() {
   return (
     <>
       <Router>
-        <AuthProvider>
+        <AuthProvider>  
+        <NoticeProvider>
           <TostMessages />
           <Navbar />
           <Routes>
@@ -181,10 +186,14 @@ function App() {
                   {/* Documnet pages */}
                   <Route path="/upload-document" element={<UploadDocuments />} />
                   <Route path="/assignment" element={<DocumentViewer/>} />
+
+                  {/* Notice pages  */}
+                  <Route path="/create-notice" element={<CreateNotice />} />
           </Routes>
           <Footer />
+        </NoticeProvider>
         </AuthProvider>
-      </Router>s
+      </Router>
     </>
   );
 }
