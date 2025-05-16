@@ -223,7 +223,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.3 }}
                   >
-                    <strong>{activity.user.name}</strong> : {activity.action}{" "}
+                    <strong>{activity.user?.name}</strong> : {activity.action}{" "}
                     <span className="text-sm text-gray-500">
                       {new Date(activity.timestamp).toLocaleString()}
                     </span>

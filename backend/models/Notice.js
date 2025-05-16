@@ -6,7 +6,12 @@ const noticeSchema = new mongoose.Schema({
   content: { type: String },
   createdAt: { type: Date, default: Date.now },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  expiresAt: { type: Date, required: true }, // ⏰ Expiry time
+  instructor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // assuming User model holds faculty too
+   
+  },  
+  expiresAt: { type: Date, required: true }, // Expiry time
 });
 
 // TTL index for automatic deletion

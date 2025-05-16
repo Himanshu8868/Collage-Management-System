@@ -10,7 +10,7 @@ const StudentDashBoard = () => {
 
   return (
     
-    <div className="mt-14 my-8 flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="mt-14 my-8 flex min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -100, opacity: 0 }}
@@ -48,6 +48,12 @@ const StudentDashBoard = () => {
           <Link to ="/assignment" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaBell /> <span>Course Materials</span>
           </Link>
+          <Link to ="/fee-details" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaBell /> <span>My fee Details</span>
+          </Link>
+         <Link to ="/payment" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+            <FaBell /> <span>payment</span>
+          </Link>
 
 
           
@@ -58,7 +64,7 @@ const StudentDashBoard = () => {
       </motion.aside>
 
       {/* Main Content */}
-      <div className="my-10 flex-1 p-6">
+      <div className=" h-auto my-10 flex-1 p-6">
         <motion.h2
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

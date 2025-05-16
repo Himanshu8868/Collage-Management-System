@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         phone: { type: String, required: true },
         address: { type: String, required: true },
+        // year: {type : String , required: true},
+        semester: {type : String , required : true} ,
         enrollYear: { 
             type: String, 
             required: function() { return this.role === "student"; } 
@@ -15,7 +17,7 @@ const userSchema = new mongoose.Schema(
             type: String, 
             required: function() { return this.role === "student"; }  
         },
-        Department: { type: String },
+        department: { type: String },
         HOD: { type: String },
         
         status: {
@@ -37,6 +39,10 @@ const userSchema = new mongoose.Schema(
             enum: ["admin", "faculty", "student"],
             default: "student",
         },
+        instructor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+          },
     },
     { timestamps: true }
 );

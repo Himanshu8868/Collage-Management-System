@@ -5,6 +5,7 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+
 // Layout & Common Components
 import Navbar from './components/Navbar';
 import Footer from "./components/Footer";
@@ -91,6 +92,15 @@ import DocumentViewer from './pages/Document/DocumentViewer';
 // NOTICE ROUTES //
 import CreateNotice from './pages/Notice/CreateNotice';
 
+// Payment //
+
+import Payment from './components/Payment'
+
+// fee
+import CreateFee from './pages/paymentPage/FeeStructure/CreateFee'
+import MyFeeDetails from './pages/paymentPage/FeeStructure/MyFeeDetails ';
+
+
 function App() {
   return (
     <>
@@ -98,6 +108,7 @@ function App() {
         <AuthProvider>  
         <NoticeProvider>
           <TostMessages />
+          
           <Navbar />
           <Routes>
 
@@ -189,6 +200,16 @@ function App() {
 
                   {/* Notice pages  */}
                   <Route path="/create-notice" element={<CreateNotice />} />
+
+                  {/* payments */}
+
+                  <Route path="/payment" element={<Payment/>} />
+                  <Route path="/create-fee-structure" element={<CreateFee />} />
+                  <Route path="/fee-details" element={<MyFeeDetails/>} />
+
+                  
+
+                 
           </Routes>
           <Footer />
         </NoticeProvider>

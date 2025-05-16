@@ -6,7 +6,19 @@ const Activity = require("../models/Activity");
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role, phone, enrollYear, endYear, address, Department, HOD } = req.body;
+        const {
+            name,
+            email,
+            password,
+            role,
+            phone,
+            semester,
+            enrollYear,
+            endYear,
+            address,
+            department,
+            HOD
+        } = req.body;
 
         // check if the user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { phone }] });
@@ -17,6 +29,15 @@ const registerUser = async (req, res) => {
         // hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // determine status and approvalStatus
+        let status = "Inactive";
+        let approvalStatus = "pending";
+
+        if (role === "student") {
+            status = "Active";
+            approvalStatus = "approved";
+        }
+
         // create user
         const user = await User.create({
             name,
@@ -24,12 +45,14 @@ const registerUser = async (req, res) => {
             password: hashedPassword,
             role,
             phone,
+            semester,
             enrollYear,
             endYear,
             address,
-            Department,
+            department,
             HOD,
-          
+            status,
+            approvalStatus
         });
 
         // Find all admin users
@@ -38,21 +61,20 @@ const registerUser = async (req, res) => {
 
         // create notification for all admins
         await Notification.create({
-            userId: user._id, // Now use the created user's id
+            userId: user._id,
             receiverIds: adminIds,
             title: "New Faculty Registration",
             message: `New user "${user.name}" has registered with role "${user.role}".`,
-            link: "/account-requests" // Update the link properly
+            link: "/account-requests"
         });
-  
-         // create activity for the new user
 
+        // create activity for the new user
         await Activity.create({
             user: user._id,
-            action: `New ${user.role} has registered : ${user.name}.`,
+            action: `New ${user.role} has registered: ${user.name}.`,
             type: "user"
         });
-        
+
         res.status(201).json({ message: "User registered successfully", user });
 
     } catch (error) {
@@ -60,6 +82,7 @@ const registerUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 
@@ -80,12 +103,16 @@ const loginUser = async (req, res) => {
         if (user.status === "Inactive" && user.approvalStatus === "pending") {
             return res.status(403).json({ message: "Your account is pending approval by an admin" });
         }
+          
+          if (user.status === "Inactive" && user.approvalStatus === "approved") {
+            return res.status(403).json({ message: "Your account is Inactive " });
+        }
 
         // If the user is approved, generate the JWT token
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         // Set the token as a cookie and respond
-        res.cookie("token", token, { httpOnly: true, secure: true });
+        res.cookie("token", token, { httpOnly: true, secure: true  , maxAge: 7 * 24 * 60 * 60 * 1000 });
         res.json({ message: "Login successful", token, role: user.role, name: user.name, email: user.email, user });
 
     } catch (error) {

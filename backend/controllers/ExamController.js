@@ -405,6 +405,15 @@ const submitExam = async (req, res) => {
             score,
         });
 
+        // Activity notify instructor //
+        const user = await User.findById(req.user._id);
+
+           await Activity.create({
+             user : req.user._id,
+             action: `0 submited by ${user.name}`,
+             type:"exam"
+           })
+
         res.status(200).json({
             success: true,
             message: "Exam submitted successfully",

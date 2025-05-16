@@ -150,15 +150,19 @@ const Profile = () => {
                     </div>
 
                     <div className="mt-6 space-y-4">
+
+                        <ProfileDetail label="Status" value={user?.status} />
                         <ProfileDetail label="Name" value={user?.name} />
                         <ProfileDetail label="Email" value={user?.email} />
+                        <ProfileDetail label="Semester" value={user?.semester} />
                         <ProfileDetail label="Role" value={user?.role} />
                         <ProfileDetail label="Phone" value={user?.phone} />
                         <ProfileDetail label="Address" value={user?.address} />
                         <ProfileDetail label="Enroll Year" value={user?.enrollYear} />
                         <ProfileDetail label="End Year" value={user?.endYear} />
-                        <ProfileDetail label="Department" value={user?.Department} />
+                        <ProfileDetail label="Department" value={user?.department} />
                         <ProfileDetail label="HOD" value={user?.HOD} />
+
                     </div>
                 </motion.div>
             </div>

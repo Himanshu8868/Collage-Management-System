@@ -111,7 +111,7 @@ const Sidebar = () => {
                 </div>
 
                 {/* Manage Results Dropdown */}
-                <div className="relative group">
+                {/* <div className="relative group">
                     <button
                         onClick={() => setIsResultOpen(!isResultOpen)}
                         className="flex items-center gap-4 p-3 hover:bg-gray-700 rounded-lg w-full text-left"
@@ -136,7 +136,7 @@ const Sidebar = () => {
                             <SidebarItem icon={<FaTrashAlt />} text="Delete Result" to="/delete-result" isOpen={isOpen} />
                         </motion.div>
                     )}
-                </div>
+                </div> */}
 
                  {/* Requests  Dropdown */}
                 <div className="relative group">
@@ -179,6 +179,7 @@ const Sidebar = () => {
                 😪
                 <SidebarItem icon={<FaUserCheck />} text="Upload Document" to="/upload-document" isOpen={isOpen} />
                 <SidebarItem icon={<FaUserCheck />} text="Create Notice " to="/create-notice" isOpen={isOpen} />
+                <SidebarItem icon={<FaUserCheck />} text="Create Fee Structure " to="/create-fee-structure" isOpen={isOpen} />
                 
 
                 <SidebarItem icon={<FaSignOutAlt />} text="Logout" isOpen={isOpen} onClick={handleLogout} />

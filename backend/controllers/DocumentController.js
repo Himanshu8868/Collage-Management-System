@@ -35,6 +35,8 @@ const uploadDocument = async (req, res) => {
 
     await newDoc.save();
 
+    
+
     res.status(201).json({ message: "Document uploaded successfully", document: newDoc });
 
   } catch (error) {

@@ -81,7 +81,17 @@ const FacultyDashboard = () => {
           {icon : <FaClipboardCheck /> , text: "Create Course" , to : "/request-course" },
        ]
     },
+    {
+      title : "Result",
+       icon : <FaClipboardCheck /> ,
+       items: [
+          {icon : <FaClipboardCheck /> , text: "see results" , to : "/all-results" },
+          {icon : <FaClipboardCheck /> , text: "manage grades" , to : "/update-result" },
+          {icon : <FaClipboardCheck /> , text: "Delete Result" , to : "/delete-results" },
+       ]
+    },
 
+         
     {
        title : "Leave",
        icon : <FaRegSquare />,
@@ -99,10 +109,11 @@ const FacultyDashboard = () => {
     //   ]
     // },
        {
-    title: "Notifications",
+    title: "Notifications & Notice",
     icon: <FaClipboardList />,
     items: [
       { icon: <FaCheckCircle />, text: " Notification", to: "/notifications" },
+      { icon: <FaCheckCircle />, text: "  CreateNotice", to: "/create-notice" },
     ]
        },
        {

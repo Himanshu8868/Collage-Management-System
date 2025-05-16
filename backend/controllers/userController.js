@@ -32,7 +32,7 @@ const getUserProfile = async (req, res) => {
 
 const UserProfile = async (req, res) => {
     try {
-        let query = { status: "Active" }; // 👈 Only Active users will be fetched
+        let query = { status: "Active" }; // Only Active users will be fetched
 
         if (req.user.role === "faculty") {
             // Faculty can only view Active students

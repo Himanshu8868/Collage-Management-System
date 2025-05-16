@@ -4,14 +4,16 @@ const User = require('../models/User');
 const CreateActivity =  async(req , res) => {
       
     try {
-        const {user , action , type} =req.body;
+        const { action , type} =req.body;
+        const userId = req.user.id;
         const activity = new Activity({
-            user,
+            user: userId,
             action: action,
             type: type
         });
         await activity.save();
-
+         
+        await activity.populate('user' , 'name email')
         res.status(201).json({
             success: true,
             message: "Activity Created Successfully",
