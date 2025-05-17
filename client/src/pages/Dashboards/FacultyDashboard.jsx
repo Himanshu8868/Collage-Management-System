@@ -116,14 +116,25 @@ const FacultyDashboard = () => {
       { icon: <FaCheckCircle />, text: "  CreateNotice", to: "/create-notice" },
     ]
        },
+       
        {
     title: "document",
     icon: <FaClipboardList />,
     items: [
       { icon: <FaCheckCircle />, text: " documnet", to: "/upload-document" },
     ]
+       },
+
+       {
+    title: "Schedule",
+    icon: <FaClipboardList />,
+    items: [
+      { icon: <FaCheckCircle />, text: "create", to: "/create-schedule" },
+    ]
        }
       ];
+
+
 
   return (
     <>

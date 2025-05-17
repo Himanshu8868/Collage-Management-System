@@ -100,6 +100,9 @@ import Payment from './components/Payment'
 import CreateFee from './pages/paymentPage/FeeStructure/CreateFee'
 import MyFeeDetails from './pages/paymentPage/FeeStructure/MyFeeDetails ';
 
+// Schedule
+ import StudentSchedule from './pages/Schedule/StudentSchedule'
+ import CreateWeeklySchedule from './pages/Schedule/CreateWeeklySchedule'
 
 function App() {
   return (
@@ -201,13 +204,21 @@ function App() {
                   {/* Notice pages  */}
                   <Route path="/create-notice" element={<CreateNotice />} />
 
-                  {/* payments */}
+                  {/* Fee */}
+                  <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                       <Route path="/create-fee-structure" element={<CreateFee />} />
+                  </Route>
 
-                  <Route path="/payment" element={<Payment/>} />
-                  <Route path="/create-fee-structure" element={<CreateFee />} />
+<Route element={<ProtectedRoute allowedRoles={["student"]} />}>
+<Route path="/payment" element={<Payment/>} />
                   <Route path="/fee-details" element={<MyFeeDetails/>} />
 
+                  </Route>
                   
+            {/* schedule */}
+
+            <Route path="/schedule" element={<StudentSchedule /> } />
+            <Route path="/create-schedule" element={<CreateWeeklySchedule/>} />
 
                  
           </Routes>

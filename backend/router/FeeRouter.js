@@ -5,7 +5,7 @@ const { createFeeStructure , getMyFeeDetails  , getFeeStructures ,getStudentPaym
 const { protect, isAdmin , isStudent } = require('../middleware/authMiddleware');
 
 //  Create Fee Structure
-router.post('/create', createFeeStructure);
+router.post('/create', protect , isAdmin ,createFeeStructure);
 
 // Get studnet fee  //
 

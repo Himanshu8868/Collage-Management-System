@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         phone: { type: String, required: true },
         address: { type: String, required: true },
+         course: { 
+        type: String, 
+        required: function() { return this.role === "student"; },
+        enum: ['BCA', 'BTech', 'MCA', 'MBA', 'Other'],
+    },
         // year: {type : String , required: true},
         semester: {type : String , required : true} ,
         enrollYear: { 

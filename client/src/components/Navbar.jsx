@@ -71,12 +71,14 @@ const Navbar = () => {
           password 
         });
     
-        const { token, role, name, email: userEmail } = response.data;
+        const { token, role, name, email: userEmail , course , semester} = response.data;
     
         localStorage.setItem("token", token);
         localStorage.setItem("role", role);
         localStorage.setItem("name", name);
         localStorage.setItem("email", userEmail);
+        localStorage.setItem("course", course);
+        localStorage.setItem("semester", semester);
     
         setIsLoggedIn(true);
         closeModal();

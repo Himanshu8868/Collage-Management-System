@@ -224,7 +224,7 @@ const rejectFacultyRequest = async (req, res) => {
         }
 
         faculty.status = "Inactive";
-        faculty.approvalStatus = "rejected"; // important!
+        faculty.approvalStatus = "rejected"; 
         await faculty.save();
 
         res.status(200).json({ success: true, message: "Faculty request rejected" , faculty});

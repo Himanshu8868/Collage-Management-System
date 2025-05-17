@@ -154,6 +154,7 @@ const Profile = () => {
                         <ProfileDetail label="Status" value={user?.status} />
                         <ProfileDetail label="Name" value={user?.name} />
                         <ProfileDetail label="Email" value={user?.email} />
+                        <ProfileDetail label="Course" value={user?.course} />
                         <ProfileDetail label="Semester" value={user?.semester} />
                         <ProfileDetail label="Role" value={user?.role} />
                         <ProfileDetail label="Phone" value={user?.phone} />

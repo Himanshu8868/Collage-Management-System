@@ -20,8 +20,10 @@ const LeateRouter = require("./router/LeaveRouter");
 const activityRouter = require("./router/ActivityRouter");
 const DocumentRouter = require("./router/documentRouter");
 const noticeRouter = require("./router/noticeRouter");
-const FeeRouter = require("./router/FeeRouter")
-const DepartmentRoutes = require("./router/DepartmentRoutes")
+const FeeRouter = require("./router/FeeRouter");
+const DepartmentRoutes = require("./router/DepartmentRoutes");
+const scheduleRoutes = require("./router/ScheduleRoutes");
+const WeeklyScheduleRoutes = require("./router/weeklyScheduleRoutes")
 
 const app = express();
 
@@ -43,8 +45,10 @@ app.use("/api/leave", LeateRouter);
 app.use("/api/activity", activityRouter)
 app.use("/api/documents", DocumentRouter);
 app.use("/api/notice", noticeRouter);
-app.use("/api/fee" , FeeRouter)
-app.use("/api/department" , DepartmentRoutes)
+app.use("/api/fee" , FeeRouter);
+app.use("/api/department" , DepartmentRoutes);
+app.use("/api/schedule" , scheduleRoutes)
+app.use("/api/weekly" , WeeklyScheduleRoutes)
 
 // Server Listening
 const PORT = process.env.PORT || 5000;

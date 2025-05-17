@@ -57,9 +57,10 @@ const StudentDashBoard = () => {
 
 
           
-          <li className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
+          <Link to= "/schedule" className="flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-blue-500">
             <FaCalendarAlt /> <span>Schedule</span>
-          </li>
+          </Link>
+
         </ul>
       </motion.aside>
 

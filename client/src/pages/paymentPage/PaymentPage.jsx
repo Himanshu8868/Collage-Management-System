@@ -24,39 +24,45 @@ const PaymentPage = () => {
   const [amount, setAmount] = useState(0);
   const [paymentError, setPaymentError] = useState(null);
   const [feeStructureId, setFeeStructureId] = useState(null);
+  const [message , setMessage] = useState(null);
+ 
   const [studentInfo, setStudentInfo] = useState({ name: '', email: '', _id: '' });
 
-  useEffect(() => {
-    const fetchSecret = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('token');
+ useEffect(() => {
+  const fetchSecret = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
 
-        const res = await axios.post(
-          'http://localhost:5000/api/fee/create-payment-intent',
-          {},
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
+      const res = await axios.post(
+        'http://localhost:5000/api/fee/create-payment-intent',
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
 
-        setClientSecret(res.data.clientSecret);
-        setAmount(res.data.amount);
-        setFeeStructureId(res.data.feeStructureId);
-        setStudentInfo({
-          name: res.data.name,
-          email: res.data.email,
-          _id: res.data.studentId || ""
-        });
-      } catch (error) {
-        toast.error(error.response?.data?.error || "Something went wrong");
-      } finally {
-        setLoading(false);
-      }
-    };
+      setClientSecret(res.data.clientSecret);
+      setAmount(res.data.amount);
+      setFeeStructureId(res.data.feeStructureId);
+      setStudentInfo({
+        name: res.data.name,
+        email: res.data.email,
+        _id: res.data.studentId || ""
+      });
 
-    fetchSecret();
-  }, []);
+      setMessage(null); 
+    } catch (error) {
+      toast.info("payment information.")
+      setMessage(error.response?.data?.error || "Failed to fetch payment information.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSecret();
+}, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,7 +124,7 @@ const PaymentPage = () => {
           <p className="text-gray-600 mb-4">Your payment of ₹{amount} has been processed.</p>
           <p className="text-sm text-gray-500 mb-4">Receipt sent to your email.</p>
           <button
-            onClick={() => window.location.href = '/StudentDashboard'}
+            onClick={() =>window.history.back()}
             className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           >
             Go to Dashboard
@@ -129,6 +135,8 @@ const PaymentPage = () => {
   }
 
   return (
+
+
     <div className="mt-17 min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-lg">
         <div className="flex items-center mb-6">
@@ -143,6 +151,12 @@ const PaymentPage = () => {
         </div>
 
         <form onSubmit={handleSubmit}>
+              {message && (
+      <div className="text-green-600 bg-green-100 border border-green-300 rounded-md p-3 mb-4 text-sm">
+        {message}
+      </div>
+    )}
+
           <label className="block text-gray-700 text-sm font-medium mb-2">Card Details</label>
           <div className="p-3 border border-gray-300 rounded-md mb-4 bg-white">
             <CardElement
