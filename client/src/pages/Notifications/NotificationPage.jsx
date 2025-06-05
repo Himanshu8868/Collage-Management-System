@@ -57,8 +57,9 @@ const FacultyNotifications = () => {
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-6">
         <h2 className="text-3xl font-bold mb-6 flex items-center gap-3 text-orange-600">
           <Bell className="text-orange-500" /> Notifications
-        </h2>
+                      <button className="text-dark-400 bg-blue-500" onClick={() => window.location.reload()}> Reload </button>
 
+        </h2>
         {loading ? (
           <div className="flex justify-center items-center h-40">
             <Loader2 className="animate-spin w-8 h-8 text-orange-600" />

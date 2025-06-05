@@ -1,4 +1,6 @@
 const WeeklySchedule = require("../models/WeeklySchedule");
+const User = require("../models/User")
+const Notification = require("../models/Notification");
 
 // Create Weekly Schedule
 const createWeeklySchedule = async (req, res) => {
@@ -30,6 +32,20 @@ const createWeeklySchedule = async (req, res) => {
       createdBy 
     });
 
+    // Notify Admin //
+
+       if (req.user.role === "faculty") {
+                const admins = await User.find({ role: "admin" });
+                const adminIds = admins.map(admin => admin._id);
+    
+                await Notification.create({
+                    userId: req.user.id,
+                    receiverIds: adminIds,
+                    title: "Course Creation Request",
+                    message: `Instructor ${req.user.name} has Create schedule of  "${course}" for semester ${semester}`,
+                });
+            }
+   
     res.status(201).json({ 
       success: true, 
       message: "Weekly schedule created successfully", 

@@ -14,7 +14,7 @@ const Login = ({ closeModal }) => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,9 +22,9 @@ const Login = ({ closeModal }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", { 
-        email, 
-        password 
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password
       });
 
       localStorage.setItem("token", response.data.token);
@@ -33,11 +33,11 @@ const Login = ({ closeModal }) => {
       localStorage.setItem("email", response.data.email);
 
 
-  ;
-      
+      ;
+
       // Use navigate instead of window.location for SPA behavior
-      window.location.href = response.data.role === "student" 
-        ? "/studentDashboard" 
+      window.location.href = response.data.role === "student"
+        ? "/studentDashboard"
         : "/faculty-portal";
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please check your credentials and try again.');
@@ -63,7 +63,7 @@ const Login = ({ closeModal }) => {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}
-          <button 
+          <button
             onClick={closeModal}
             className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400"
             aria-label="Close login modal"

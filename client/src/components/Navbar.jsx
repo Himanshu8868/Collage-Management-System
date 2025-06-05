@@ -232,7 +232,7 @@ const Navbar = () => {
                   <Link to="/exams" className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-900 dark:text-white hover:bg-white/20 dark:hover:bg-gray-800/30">
                     <FiBook className="mr-2" /> Exams
                   </Link>
-                  <Link to="/enroll-course" className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-900 dark:text-white hover:bg-white/20 dark:hover:bg-gray-800/30">
+                  <Link to="/courses" className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-900 dark:text-white hover:bg-white/20 dark:hover:bg-gray-800/30">
                     <FiBook className="mr-2" /> Enroll
                   </Link>
                 </div>
@@ -274,10 +274,10 @@ const Navbar = () => {
                         <FiUser className="mr-2" /> Profile
                       </Link>
                       <Link 
-                        to="/settings"
+                        to="/theme"
                         className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
                       >
-                        <FiSettings className="mr-2" /> Settings
+                        <FiSettings className="mr-2" /> Theme
                       </Link>
                       <button 
                         onClick={handleLogout}

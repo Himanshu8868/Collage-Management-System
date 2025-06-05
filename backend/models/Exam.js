@@ -34,6 +34,12 @@ const ExamSchema = new mongoose.Schema({
     deleteRequested: { type: Boolean, default: false },
     deletedByAdmin: { type: Boolean, default: false }, // Will be set to true when admin deletes the exam
     
+    expiresAt: {
+    type: Date,
+    required: true,
+     index: { expires: 0 } ,// MongoDB will auto-delete this doc at `expiresAt`
+
+},
     questions: [
         {
             questionText: { type: String, required: true },

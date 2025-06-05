@@ -1,10 +1,15 @@
 import React from 'react'
 import { Typography, Button } from "@material-tailwind/react";
 import { FlagIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from 'react-router-dom';
 
 const NoPage = () => {
 
-
+  const navigate = useNavigate(); 
+ 
+  const handleGoBack = () => {
+  navigate(-1)
+}
   return (
     <div>
         <div className="h-screen mx-auto grid place-items-center text-center px-8">
@@ -21,9 +26,10 @@ const NoPage = () => {
             Don&apos;t worry, our team is already on it.Please try refreshing
             the page or come back later.
           </Typography>
-          <Button color="gray" className="w-full px-4 md:w-[8rem]">
+          <Button  onClick={handleGoBack} color="gray" className="w-full px-4 md:w-[8rem]">
+             
+              Back 
 
-              <a href="/" className="text-gray-500">Go back to home</a>
             </Button>
         </div>
       </div>

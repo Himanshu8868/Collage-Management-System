@@ -92,7 +92,7 @@ const CreateWeeklySchedule = () => {
   };
 
   return (
-   <div className="max-w-8xl mx-auto mt-20 mb-4  p-6 bg-white shadow-md rounded-x5">
+<div className="max-w-6xl mx-auto mt-12 p-6 bg-white shadow-md rounded-xl">
   <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
     Create Weekly Schedule
   </h2>
@@ -101,19 +101,19 @@ const CreateWeeklySchedule = () => {
     {/* Left Side - Form */}
     <div className="md:w-1/2 space-y-6">
       <div className="grid grid-cols-1 gap-4">
-        <input 
+        <input
           type="text"
-          placeholder="Course Name (eg:BCA)"
+          placeholder="Course Name"
           value={course}
           onChange={(e) => setCourse(e.target.value)}
-          className=" input-field"
+          className="uppercase input-field"
         />
         <input
           type="text"
           placeholder="Semester"
           value={semester}
           onChange={(e) => setSemester(e.target.value)}
-          className="input-field"
+          className=" uppercase input-field"
         />
       </div>
 
@@ -134,14 +134,14 @@ const CreateWeeklySchedule = () => {
           placeholder="Start Time (e.g., 9:00 AM)"
           value={entry.startTime}
           onChange={(e) => setEntry({ ...entry, startTime: e.target.value })}
-          className=" uppercase input-field"
+          className="uppercase input-field"
         />
         <input
           type="text"
           placeholder="End Time (e.g., 10:00 AM)"
           value={entry.endTime}
           onChange={(e) => setEntry({ ...entry, endTime: e.target.value })}
-          className=" uppercase input-field"
+          className="uppercase input-field"
         />
         <input
           type="text"
@@ -209,7 +209,7 @@ const CreateWeeklySchedule = () => {
                 {e.faculty && <span>Faculty: {e.faculty}</span>}
                 <button
                   onClick={() => handleRemoveEntry(i)}
-                  className="px-4 py-1 bg-orange-700 text-white border rounded-md hover:bg-red-700"
+                  className="px-4 py-1 bg-red-600 text-white rounded-md hover:bg-red-700"
                 >
                   Remove
                 </button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 // import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
 
 
 const Register = () => {
@@ -9,7 +9,10 @@ const Register = () => {
         name: "",
         email: "",
         password: "",
+        course: "",
         phone: "",
+        rollNo: "",
+        semester: "1",
         enrollYear: "",
         endYear: "",
         address: "",
@@ -19,15 +22,20 @@ const Register = () => {
     });
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
-   
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        // uppercase fields using name of input 
+        const uppercaseFields = ["course"]
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: uppercaseFields.includes(name) ? value.toUpperCase() : value
         }));
     };
+
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -35,31 +43,31 @@ const Register = () => {
         setMessage(null);
         try {
             const response = await axios.post("http://localhost:5000/api/auth/register", formData);
-                      if(response.success)
+            if (response.success)
                 toast.success("Registration successful! Redirecting to login...");
-                      window.location.href = response.data.role === "student" ? "/studentDashboard" : "/dashboard";
+            window.location.href = response.data.role === "student" ? "/studentDashboard" : "/";
         } catch (err) {
-              if(err.response?.status == 400){
+            if (err.response?.status == 400) {
                 setTimeout(() => {
-                      toast.error("User Alreday exits , Try different Email or Number")
+                    toast.error("User Alreday exits , Try different Email or Number")
                 }, 2000)
-              } 
-              else{
+            }
+            else {
                 toast.error(err.response?.data?.message || "Registration Failed");
-              }
+            }
         }
     };
 
     return (
-        <div className=" mt-15 max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+        <div className=" mt-19 mb-4 max-w-4xl mx-auto bg-white-400 dark:bg-gray-400 p-8 rounded-lg shadow-lg">
             <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">Create Account</h2>
-            
+
             {message && (
                 <div className="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 rounded mb-6">
                     {message}
                 </div>
             )}
-            
+
             {error && (
                 <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded mb-6">
                     {error}
@@ -70,7 +78,7 @@ const Register = () => {
                 {/* Personal Information Column */}
                 <div className="space-y-4">
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b pb-2">Personal Information</h3>
-                    
+
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name*</label>
                         <input
@@ -108,6 +116,9 @@ const Register = () => {
                         />
                     </div>
 
+
+
+
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number*</label>
                         <input
@@ -138,7 +149,9 @@ const Register = () => {
                 {/* Academic Information Column */}
                 <div className="space-y-4">
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b pb-2">Academic Information</h3>
-                    
+
+
+
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role*</label>
                         <select
@@ -172,8 +185,54 @@ const Register = () => {
                     </div>
 
                     {formData.role === "student" && (
+
                         <>
                             <div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ROLL NO*</label>
+                                    <input
+                                        type="number"
+                                        name="rollNo"
+                                        placeholder=" eg.. 123456"
+                                        value={formData.rollNo}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                        required
+                                        minLength="6"
+                                    />
+                                </div>
+
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Semester*</label>
+                                    <input
+                                        type="number"
+                                        name="semester"
+                                        placeholder=" "
+                                        value={formData.semester}
+                                        onChange={handleChange}
+                                        className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                        required
+                                        minLength="6"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Course*</label>
+                                    <input
+                                        type="text"
+                                        name="course"
+                                        placeholder=" eg.. BCA , Btech .."
+                                        value={formData.course}
+                                        onChange={handleChange}
+                                        className="  w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                                        minLength="2"
+                                        required={formData.role === "student"}
+                                    />
+                                </div>
+
+
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Enrollment Year*</label>
                                 <input
                                     type="number"
@@ -195,7 +254,7 @@ const Register = () => {
                                     value={formData.endYear}
                                     onChange={handleChange}
                                     className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                                    min={formData.enrollYear || 2000}
+                                    min={formData.enrollYear || 2020}
                                     max={formData.enrollYear ? parseInt(formData.enrollYear) + 6 : 2030}
                                     required={formData.role === "student"}
                                 />
@@ -203,7 +262,7 @@ const Register = () => {
                         </>
                     )}
 
-                    {formData.role === "faculty" && (
+                    {/* {formData.role === "faculty" && (
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">HOD Name</label>
                             <input
@@ -215,7 +274,7 @@ const Register = () => {
                                 required={formData.role === "faculty"}
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Submit Button - Full Width */}

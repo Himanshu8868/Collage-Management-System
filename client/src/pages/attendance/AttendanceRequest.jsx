@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const FacultyRequests = () => {
+const AttendanceRequest = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
@@ -128,13 +128,12 @@ const FacultyRequests = () => {
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t">
-                <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                  req.status === 'pending' 
-                    ? 'bg-yellow-100 text-yellow-800' 
-                    : req.status === 'approved' 
-                      ? 'bg-green-100 text-green-800' 
+                <span className={`px-2 py-1 text-xs font-semibold rounded-full ${req.status === 'pending'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : req.status === 'approved'
+                      ? 'bg-green-100 text-green-800'
                       : 'bg-red-100 text-red-800'
-                }`}>
+                  }`}>
                   {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
                 </span>
 
@@ -142,11 +141,10 @@ const FacultyRequests = () => {
                   <button
                     onClick={() => handleAction(req._id, "approved")}
                     disabled={actionLoading === req._id}
-                    className={`px-4 py-2 rounded-md flex items-center ${
-                      actionLoading === req._id && actionLoading !== "rejected"
+                    className={`px-4 py-2 rounded-md flex items-center ${actionLoading === req._id && actionLoading !== "rejected"
                         ? 'bg-gray-300 text-gray-600'
                         : 'bg-green-600 hover:bg-green-700 text-white'
-                    }`}
+                      }`}
                   >
                     {actionLoading === req._id && actionLoading !== "rejected" ? (
                       <>
@@ -168,11 +166,10 @@ const FacultyRequests = () => {
                   <button
                     onClick={() => handleAction(req._id, "rejected")}
                     disabled={actionLoading === req._id}
-                    className={`px-4 py-2 rounded-md flex items-center ${
-                      actionLoading === req._id && actionLoading !== "approved"
+                    className={`px-4 py-2 rounded-md flex items-center ${actionLoading === req._id && actionLoading !== "approved"
                         ? 'bg-gray-300 text-gray-600'
                         : 'bg-red-600 hover:bg-red-700 text-white'
-                    }`}
+                      }`}
                   >
                     {actionLoading === req._id && actionLoading !== "approved" ? (
                       <>
@@ -201,4 +198,4 @@ const FacultyRequests = () => {
   );
 };
 
-export default FacultyRequests;
+export default AttendanceRequest;

@@ -2,21 +2,13 @@ import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowRight, FiCheckCircle, FiAward, FiUsers, FiBookOpen } from 'react-icons/fi';
-import video from '../assets/video/homepage.mp4'
+import dashboard from '../assets/images/dashboard.jpeg'
+import { FiArrowRight, FiCheckCircle, FiDatabase, FiClock, FiLayers, FiBarChart2, FiLock, FiUsers, FiBookOpen, FiAward } from 'react-icons/fi';
 
 const Homepage = () => {
   const navigate = useNavigate();
   const controls = useAnimation();
   const [ref, inView] = useInView({ threshold: 0.1 });
-
-  // Stats data
-  const stats = [
-    { value: "10K+", label: "Students Enrolled", icon: <FiUsers className="text-2xl" /> },
-    { value: "500+", label: "Courses Offered", icon: <FiBookOpen className="text-2xl" /> },
-    { value: "200+", label: "Expert Faculty", icon: <FiAward className="text-2xl" /> },
-    { value: "98%", label: "Satisfaction Rate", icon: <FiCheckCircle className="text-2xl" /> },
-  ];
 
   // Animation variants
   const textVariants = {
@@ -55,6 +47,14 @@ const Homepage = () => {
     }
   }, [controls, inView]);
 
+  // Stats data - use your actual metrics
+  const stats = [
+    { value: "50+", label: "Institutions Using Our System", icon: <FiDatabase className="text-2xl" /> },
+    { value: "90%", label: "Process Automation", icon: <FiClock className="text-2xl" /> },
+    { value: "10K+", label: "Daily Transactions", icon: <FiLayers className="text-2xl" /> },
+    { value: "100%", label: "Data Security", icon: <FiLock className="text-2xl" /> },
+  ];
+
   return (
     <div className="font-sans bg-gray-50 text-gray-900 overflow-x-hidden">
       {/* Floating Navigation Button */}
@@ -67,64 +67,76 @@ const Homepage = () => {
         ↑
       </motion.button>
 
-      {/* Hero Section with Video Background */}
-      <motion.div
+      {/* Hero Section */}
+      <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="relative h-screen flex items-center justify-center text-white overflow-hidden"
+        className="relative h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-blue-700 text-white overflow-hidden"
       >
-        <div className="absolute inset-0 bg-black z-10">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src={video} type="video/mp4" />
-        </video>
+        <div className="absolute inset-0 bg-black/30 z-10" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-20">
+          <div className="grid grid-cols-4 gap-8 opacity-50">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div key={i} className="w-16 h-16 border-2 border-white/20 rounded-lg"></div>
+            ))}
+          </div>
         </div>
         
-        <div className="relative z-20 text-left px-4 max-w-4xl">
+        <div className="relative z-20 text-center px-4 max-w-5xl">
           <motion.h1
             variants={textVariants}
             initial="hidden"
             animate="visible"
-            className="text-5xl md:text-6xl font-bold mb-6"
+            className="text-4xl md:text-6xl font-bold mb-6"
           >
-             <span className='text-pink-400'>Welcome to </span><span className="text-blue-400">College Management <span className='text-pink-400'>Systsm</span></span>
+            <span className="text-blue-300">Campus</span>
+            <span className="text-white">Pro </span>
+            <span className="text-yellow-300">Management</span>
           </motion.h1>
+          
           <motion.p
             variants={textVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-xl md:text-2xl mb-8 text-dark-500"
+            className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto"
           >
-            Revolutionizing education through innovative technology and collaborative learning
+             Geo-Location-Based Atttendace System
           </motion.p>
+          
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <motion.button
-              onClick={() => navigate("/courses")}
+              onClick={() => navigate("/demo")}
               variants={textVariants}
-              whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow-lg flex items-center justify-center gap-2 hover:text--500"
+              className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2"
             >
-              Explore Courses <FiArrowRight />
+              <FiArrowRight />
             </motion.button>
             <motion.button
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/pricing")}
               variants={textVariants}
-              whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold shadow-lg"
+              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold"
             >
-              Join Now
+                Visit
             </motion.button>
           </div>
         </div>
       </motion.div>
+
+      {/* Trusted By Section */}
+      <div className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-gray-500 mb-8">Trusted by leading institutions worldwide</p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-32 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                <span className="text-gray-400 font-medium">Logo {i}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Stats Section */}
       <motion.div
@@ -132,152 +144,72 @@ const Homepage = () => {
         initial="hidden"
         animate={controls}
         variants={staggerContainer}
-        className="py-16 bg-black"
+        className="py-16 bg-gray-900 text-white"
       >
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 ">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
                 variants={fadeIn}
-                className="text-center p-6 rounded-xl bg-gradient-to-br from-blue-50 to-white shadow-sm  "
+                className="text-center p-6 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
               >
-                <div className="text-blue-600 mb-3 flex justify-center">
+                <div className="text-blue-400 mb-3 flex justify-center">
                   {stat.icon}
                 </div>
-                <h3 className="text-3xl font-bold mb-2 hover:text-green-600">{stat.value}</h3>
-                <p className="text-gray-600 hover:text-pink-500">{stat.label}</p>
+                <h3 className="text-3xl font-bold mb-2 text-white">{stat.value}</h3>
+                <p className="text-blue-200">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </motion.div>
 
-      {/* About Section with Parallax Effect */}
-      <div className="relative py-28 overflow-hidden ">
-        <div className="absolute inset-0 bg-black  z-0"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <video    
-         autoPlay
-          loop
-          muted
-          playsInline
-                src="https://videos.pexels.com/video-files/7945680/7945680-hd_1920_1080_25fps.mp4"
-                alt="Students"
-                className="rounded-xl shadow-2xl w-full"
-             ></video>
-
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-8 -right-8 bg-white p-6 rounded-xl shadow-lg max-w-xs"
-              >
-                <h4 className="font-bold text-lg mb-2">Since 1995</h4>
-                <p className="text-gray-600">Providing quality education for over 25 years</p>
-              </motion.div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                Transforming <span className="text-blue-600 hover:text-yellow-500">Education</span> <span className='text-green-500 hover:text-pink-500'>Through Innovation</span> 
-              </h2>
-              <p className="text-gray-700 mb-6 text-white hover:text-green-500">
-                Our institution is dedicated to creating an environment where students don't just learn, but thrive. With cutting-edge facilities and a forward-thinking curriculum, we prepare students for the challenges of tomorrow.
-              </p>
-              <div className="space-y-4 mb-8 text-white hover:text-blue-600">
-                {[
-                  "World-class faculty with industry experience",
-                  "State-of-the-art learning facilities",
-                  "Industry-aligned curriculum",
-                  "Global partnership opportunities"
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3"
-                  >
-                    <FiCheckCircle className="text-green-500 text-xl flex-shrink-0" />
-                    <span>{item}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2"
-              >
-                Discover Our Story <FiArrowRight />
-              </motion.button>
-            </motion.div>
-          </div>
-        </div>
-      </div>
-
       {/* Features Section */}
-      <div className="py-20 bg-gray-50">
+      <div className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose CollegeSync?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              We combine academic excellence with practical skills to create well-rounded professionals
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Comprehensive Campus Management</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              All the tools you need to efficiently run your educational institution
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 hover:text-green-500">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: "Interactive Learning",
-                description: "Engaging digital platforms that make learning dynamic and effective",
-                icon: "💻"
+                title: "Student Information System",
+                description: "Centralized database for all student records with advanced analytics",
+                icon: <FiUsers className="text-4xl mb-4 text-blue-600" />
               },
               {
-                title: "Career Support",
-                description: "Dedicated career services to help you land your dream job",
-                icon: "👔"
+                title: "Attendance Tracking",
+                description: "Automated attendance with Zeo-location based request",
+                icon: <FiCheckCircle className="text-4xl mb-4 text-blue-600" />
               },
               {
-                title: "Global Network",
-                description: "Connect with alumni and professionals worldwide",
-                icon: "🌎"
+                title: "Academic Scheduling",
+                description: "Smart timetabling and room allocation system",
+                icon: <FiClock className="text-4xl mb-4 text-blue-600" />
               },
               {
-                title: "Flexible Scheduling",
-                description: "Programs designed to fit your busy lifestyle",
-                icon: "⏱️"
+                title: "Examination System",
+                description: "Complete exam management from scheduling to results",
+                icon: <FiBookOpen className="text-4xl mb-4 text-blue-600" />
               },
               {
-                title: "Research Opportunities",
-                description: "Work with faculty on cutting-edge research projects",
-                icon: "🔬"
+                title: "Fee Management",
+                description: "Automated billing, payments, and financial reporting",
+                icon: <FiBarChart2 className="text-4xl mb-4 text-blue-600" />
               },
               {
-                title: "Campus Life",
-                description: "Vibrant student community with diverse activities",
-                icon: "🎉"
+                title: "HR & Payroll",
+                description: "Staff management with integrated payroll system",
+                icon: <FiDatabase className="text-4xl mb-4 text-blue-600" />
               }
             ].map((feature, index) => (
               <motion.div
@@ -286,10 +218,10 @@ const Homepage = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                whileHover={{ y: -10, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
-                className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-all"
+                whileHover={{ y: -5 }}
+                className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md border border-gray-100"
               >
-                <div className="text-4xl mb-6">{feature.icon}</div>
+                {feature.icon}
                 <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
               </motion.div>
@@ -298,40 +230,108 @@ const Homepage = () => {
         </div>
       </div>
 
+      {/* Dashboard Preview Section */}
+      <div className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="order-2 lg:order-1"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Intuitive <span className="text-blue-600">Dashboard</span> for Every User
+              </h2>
+              <p className="text-gray-600 mb-8 text-lg">
+                Role-specific interfaces designed to simplify daily operations for administrators, faculty, and students.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {[
+                  "Real-time analytics and reporting",
+                  "Customizable admin views",
+                  "Mobile-responsive design",
+                  "Single sign-on integration"
+                ].map((item, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <FiCheckCircle className="text-green-500 text-xl" />
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg"
+              >
+                See All Features
+              </motion.button>
+            </motion.div>
+            
+                    <motion.div
+  initial={{ opacity: 0, x: 50 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  className="order-1 lg:order-2 relative rounded-xl overflow-hidden shadow-2xl"
+>
+  {/* Fake browser top bar */}
+  <div className="bg-gray-100 p-2 rounded-t-md flex space-x-2">
+    <span className="w-3 h-3 bg-red-500 rounded-full inline-block"></span>
+    <span className="w-3 h-3 bg-yellow-500 rounded-full inline-block"></span>
+    <span className="w-3 h-3 bg-green-500 rounded-full inline-block"></span>
+  </div>
+
+  {/* Dashboard Image */}
+  <img
+    src={dashboard}
+    alt="Admin Dashboard Preview"
+    className="w-full h-96 object-cover"
+  />
+
+  {/* Hover effect */}
+  <div className="absolute inset-0 border-4 border-transparent hover:border-blue-300/50 transition-all duration-300 pointer-events-none" />
+</motion.div>
+
+          </div>
+        </div>
+      </div>
+
       {/* Testimonials Section */}
-      <div className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <div className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Students Say</h2>
-            <p className="text-blue-100 max-w-2xl mx-auto text-lg">
-              Hear from our community about their experiences
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+            <p className="text-blue-200 max-w-2xl mx-auto">
+              Hear from institutions that transformed their operations
             </p>
           </motion.div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {[
               {
-                quote: "CollegeSync provided me with the skills and network to launch my career successfully.",
-                name: "Sarah Johnson",
-                role: "Computer Science Graduate",
+                quote: "Reduced our administrative workload by 60% while improving data accuracy.",
+                name: "Dr. Sarah Johnson",
+                role: "Dean, Springfield University",
                 avatar: "https://randomuser.me/api/portraits/women/44.jpg"
               },
               {
-                quote: "The faculty's dedication and the practical curriculum set CollegeSync apart from others.",
+                quote: "The attendance automation alone saved us 20 hours per week in manual work.",
                 name: "Michael Chen",
-                role: "Business Administration",
+                role: "Registrar, Techwood College",
                 avatar: "https://randomuser.me/api/portraits/men/32.jpg"
               },
               {
-                quote: "I found my passion through the diverse courses and extracurricular activities offered.",
+                quote: "Parent engagement increased dramatically after implementing the portal.",
                 name: "Priya Patel",
-                role: "Art & Design",
+                role: "Principal, Global Academy",
                 avatar: "https://randomuser.me/api/portraits/women/68.jpg"
               }
             ].map((testimonial, index) => (
@@ -340,8 +340,7 @@ const Homepage = () => {
                 variants={testimonialVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true }}
-                className="bg-white/10 p-8 rounded-xl backdrop-blur-sm"
+                className="bg-white/10 p-8 rounded-xl backdrop-blur-sm hover:bg-white/15 transition-all"
               >
                 <div className="text-xl italic mb-6">"{testimonial.quote}"</div>
                 <div className="flex items-center gap-4">
@@ -363,35 +362,83 @@ const Homepage = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Future?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Modernize Your Campus?</h2>
             <p className="text-gray-300 mb-8 text-lg">
-              Join thousands of students who have already taken the first step toward their dream careers
+              Join hundreds of institutions revolutionizing their management systems
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <motion.button
-                onClick={() => navigate("/register")}
-                whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg"
               >
-                Apply Now
+                Schedule a Demo
               </motion.button>
               <motion.button
-                onClick={() => navigate("/contact")}
-                whileHover={{ scale: 1.05, boxShadow: "0 5px 15px rgba(0,0,0,0.3)" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-semibold"
+                className="bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-full font-semibold"
               >
-                Contact Admissions
+                Contact Our Team
               </motion.button>
             </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-300 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-white text-lg font-bold mb-4">CampusPro</h3>
+              <p className="mb-4">The complete campus management solution for modern educational institutions.</p>
+              <div className="flex gap-4">
+                {['Twitter', 'Facebook', 'LinkedIn'].map((social) => (
+                  <a key={social} href="#" className="hover:text-white">
+                    {social}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-white text-lg font-bold mb-4">Product</h4>
+              <ul className="space-y-2">
+                {['Features', 'Pricing', 'Demo', 'Roadmap'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white text-lg font-bold mb-4">Resources</h4>
+              <ul className="space-y-2">
+                {['Documentation', 'API', 'Help Center', 'Webinars'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white text-lg font-bold mb-4">Company</h4>
+              <ul className="space-y-2">
+                {['About Us', 'Careers', 'Contact', 'Partners'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="hover:text-white">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-12 pt-8 text-center text-sm">
+            <p>© {new Date().getFullYear()} CampusPro Management System. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

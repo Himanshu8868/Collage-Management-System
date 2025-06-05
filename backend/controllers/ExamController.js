@@ -4,6 +4,9 @@ const Result = require('../models/Result');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const Activity = require('../models/Activity');
+const moment = require('moment'); // for date moment
+
+
 
 // const { validationResult } = require('express-validator');
 
@@ -17,6 +20,8 @@ const createExam = async (req, res) => {
             return res.status(400).json({ message: "Invalid exam code" });
         }
 
+        
+
         // Ensure the faculty is assigned to this course
         if (String(course.instructor) !== String(req.user.id)) {
             return res.status(403).json({ message: "Not authorized to create exams for this course" });
@@ -29,12 +34,15 @@ const createExam = async (req, res) => {
             correctAnswer: q.options[parseInt(q.correctAnswer)] // convert "0" → "GET", etc.
         }));
 
+        const expiresAt = moment(date).add(15, 'minutes').toDate();
+
         // Create the exam
         const exam = await Exam.create({
             course: course._id,
             title,
             date,
             duration,
+            expiresAt,
             questions: formattedQuestions
         });
 
@@ -410,7 +418,7 @@ const submitExam = async (req, res) => {
 
            await Activity.create({
              user : req.user._id,
-             action: `0 submited by ${user.name}`,
+             action: `${exam} submited by ${user.name}`,
              type:"exam"
            })
 

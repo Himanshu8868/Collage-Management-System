@@ -66,7 +66,7 @@ const createCourse = async (req, res) => {
                 message: "Students cannot create courses"
             });
         }
-        console.log(req.user.role)
+        // console.log(req.user.role)
 
         const course = await Course.create({
             name,
@@ -392,10 +392,6 @@ const deleteAllCourses = async () => {
   }
 };
 
-
-  
-  
-  
 
 module.exports = {
     createCourse,

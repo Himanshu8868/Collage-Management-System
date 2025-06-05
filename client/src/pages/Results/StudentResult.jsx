@@ -137,7 +137,7 @@ const StudentResult = () => {
                   <div className="mb-4 md:mb-0">
                     <h3 className="text-xl font-bold text-gray-800 flex items-center">
                       <FiBook className="mr-2 text-blue-500" />
-                      {res.exam.title}
+                      {res.exam?.title}
                     </h3>
                     <p className="text-gray-600 mt-1">{res.course.name}</p>
 
@@ -170,7 +170,7 @@ const StudentResult = () => {
                     <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-sm text-gray-600">Duration: {res.exam.duration} mins</span>
+                    <span className="text-sm text-gray-600">Duration: {res.exam?.duration} mins</span>
                   </div>
                 </div>
               </div>

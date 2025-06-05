@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  FaBook, FaClipboardList, FaCheckCircle, 
+import {
+  FaBook, FaClipboardList, FaCheckCircle,
   FaClipboardCheck, FaCalendarCheck, FaBars, FaTimes,
   FaChalkboardTeacher, FaUserGraduate, FaChartLine,
   FaRegSquare
@@ -8,8 +8,8 @@ import {
 import { Link } from "react-router-dom";
 
 const SidebarItem = ({ icon, text, to }) => (
-  <Link 
-    to={to} 
+  <Link
+    to={to}
     className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-blue-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 transition-colors duration-200 rounded-lg"
   >
     <span className="text-blue-500 dark:text-blue-400">{icon}</span>
@@ -30,17 +30,17 @@ const DropdownMenu = ({ title, icon, items }) => {
           <span className="text-blue-500 dark:text-blue-400">{icon}</span>
           <span>{title}</span>
         </div>
-        <svg 
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          viewBox="0 0 24 24" 
+        <svg
+          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      
-      <div 
+
+      <div
         className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96' : 'max-h-0'}`}
       >
         <div className="py-2 pl-8 pr-2 space-y-1">
@@ -75,64 +75,64 @@ const FacultyDashboard = () => {
     },
 
     {
-      title : "Course",
-       icon : <FaClipboardCheck /> ,
-       items: [
-          {icon : <FaClipboardCheck /> , text: "Create Course" , to : "/request-course" },
-       ]
+      title: "Course",
+      icon: <FaClipboardCheck />,
+      items: [
+        { icon: <FaClipboardCheck />, text: "Create Course", to: "/request-course" },
+      ]
     },
     {
-      title : "Result",
-       icon : <FaClipboardCheck /> ,
-       items: [
-          {icon : <FaClipboardCheck /> , text: "see results" , to : "/all-results" },
-          {icon : <FaClipboardCheck /> , text: "manage grades" , to : "/update-result" },
-          {icon : <FaClipboardCheck /> , text: "Delete Result" , to : "/delete-results" },
-       ]
+      title: "Result",
+      icon: <FaClipboardCheck />,
+      items: [
+        { icon: <FaClipboardCheck />, text: "see results", to: "/all-results" },
+        { icon: <FaClipboardCheck />, text: "manage grades", to: "/update-result" },
+        { icon: <FaClipboardCheck />, text: "Delete Result", to: "/delete-results" },
+      ]
     },
 
-         
+
     {
-       title : "Leave",
-       icon : <FaRegSquare />,
-       items: [
-         {icon : <FaRegSquare /> , text: "Create leave application" , to : "/submit-leave-request" },
-         {icon : <FaRegSquare /> , text: "View leave application" , to : "/my-leaves" },
-       ]
+      title: "Leave",
+      icon: <FaRegSquare />,
+      items: [
+        { icon: <FaRegSquare />, text: "Create leave application", to: "/submit-leave-request" },
+        { icon: <FaRegSquare />, text: "View leave application", to: "/my-leaves" },
+      ]
     },
-    // {
-    //   title: "Students",
-    //   icon: <FaUserGraduate />,
-    //   items: [
-    //     { icon: <FaChartLine />, text: "My students", to: "/users" },
-    //     { icon: <FaCheckCircle />, text: "Manage Grades", to: "/students/grades" }
-    //   ]
-    // },
-       {
-    title: "Notifications & Notice",
-    icon: <FaClipboardList />,
-    items: [
-      { icon: <FaCheckCircle />, text: " Notification", to: "/notifications" },
-      { icon: <FaCheckCircle />, text: "  CreateNotice", to: "/create-notice" },
-    ]
-       },
-       
-       {
-    title: "document",
-    icon: <FaClipboardList />,
-    items: [
-      { icon: <FaCheckCircle />, text: " documnet", to: "/upload-document" },
-    ]
-       },
+    {
+      title: "Attendance",
+      icon: <FaUserGraduate />,
+      items: [
+        { icon: <FaChartLine />, text: "request-attendance", to: "/attendance-request" },
+        { icon: <FaCheckCircle />, text: "mark attendacne", to: "/self-attendance" }
+      ]
+    },
+    {
+      title: "Notifications & Notice",
+      icon: <FaClipboardList />,
+      items: [
+        { icon: <FaCheckCircle />, text: " Notification", to: "/notifications" },
+        { icon: <FaCheckCircle />, text: "  CreateNotice", to: "/create-notice" },
+      ]
+    },
 
-       {
-    title: "Schedule",
-    icon: <FaClipboardList />,
-    items: [
-      { icon: <FaCheckCircle />, text: "create", to: "/create-schedule" },
-    ]
-       }
-      ];
+    {
+      title: "document",
+      icon: <FaClipboardList />,
+      items: [
+        { icon: <FaCheckCircle />, text: " documnet", to: "/upload-document" },
+      ]
+    },
+
+    {
+      title: "Schedule",
+      icon: <FaClipboardList />,
+      items: [
+        { icon: <FaCheckCircle />, text: "create", to: "/create-schedule" },
+      ]
+    }
+  ];
 
 
 
@@ -163,11 +163,11 @@ const FacultyDashboard = () => {
 
           <div className="space-y-1">
             {menuItems.map((menu, index) => (
-              <DropdownMenu 
-                key={index} 
-                title={menu.title} 
-                icon={menu.icon} 
-                items={menu.items} 
+              <DropdownMenu
+                key={index}
+                title={menu.title}
+                icon={menu.icon}
+                items={menu.items}
               />
             ))}
           </div>
@@ -183,7 +183,7 @@ const FacultyDashboard = () => {
 
       {/* Overlay */}
       {drawerOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-30 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setDrawerOpen(false)}
         />

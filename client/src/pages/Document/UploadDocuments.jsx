@@ -92,7 +92,7 @@ const UploadDocuments = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Select Course *</label>
+          <label className="block text-sm font-medium">Select Subject *</label>
           <select
             className="w-full border p-2 rounded"
             value={courseId}

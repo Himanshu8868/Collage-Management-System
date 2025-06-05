@@ -13,7 +13,19 @@ const userSchema = new mongoose.Schema(
         enum: ['BCA', 'BTech', 'MCA', 'MBA', 'Other'],
     },
         // year: {type : String , required: true},
-        semester: {type : String , required : true} ,
+        rollNo: {
+            type: String,
+            required: function() { return this.role === "student"; },
+            unique: function() { return this.role === "student"; }
+        },  
+        // batch: { 
+        //     type: String, 
+        //     required: function() { return this.role === "student"; },
+        //     enum: ['2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+        // },
+
+        semester: {type : String ,
+         required : function() { return this.role === "student"}} ,
         enrollYear: { 
             type: String, 
             required: function() { return this.role === "student"; } 
@@ -22,6 +34,8 @@ const userSchema = new mongoose.Schema(
             type: String, 
             required: function() { return this.role === "student"; }  
         },
+
+        
         department: { type: String },
         HOD: { type: String },
         

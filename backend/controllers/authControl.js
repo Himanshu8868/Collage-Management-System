@@ -17,6 +17,7 @@ const registerUser = async (req, res) => {
             enrollYear,
             endYear,
             address,
+            rollNo,
             department,
             HOD
         } = req.body;
@@ -105,8 +106,8 @@ const loginUser = async (req, res) => {
         if (user.status === "Inactive" && user.approvalStatus === "pending") {
             return res.status(403).json({ message: "Your account is pending approval by an admin" });
         }
-          
-          if (user.status === "Inactive" && user.approvalStatus === "approved") {
+
+        if (user.status === "Inactive" && user.approvalStatus === "approved") {
             return res.status(403).json({ message: "Your account is Inactive " });
         }
 
@@ -114,7 +115,7 @@ const loginUser = async (req, res) => {
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         // Set the token as a cookie and respond
-        res.cookie("token", token, { httpOnly: true, secure: true  , maxAge: 7 * 24 * 60 * 60 * 1000 });
+        res.cookie("token", token, { httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
         res.json({ message: "Login successful", token, role: user.role, name: user.name, email: user.email, user });
 
     } catch (error) {

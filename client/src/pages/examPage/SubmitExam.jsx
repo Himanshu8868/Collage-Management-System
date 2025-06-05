@@ -67,7 +67,7 @@ const SubmitExam = () => {
 
             // Redirect after 3 seconds
             setTimeout(() => {
-                navigate("/exams");
+                navigate(-1); // Go back to the previous pages");
             }, 3000);
         } catch (err) {
                toast.error(err.response?.data?.message || "Submission failed. Please try again.");

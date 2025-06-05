@@ -117,7 +117,7 @@ const AttendanceProgress = () => {
   };
 
   return (
-    <div className="mt-17 max-w-6xl mx-auto mt-10 p-6 shadow-md bg-white rounded-lg">
+    <div className="mt-19 mb-4 max-w-6xl mx-auto mt-10 p-6 shadow-md bg-white rounded-lg">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Attendance Overview</h2>
         <div className="flex items-center space-x-4">
