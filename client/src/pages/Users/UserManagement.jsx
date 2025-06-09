@@ -59,7 +59,7 @@ const UserManagement = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const res = await axios.get("/api/users/users`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(Array.isArray(res.data.data) ? res.data.data : []);
