@@ -35,7 +35,7 @@ const PaymentPage = () => {
       const token = localStorage.getItem('token');
 
       const res = await axios.post(
-        'http://localhost:5000/api/fee/create-payment-intent',
+        `${import.meta.env.VITE_API_BASE_URL}/api/fee/create-payment-intent`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -95,7 +95,7 @@ const PaymentPage = () => {
         const paymentMethodType = paymentIntent.payment_method_types[0];
         const paymentMode = mapStripeMethodToMode(paymentMethodType);
 
-        await axios.post('http://localhost:5000/api/fee/record', {
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/fee/record`, {
           feeStructure: feeStructureId,
           amountPaid: paymentIntent.amount / 100,
           paymentMode,

@@ -32,7 +32,7 @@ const CreateLeaveRequest = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/leave/submit', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/leave/submit`, formData, {
         headers: {   
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

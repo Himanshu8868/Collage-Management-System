@@ -15,7 +15,7 @@ const Courses = () => {
         const fetchCourses = async () => {
             try {
                 await new Promise(resolve => setTimeout(resolve, 800));
-                const { data } = await axios.get("http://localhost:5000/api/courses");
+                const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses`);
                 setCourses(data);
             } catch {
                 setError("Failed to fetch courses. Please try again later.");

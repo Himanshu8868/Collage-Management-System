@@ -22,7 +22,7 @@ const SubmitExam = () => {
         const fetchExam = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get(`http://localhost:5000/api/exams/id/${id}`, {
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/id/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setExam(response.data);
@@ -55,7 +55,7 @@ const SubmitExam = () => {
             }));
 
             const response = await axios.post(
-                `http://localhost:5000/api/exams/submit/${id}`,
+                `${import.meta.env.VITE_API_BASE_URL}/api/exams/submit/${id}`,
                 { answers: formattedAnswers },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

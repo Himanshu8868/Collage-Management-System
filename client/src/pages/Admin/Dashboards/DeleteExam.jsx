@@ -20,7 +20,7 @@ const DeleteExam = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:5000/api/exams/pending-deletion", {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/pending-deletion`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ const DeleteExam = () => {
     setDeletingId(examId);
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/exams/delete-approved/${examId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/exams/delete-approved/${examId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

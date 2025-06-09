@@ -22,7 +22,7 @@ const EnrollCourse = () => {
         setLoading(true);
         const token = localStorage.getItem('token')
         try {
-            const response = await axios.post(`http://localhost:5000/api/courses/${id}/enroll`, formData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/courses/${id}/enroll`, formData, {
 
                 headers: { Authorization: `Bearer ${token}` },
             });

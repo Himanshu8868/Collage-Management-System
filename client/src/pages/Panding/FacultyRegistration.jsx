@@ -12,7 +12,7 @@ const FacultyRegistration = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get("http://localhost:5000/api/users/pending-faculty", {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/pending-faculty`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -28,7 +28,7 @@ const FacultyRegistration = () => {
 
   const handleApprove = async (facultyId) => {
     try {
-      await axios.put(`http://localhost:5000/api/users/approve-faculty/${facultyId}`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/users/approve-faculty/${facultyId}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -43,7 +43,7 @@ const FacultyRegistration = () => {
 
   const handleReject = async (facultyId) => {
     try {
-      await axios.put(`http://localhost:5000/api/users/reject-faculty/${facultyId}`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/users/reject-faculty/${facultyId}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

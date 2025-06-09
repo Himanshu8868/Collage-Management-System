@@ -41,10 +41,10 @@ const AttendanceProgress = () => {
         setLoading(true);
 
         const [courseRes, overallRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/attendance/summary/student/${studentId}?view=${viewMode}`, {
+          axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/attendance/summary/student/${studentId}?view=${viewMode}`, {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get(`http://localhost:5000/api/attendance/overall-attendance/${studentId}`, {
+          axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/attendance/overall-attendance/${studentId}`, {
             headers: { Authorization: `Bearer ${token}` }
           }),
         ]);

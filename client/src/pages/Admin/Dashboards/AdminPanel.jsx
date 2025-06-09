@@ -26,13 +26,13 @@ const Dashboard = () => {
     const fetchPendingCounts = async () => {
       try {
         const [courseRes, facultyRes, leaveRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/courses/pending-requests", {
+          axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/pending-requests`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/users/pending-faculty", {
+          axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users/pending-faculty`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/leaves/pending-requests", {
+          axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/leaves/pending-requests`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -51,7 +51,7 @@ const Dashboard = () => {
     const fetchRecentActivities = async () => {
       try {
         const activityRes = await axios.get(
-          `http://localhost:5000/api/activity/recent?limit=5`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/activity/recent?limit=5`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

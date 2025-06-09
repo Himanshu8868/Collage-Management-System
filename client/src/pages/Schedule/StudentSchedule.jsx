@@ -12,7 +12,7 @@ const WeeklySchedule = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await fetch(
-          `http://localhost:5000/api/weekly`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/weekly`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

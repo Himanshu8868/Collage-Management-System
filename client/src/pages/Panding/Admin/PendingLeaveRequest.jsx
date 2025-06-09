@@ -13,7 +13,7 @@ const PendingLeaveRequests = () => {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/leave/requests/pending', {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/leave/requests/pending`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -35,7 +35,7 @@ const PendingLeaveRequests = () => {
 
   const handleApprove = async (leaveId) => {
     try {
-      await axios.put(`http://localhost:5000/api/leave/approve/${leaveId}`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/leave/approve/${leaveId}`, {}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -56,7 +56,7 @@ const PendingLeaveRequests = () => {
 
   const handleReject = async (leaveId) => {
     try {
-      await axios.put(`http://localhost:5000/api/leave/reject/${leaveId}`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/leave/reject/${leaveId}`, {}, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

@@ -14,7 +14,7 @@ const PendingCourseRequests = () => {
   useEffect(() => {
     const fetchPendingCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/courses/pending-requests", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/pending-requests`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

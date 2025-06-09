@@ -40,7 +40,7 @@ const CreateCourse = () => {
   useEffect(() => {
     const fetchInstructors = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/courses/instructors", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/courses/instructors`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -136,7 +136,7 @@ const CreateCourse = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/courses/create-course", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/courses/create-course`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

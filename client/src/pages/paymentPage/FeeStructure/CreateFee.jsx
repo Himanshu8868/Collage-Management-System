@@ -17,7 +17,7 @@ const CreateFee = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/department');
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/department`);
         setDepartments(res.data);
       } catch (error) {
         console.error('Failed to fetch departments:', error);
@@ -38,7 +38,7 @@ const CreateFee = () => {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.post('http://localhost:5000/api/fee/create', formData, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/fee/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

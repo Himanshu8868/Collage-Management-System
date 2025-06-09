@@ -15,7 +15,7 @@ const DocumentViewer = () => {
     const fetchCourses = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get('http://localhost:5000/api/courses/enrolled', {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/enrolled`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCourses(res.data.data);
@@ -37,7 +37,7 @@ const DocumentViewer = () => {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/documents/${selectedCourse}?type=${docType}`,
+         `${import.meta.env.VITE_API_BASE_URL}/api/documents/${selectedCourse}?type=${docType}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

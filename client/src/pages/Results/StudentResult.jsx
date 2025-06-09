@@ -14,7 +14,7 @@ const StudentResult = () => {
     const fetchResults = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/result/${id}/my-results`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/result/${id}/my-results`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

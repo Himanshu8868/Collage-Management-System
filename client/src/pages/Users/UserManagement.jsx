@@ -140,7 +140,7 @@ const UserManagement = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter(u => u._id !== userId));
@@ -163,7 +163,7 @@ const UserManagement = () => {
         // Update existing user
         const { password, confirmPassword, ...updateData } = formData;
         res = await axios.put(
-          `http://localhost:5000/api/users/${selectedUser._id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/${selectedUser._id}`,
           updateData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -171,7 +171,7 @@ const UserManagement = () => {
         // Create new user
         const { confirmPassword, ...newUserData } = formData;
         res = await axios.post(
-          "http://localhost:5000/api/users/register",
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
           newUserData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

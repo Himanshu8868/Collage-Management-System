@@ -14,7 +14,7 @@ const InstructorAttendanceSummary = () => {
     const fetchSummary = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/attendance/instructor/students/attendance-summary/${courseId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/attendance/instructor/students/attendance-summary/${courseId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setStudents(res.data.data);

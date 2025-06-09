@@ -10,7 +10,7 @@ const FacultyNotifications = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/notifications/all-notifications', {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/all-notifications`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -33,7 +33,7 @@ const FacultyNotifications = () => {
   const handleNotificationClick = async (notification) => {
     try {
       if (!notification.isRead) {
-        await axios.put(`http://localhost:5000/api/notifications/${notification._id}/read`, {}, {
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/notifications/${notification._id}/read`, {}, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },

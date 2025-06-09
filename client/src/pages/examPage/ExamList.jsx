@@ -13,7 +13,7 @@ const ExamList = () => {
         const fetchExams = async () => {
              let token =  localStorage.getItem("token")
             try {
-                const response = await axios.get("http://localhost:5000/api/exams/all-exams", {
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/all-exams`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

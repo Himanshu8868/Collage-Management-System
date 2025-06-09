@@ -72,7 +72,7 @@ const CreateExam = () => {
         // Duration remains in minutes (no conversion)
       };
 
-      const response = await axios.post('http://localhost:5000/api/exams', examData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/exams`, examData, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

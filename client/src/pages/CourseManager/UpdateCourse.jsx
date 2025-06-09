@@ -29,7 +29,7 @@ const role = localStorage.getItem("role")
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/courses');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses`);
       setCourses(response.data);
     } catch (error) {
       setError('Failed to fetch courses');
@@ -40,7 +40,7 @@ const role = localStorage.getItem("role")
   const fetchInstructors = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/courses/instructors', {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/instructors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = response.data.Instructors || [];
@@ -80,7 +80,7 @@ const role = localStorage.getItem("role")
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://localhost:5000/api/courses/${selectedCourse._id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/courses/${selectedCourse._id}`,
         selectedCourse,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -100,7 +100,7 @@ const role = localStorage.getItem("role")
     
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/courses/${courseId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/courses/${courseId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Course deleted successfully");

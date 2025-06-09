@@ -10,7 +10,7 @@ const MyLeaves = () => {
   const fetchLeaves = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/leave/my-leaves', {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/leave/my-leaves`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +34,7 @@ const MyLeaves = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/leave/cancel/${leaveId}`, {}, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/leave/cancel/${leaveId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

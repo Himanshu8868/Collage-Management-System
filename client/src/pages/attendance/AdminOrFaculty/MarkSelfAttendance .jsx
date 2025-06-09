@@ -45,7 +45,7 @@ const MarkSelfAttendance = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/attendance/self-attendance',
+        `${import.meta.env.VITE_API_BASE_URL}/api/attendance/self-attendance`,
         {
           latitude: location.latitude,
           longitude: location.longitude,

@@ -11,7 +11,7 @@ const ActivityList = ({ currentPage, setTotalActivities }) => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/activity/all", {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/activity/all`, {
           headers: { Authorization: `Bearer ${token}` },
           params: {
             page: currentPage,

@@ -17,7 +17,7 @@ const UploadDocuments = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/courses/my-courses', {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/my-courses`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setCourses(res.data.data);
@@ -43,7 +43,7 @@ const UploadDocuments = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/documents/upload', formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/documents/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

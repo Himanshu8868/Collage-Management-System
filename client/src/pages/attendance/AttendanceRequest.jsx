@@ -12,7 +12,7 @@ const AttendanceRequest = () => {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/attendance/requests', {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/attendance/requests`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,7 +33,7 @@ const AttendanceRequest = () => {
     setActionLoading(id);
     try {
       await axios.put(
-        `http://localhost:5000/api/attendance/respond/${id}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/attendance/respond/${id}`,
         { action },
         {
           headers: {

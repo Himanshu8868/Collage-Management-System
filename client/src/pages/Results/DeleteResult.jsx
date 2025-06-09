@@ -13,7 +13,7 @@ const DeleteResult = () => {
     const fetchExams = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/exams/all-exams", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/exams/all-exams`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -33,7 +33,7 @@ const DeleteResult = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/result/by-exam/${examId}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/result/by-exam/${examId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -60,7 +60,7 @@ const DeleteResult = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/result/delete-result", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/result/delete-result`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -28,7 +28,7 @@ const FacultyCourseRequest = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await axios.post('http://localhost:5000/api/courses/create-course', formData, {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/courses/create-course`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

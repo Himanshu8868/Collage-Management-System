@@ -16,7 +16,7 @@ const MarkAttendance = () => {
   useEffect(() => {
     const fetchEnrolledCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/courses/enrolled`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/enrolled`, {
           headers: { Authorization: `Bearer ${token}` },
         });
     
@@ -73,7 +73,7 @@ const MarkAttendance = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/attendance/request-attendance',
+        `${import.meta.env.VITE_API_BASE_URL}/api/attendance/request-attendance`,
         {
           courseId,
           latitude: location.latitude,

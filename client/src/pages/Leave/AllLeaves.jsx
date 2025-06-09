@@ -17,7 +17,7 @@ const GetAllLeaves = () => {
   useEffect(() => {
     const fetchLeaves = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/leave/all-records", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/leave/all-records`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,

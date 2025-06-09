@@ -16,7 +16,7 @@ const CourseDetails = () => {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/${id}`);
                 setCourse(response.data);
             } catch (err) {
                 setError("Failed to load course details");

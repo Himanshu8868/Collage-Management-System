@@ -21,7 +21,7 @@ const EditExam = () => {
         try {
             setLoading(true);
             const token = localStorage.getItem("token");
-            const response = await axios.get("http://localhost:5000/api/exams/exam-specific", {
+            const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/exams/exam-specific`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -44,7 +44,7 @@ const EditExam = () => {
                 const token = localStorage.getItem("token");
                 // Send PUT request to request deletion
                 const response = await axios.put(
-                    `http://localhost:5000/api/exams/${examId}/request-delete`, 
+                    `${import.meta.env.VITE_API_BASE_URL}/api/exams/${examId}/request-delete`, 
                     { examId },  // Send the examId as a payload
                     {
                         headers: { Authorization: `Bearer ${token}` }  // Authorization header with token
@@ -88,7 +88,7 @@ const EditExam = () => {
             };
 
             await axios.put(
-                `http://localhost:5000/api/exams/${currentExam._id}`,
+               `${import.meta.env.VITE_API_BASE_URL}/api/exams/${currentExam._id}`,
                 updatedExam,
                 { headers: { Authorization: `Bearer ${token}` } }
             );

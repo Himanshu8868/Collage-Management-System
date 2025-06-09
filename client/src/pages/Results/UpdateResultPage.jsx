@@ -25,7 +25,7 @@ const UpdateResultByDetails = () => {
     const fetchExams = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:5000/api/exams/all-exams", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/exams/all-exams`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -51,13 +51,13 @@ const UpdateResultByDetails = () => {
 
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/result/by-exam/${formData.examId}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/result/by-exam/${formData.examId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         setStudents(data.students || []);
       } catch (error) {
-        toast.error(res.message.data || "Failed to load students");
+        // toast.error(res.message.data || "Failed to load students");
         toast.error("Failed to load students");
       } finally {
     
@@ -92,7 +92,7 @@ const UpdateResultByDetails = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/result/update-by-details", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/result/update-by-details`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
