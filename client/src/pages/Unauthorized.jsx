@@ -1,8 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiLock } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+
 
 const Unauthorized = () => {
+  const navigate = useNavigate();
+  const handleback = () => {
+  
+    navigate(-1);
+  }
+  
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-center p-4">
       <FiLock size={80} className="text-red-500 mb-4" />

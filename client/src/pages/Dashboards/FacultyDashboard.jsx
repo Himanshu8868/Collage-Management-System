@@ -105,7 +105,9 @@ const FacultyDashboard = () => {
       icon: <FaUserGraduate />,
       items: [
         { icon: <FaChartLine />, text: "request-attendance", to: "/attendance-request" },
-        { icon: <FaCheckCircle />, text: "mark attendacne", to: "/self-attendance" }
+        { icon: <FaCheckCircle />, text: "mark attendacne", to: "/self-attendance" },
+        { icon: <FaCheckCircle />, text: "record attendacne", to: "/students-attendance-summary/:courseId" },
+
       ]
     },
     {

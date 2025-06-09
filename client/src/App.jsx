@@ -168,7 +168,7 @@ function App() {
             <Route path="/attendance-request" element={<AttendanceRequest />} />
             <Route path="/attendance-record" element={<AttendanceChart />} />
             <Route path="/self-attendance" element={<MarkSelfAttendance />} />
-            <Route path="/students-attendance-summary/:courseId" element={<InstructorAttendanceSummary />} />
+            <Route path="/students-attendance-summary/:courseId" element={<InstructorAttendanceSummary />} /> 
             <Route path="/instructor-courses" element={<MyCourses />} />
 
             {/* Notifications */}
