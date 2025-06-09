@@ -59,7 +59,7 @@ const UserManagement = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/users/users", {
+        const res = await axios.get("/api/users/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(Array.isArray(res.data.data) ? res.data.data : []);
