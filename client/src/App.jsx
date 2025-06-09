@@ -71,7 +71,7 @@ import NotificationPage from './pages/Notifications/NotificationPage';
 import CreateNotification from './pages/Notifications/CreateNotification';
 
 // Faculty Registration Requests
-// import FacultyRegistration from './pages/panding/FacultyRegistration';
+import FacultyRegistration from './pages/panding/FacultyRegistration';
 
 // Leave Pages
 import CreateLeaverequests from './pages/Requests/CreateLeaverequest';
