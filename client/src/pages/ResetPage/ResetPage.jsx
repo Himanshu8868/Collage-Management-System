@@ -13,7 +13,7 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/reset-password`, {
+      const res = await axios.post("https://camclg.netlify.com/api/auth/reset-password", {
         token,
         password,
       });
