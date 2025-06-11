@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiMail, FiLock, FiEye, FiEyeOff, FiUser, FiX, FiLogIn } from "react-icons/fi";
 
-const Login = ({ closeModal }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -12,9 +12,12 @@ const Login = ({ closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
 
-
+  const closeModal = () => {
+    navigate("/")
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,18 +30,19 @@ const Login = ({ closeModal }) => {
         password
       });
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("role", response.data.role);
-      localStorage.setItem("name", response.data.name);
-      localStorage.setItem("email", response.data.email);
+      const { token, role, name, email: userEmail } = response.data;
 
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("name", name);
+      localStorage.setItem("email", userEmail);
 
-      ;
+      // Redirect based on role
+      if (role === "admin") navigate("/AdminDashboard");
+      else if (role === "student") navigate("/StudentDashboard");
+      else if (role === "faculty") navigate("/faculty-portal");
+      else navigate(from); // fallback
 
-      // Use navigate instead of window.location for SPA behavior
-      window.location.href = response.data.role === "student"
-        ? "/studentDashboard"
-        : "/faculty-portal";
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed. Please check your credentials and try again.');
       setIsLoading(false);
@@ -199,4 +203,5 @@ const Login = ({ closeModal }) => {
     </AnimatePresence>
   );
 };
+
 export default Login;

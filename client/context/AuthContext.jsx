@@ -21,8 +21,8 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
-      
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, credentials);
+
       const { user, token } = response.data;
 
       // Save user and token in localStorage
