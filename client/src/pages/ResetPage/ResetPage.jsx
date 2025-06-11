@@ -9,12 +9,12 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const URL = "https://camclg.netlify.com";  
+  
   const handleReset = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(`${URL}/api/auth/reset-password`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/reset-password`, {
         token,
         password,
       });
