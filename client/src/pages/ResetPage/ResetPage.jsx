@@ -9,7 +9,7 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const URL = "https://camclg.netilify..com";  
+  const URL = "https://camclg.netlify.com";  
   const handleReset = async (e) => {
     e.preventDefault();
     setLoading(true);
