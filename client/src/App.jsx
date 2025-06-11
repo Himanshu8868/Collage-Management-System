@@ -101,7 +101,7 @@ import ThemeToggleButton from './components/ThemeTogglebutton';
 
 // Rest page 
 
-import ResetPage from './pages/ResetPage/Resetpage';
+import ResetPage from './pages/ResetPage/ResetPage';
 import ForgotPassword from './pages/ResetPage/ForgotPassword'
 
 // Unauthorized Page
