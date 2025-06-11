@@ -9,11 +9,12 @@ const ResetPassword = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const URL = "https://camclg.netilify..com";  
   const handleReset = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("https://camclg.netlify.com/api/auth/reset-password", {
+      const res = await axios.post(`${URL}/api/auth/reset-password`, {
         token,
         password,
       });
