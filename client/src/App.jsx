@@ -99,6 +99,11 @@ import StudentSchedule from './pages/Schedule/StudentSchedule';
 import CreateWeeklySchedule from './pages/Schedule/CreateWeeklySchedule';
 import ThemeToggleButton from './components/ThemeTogglebutton';
 
+// Rest page 
+
+import ResetPage from './pages/ResetPage/Resetpage';
+import ForgotPassword from './pages/ResetPage/ForgotPassword'
+
 // Unauthorized Page
 import Unauthorized from './pages/Unauthorized';
 
@@ -199,6 +204,9 @@ function App() {
             <Route path="/schedule" element={<StudentSchedule />} />
             <Route path="/create-schedule" element={<CreateWeeklySchedule />} />
             <Route path='/theme' element ={<ThemeToggleButton/>} />
+
+            <Route path="/reset-password/:token" element={<ResetPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
             {/* Unauthorized page */}
 

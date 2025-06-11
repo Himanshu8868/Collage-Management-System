@@ -181,7 +181,7 @@ const Navbar = () => {
                 )}
               </motion.button>
             </form>
-            
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600 dark:text-gray-400">
             <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{' '}
               <Link 
@@ -192,6 +192,18 @@ const Navbar = () => {
                 Register
               </Link>
             </div>
+
+             <div className="mt-6 text-right  text-sm text-gray-600 dark:text-gray-400">
+                {' '}
+              <Link 
+                to="/forgot-password" 
+                onClick={closeModal}
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Forget-Password
+              </Link>
+            </div>
+            </div>  
           </div>
         </motion.div>
       </motion.div>
