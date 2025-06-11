@@ -134,7 +134,7 @@ const loginUser = async (req, res) => {
   if (!user) return res.status(404).json({ message: "User not found" });
 
   const token = crypto.randomBytes(32).toString("hex");
-  const resetLink = `${process.env.API_BASE_URL}/reset-password/${token}`;
+  const resetLink = `${process.env.API_URL}/reset-password/${token}`;
 
   //  Update without save() validation
   await User.updateOne(
