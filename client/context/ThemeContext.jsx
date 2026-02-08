@@ -9,7 +9,13 @@ const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    document.body.className = darkMode ? 'dark' : 'light';
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      document.body.className = 'dark';
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.className = 'light';
+    }
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 

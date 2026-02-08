@@ -1,18 +1,30 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const upload= require('../uploads/uploadMiddleware')
-const { uploadDocument , GetByCourseId , deleteDocument} = require('../controllers/DocumentController');
-const {protect , isAdminOrFaculty} = require('../middleware/authMiddleware')
 
-// Middleware for file upload
+const upload = require("../uploads/uploadMiddleware");
+const {
+  uploadDocument,
+  GetByCourseId,
+  deleteDocument,
+  downloadDocument,
+  GetAllDocuments
+} = require("../controllers/DocumentController");
+
+const { protect, isAdminOrFaculty } = require("../middleware/authMiddleware");
+
+// Upload document
 router.post("/upload", protect, upload.single("file"), uploadDocument);
 
-//Get document By Course Id //
+// Download document
+router.get("/download/:documentId", protect, downloadDocument);
 
-router.get('/:courseId', protect, GetByCourseId);
+// Get all documents
+router.get("/all", protect, GetAllDocuments);
 
-// Delete a document //
+// Get documents by courseId (⚠️ ALWAYS KEEP LAST)
+router.get("/:courseId", protect, GetByCourseId);
 
-router.delete('/delete/:documentId', protect, isAdminOrFaculty, deleteDocument);
+// Delete document
+router.delete("/delete/:documentId", protect, isAdminOrFaculty, deleteDocument);
 
 module.exports = router;

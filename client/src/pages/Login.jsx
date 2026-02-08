@@ -16,7 +16,8 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
 
   const closeModal = () => {
-    navigate("/")
+    // window.history.go(-1);
+    navigate("-1")
   }
 
   const handleLogin = async (e) => {
