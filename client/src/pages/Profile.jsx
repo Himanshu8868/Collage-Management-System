@@ -86,7 +86,7 @@ const Profile = () => {
                         >
                             {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
-                        <h1 className="text-xl font-semibold text-gray-900 dark:text-white ml-4">CollegeSync</h1>
+                        <h1 className="text-xl font-semibold text-gray-900 dark:text-white ml-4">User Profile</h1>
                     </div>
                     <div className="flex items-center space-x-4">
                         <motion.button
@@ -135,14 +135,14 @@ const Profile = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <a
+                                        <Link
                                             href="#"
                                             className="flex items-center p-3 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg"
                                             onClick={() => setSidebarOpen(false)}
                                         >
                                             <Settings size={20} className="mr-3" />
                                             <span>Settings</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
                                         <button

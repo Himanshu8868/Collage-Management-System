@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SlideBar from "../../../components/SlideBar";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNotice } from "../../../../context/NoticeContext";
 import axios from "axios";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Dashboard = () => {
   const role = localStorage.getItem("role");
@@ -12,9 +13,45 @@ const Dashboard = () => {
   const [pendingFaculties, setPendingFaculties] = useState(0);
   const [pendingLeaves, setPendingLeaves] = useState(0);
   const [loadingPending, setLoadingPending] = useState(true);
-
   const [recentActivities, setRecentActivities] = useState([]);
   const [loadingActivities, setLoadingActivities] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  const sidebarRef = useRef(null);
+  const hamburgerRef = useRef(null);
+
+  // Check screen size
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setSidebarOpen(false);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarOpen && 
+          sidebarRef.current && 
+          !sidebarRef.current.contains(event.target) &&
+          hamburgerRef.current && 
+          !hamburgerRef.current.contains(event.target)) {
+        setSidebarOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [sidebarOpen]);
 
   useEffect(() => {
     if (role !== "admin") {
@@ -22,10 +59,9 @@ const Dashboard = () => {
       return;
     }
 
-    // Fetch pending counts
-    const fetchPendingCounts = async () => {
+    const fetchData = async () => {
       try {
-        const [courseRes, facultyRes, leaveRes] = await Promise.all([
+        const [courseRes, facultyRes, leaveRes, activityRes] = await Promise.all([
           axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/courses/pending-requests`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
@@ -35,38 +71,41 @@ const Dashboard = () => {
           axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/leaves/pending-requests`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
+          axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/api/activity/recent?limit=5`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
         ]);
 
         setPendingCourses(courseRes?.data?.pendingCourses?.length || 0);
         setPendingFaculties(facultyRes?.data?.pendingFaculties?.length || 0);
         setPendingLeaves(leaveRes?.data?.pendingLeaves?.length || 0);
-      } catch (error) {
-        console.error("Failed to fetch pending approvals:", error);
-      } finally {
-        setLoadingPending(false);
-      }
-    };
-
-    // Fetch 5 recent activities
-    const fetchRecentActivities = async () => {
-      try {
-        const activityRes = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/activity/recent?limit=5`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
         setRecentActivities(activityRes?.data?.activities || []);
       } catch (error) {
-        console.error("Failed to fetch recent activities:", error);
+        console.error("Failed to fetch dashboard data:", error);
       } finally {
+        setLoadingPending(false);
         setLoadingActivities(false);
       }
     };
 
-    fetchPendingCounts();
-    fetchRecentActivities();
+    fetchData();
   }, [token, role]);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (sidebarOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [sidebarOpen, isMobile]);
 
   const quickActions = [
     { title: "Add Course", action: "/create-courses", color: "bg-blue-500" },
@@ -81,26 +120,73 @@ const Dashboard = () => {
     { title: "Courses Offered", value: "45" },
   ];
 
-
   return (
-    <div className="flex mt-15">
-      {/* Sidebar */}
-      <SlideBar />
+    <div className="min-h-screen bg-gray-100">
+      {/* Mobile Header */}
+      {isMobile && (
+        <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 h-16 flex items-center px-4">
+          <button
+            ref={hamburgerRef}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 mr-4 rounded-lg hover:bg-gray-100"
+          >
+            {sidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
+          <h1 className="text-xl font-bold text-gray-800">Admin Dashboard</h1>
+        </div>
+      )}
+
+      {/* Sidebar with Animation */}
+      <AnimatePresence>
+        {(sidebarOpen || !isMobile) && (
+          <>
+            {/* Backdrop for mobile */}
+            {isMobile && sidebarOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setSidebarOpen(false)}
+                className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              />
+            )}
+            
+            {/* Sidebar */}
+            <motion.div
+              ref={sidebarRef}
+              key="sidebar"
+              initial={isMobile ? { x: -300 } : false}
+              animate={{ x: 0 }}
+              exit={isMobile ? { x: -300 } : false}
+              transition={{ duration: 0.3 }}
+              className={`fixed lg:static top-0 left-0 h-full z-50 lg:z-40
+                ${isMobile ? 'w-64 shadow-xl' : ''}
+                ${!isMobile ? 'block' : ''}`}
+            >
+              <SlideBar />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
-        {/* Heading */}
-        <motion.h1
-          className="text-3xl font-bold mb-6 text-gray-800"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          College Management Admin Dashboard
-        </motion.h1>
+      <div className={`flex-1 p-4 md:p-6 min-h-screen transition-all duration-300
+        ${isMobile ? 'pt-16' : ''}
+        ${!isMobile ? 'ml-64' : ''}`}>
+        
+        {/* Heading - Only show on desktop */}
+        {!isMobile && (
+          <motion.h1
+            className="text-3xl font-bold mb-6 text-gray-800"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            College Management Admin Dashboard
+          </motion.h1>
+        )}
 
         {/* Notice Announcement */}
-
         <motion.div
           className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 shadow-sm mb-6"
           initial={{ opacity: 0 }}
@@ -120,8 +206,6 @@ const Dashboard = () => {
                 strokeWidth={2}
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
-
-              {/* NOTICE */}
             </svg>
             <h3 className="font-semibold text-yellow-800">Notices</h3>
           </div>
@@ -152,11 +236,11 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           {quickActions.map(({ title, action, color }, i) => (
             <motion.div
               key={i}
-              className={`${color} text-white py-4 px-6 rounded shadow hover:opacity-90 cursor-pointer`}
+              className={`${color} text-white py-4 px-4 sm:px-6 rounded shadow hover:opacity-90 cursor-pointer text-center text-sm sm:text-base`}
               onClick={() => window.location.href = action}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -168,24 +252,24 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6">
           {stats.map(({ title, value }, index) => (
             <motion.div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-lg text-center"
+              className="bg-white p-4 md:p-6 rounded-lg shadow-lg text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
             >
-              <h2 className="text-lg font-semibold text-gray-700">{title}</h2>
-              <p className="text-2xl font-bold text-blue-600">{value}</p>
+              <h2 className="text-base md:text-lg font-semibold text-gray-700">{title}</h2>
+              <p className="text-xl md:text-2xl font-bold text-blue-600 mt-2">{value}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Pending Approvals */}
         <motion.div
-          className="bg-white p-6 rounded-lg shadow mb-6"
+          className="bg-white p-4 md:p-6 rounded-lg shadow mb-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -204,7 +288,7 @@ const Dashboard = () => {
 
         {/* Recent Activities */}
         <motion.div
-          className="bg-white p-6 rounded-lg shadow-lg"
+          className="bg-white p-4 md:p-6 rounded-lg shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}

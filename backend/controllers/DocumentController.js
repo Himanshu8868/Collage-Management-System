@@ -35,8 +35,9 @@ const uploadDocument = async (req, res) => {
       type,
       courseId,
       uploadedBy: req.user._id,
-      // 🔥 WINDOWS PATH FIX
-      fileUrl: req.file.path.replace(/\\/g, "/")
+      // WINDOWS PATH FIX
+     fileUrl: req.file.path.replace(/\\/g, "/")
+
     });
 
     await newDoc.save();
@@ -53,6 +54,29 @@ const uploadDocument = async (req, res) => {
 };
 
 // ================= DOWNLOAD DOCUMENT =================
+// const downloadDocument = async (req, res) => {
+//   try {
+//     const { documentId } = req.params;
+
+//     const document = await Document.findById(documentId);
+//     if (!document) {
+//       return res.status(404).json({ message: "Document not found" });
+//     }
+
+//     const filePath = path.join(__dirname, "..", document.fileUrl);
+
+//     if (!fs.existsSync(filePath)) {
+//       return res.status(404).json({ message: "File not found on server" });
+//     }
+
+//     res.download(filePath);
+
+//   } catch (error) {
+//     console.error("Download Error:", error);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
 const downloadDocument = async (req, res) => {
   try {
     const { documentId } = req.params;
@@ -62,19 +86,22 @@ const downloadDocument = async (req, res) => {
       return res.status(404).json({ message: "Document not found" });
     }
 
-    const filePath = path.join(__dirname, "..", document.fileUrl);
+    const safePath = document.fileUrl.replace(/\\/g, "/");
+    const filePath = path.join(__dirname, "..", safePath);
+
+    console.log("Trying to download from:", filePath);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ message: "File not found on server" });
     }
 
     res.download(filePath);
-
   } catch (error) {
-    console.error("Download Error:", error);
+    console.error(error);
     res.status(500).json({ message: "Server Error" });
   }
 };
+
 
 // ================= GET DOCUMENTS BY COURSE =================
 const GetByCourseId = async (req, res) => {
