@@ -2,8 +2,13 @@ import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import dashboard from '../assets/images/dashboard.jpeg'
-import { FiArrowRight, FiCheckCircle, FiDatabase, FiClock, FiLayers, FiBarChart2, FiLock, FiUsers, FiBookOpen, FiAward } from 'react-icons/fi';
+import dashboard from '../assets/images/dashboard.jpeg';
+import { 
+  FiArrowRight, FiCheckCircle, FiDatabase, FiClock, FiLayers, 
+  FiBarChart2, FiLock, FiUsers, FiBookOpen, FiAward, FiStar,
+  FiTrendingUp, FiShield, FiHeadphones, FiMail, FiPhone, 
+  FiMapPin, FiTwitter, FiFacebook, FiLinkedin, FiGithub, FiChevronUp
+} from 'react-icons/fi';
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -47,24 +52,27 @@ const Homepage = () => {
     }
   }, [controls, inView]);
 
-  // Stats data - use your actual metrics
+  // Stats data
   const stats = [
-    { value: "50+", label: "Institutions Using Our System", icon: <FiDatabase className="text-2xl" /> },
-    { value: "90%", label: "Process Automation", icon: <FiClock className="text-2xl" /> },
-    { value: "10K+", label: "Daily Transactions", icon: <FiLayers className="text-2xl" /> },
-    { value: "100%", label: "Data Security", icon: <FiLock className="text-2xl" /> },
+    { value: "50+", label: "Institutions", icon: <FiDatabase className="text-2xl" /> },
+    { value: "90%", label: "Automation", icon: <FiClock className="text-2xl" /> },
+    { value: "10K+", label: "Daily Users", icon: <FiLayers className="text-2xl" /> },
+    { value: "100%", label: "Security", icon: <FiLock className="text-2xl" /> },
   ];
 
   return (
     <div className="font-sans bg-gray-50 text-gray-900 overflow-x-hidden">
-      {/* Floating Navigation Button */}
+      
+      {/* Scroll to Top Button */}
       <motion.button
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-8 right-8 z-50 bg-blue-600 text-white p-4 rounded-full shadow-lg"
+        className="fixed bottom-6 right-6 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-        ↑
+        <FiChevronUp size={24} />
       </motion.button>
 
       {/* Hero Section */}
@@ -98,7 +106,7 @@ const Homepage = () => {
             variants={textVariants}
             className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto"
           >
-             Geo-Location-Based Atttendace System
+            Geo-Location-Based Attendance System
           </motion.p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -109,16 +117,16 @@ const Homepage = () => {
               whileTap={{ scale: 0.95 }}
               className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2"
             >
-              <FiArrowRight />
+              Get Started <FiArrowRight />
             </motion.button>
             <motion.button
               onClick={() => navigate("/pricing")}
               variants={textVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold"
+              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition"
             >
-                Visit
+              Learn More
             </motion.button>
           </div>
         </div>
@@ -188,7 +196,7 @@ const Homepage = () => {
               },
               {
                 title: "Attendance Tracking",
-                description: "Automated attendance with Zeo-location based request",
+                description: "Automated attendance with geo-location based request",
                 icon: <FiCheckCircle className="text-4xl mb-4 text-blue-600" />
               },
               {
@@ -267,35 +275,29 @@ const Homepage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg"
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-blue-700 transition"
               >
                 See All Features
               </motion.button>
             </motion.div>
             
-                    <motion.div
-  initial={{ opacity: 0, x: 50 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  className="order-1 lg:order-2 relative rounded-xl overflow-hidden shadow-2xl"
->
-  {/* Fake browser top bar */}
-  <div className="bg-gray-100 p-2 rounded-t-md flex space-x-2">
-    <span className="w-3 h-3 bg-red-500 rounded-full inline-block"></span>
-    <span className="w-3 h-3 bg-yellow-500 rounded-full inline-block"></span>
-    <span className="w-3 h-3 bg-green-500 rounded-full inline-block"></span>
-  </div>
-
-  {/* Dashboard Image */}
-  <img
-    src={dashboard}
-    alt="Admin Dashboard Preview"
-    className="w-full h-96 object-cover"
-  />
-
-  {/* Hover effect */}
-  <div className="absolute inset-0 border-4 border-transparent hover:border-blue-300/50 transition-all duration-300 pointer-events-none" />
-</motion.div>
-
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              className="order-1 lg:order-2 relative rounded-xl overflow-hidden shadow-2xl"
+            >
+              <div className="bg-gray-100 p-2 rounded-t-md flex space-x-2">
+                <span className="w-3 h-3 bg-red-500 rounded-full inline-block"></span>
+                <span className="w-3 h-3 bg-yellow-500 rounded-full inline-block"></span>
+                <span className="w-3 h-3 bg-green-500 rounded-full inline-block"></span>
+              </div>
+              <img
+                src={dashboard}
+                alt="Admin Dashboard Preview"
+                className="w-full h-96 object-cover"
+              />
+              <div className="absolute inset-0 border-4 border-transparent hover:border-blue-300/50 transition-all duration-300 pointer-events-none" />
+            </motion.div>
           </div>
         </div>
       </div>
@@ -372,14 +374,14 @@ const Homepage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold shadow-lg transition"
               >
                 Schedule a Demo
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-full font-semibold"
+                className="bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-full font-semibold transition"
               >
                 Contact Our Team
               </motion.button>
@@ -387,7 +389,6 @@ const Homepage = () => {
           </motion.div>
         </div>
       </div>
-  
     </div>
   );
 };

@@ -66,16 +66,16 @@ const Footer = () => {
           
           {/* Social Links */}
           <div className="flex gap-4">
-            <a href="#" className="hover:text-white transition">
+            <a href="https://github.com/Himanshu8868" className="hover:text-white transition">
               <FiTwitter size={18} />
             </a>
-            <a href="#" className="hover:text-white transition">
+            <a href="https://github.com/Himanshu8868" className="hover:text-white transition">
               <FiFacebook size={18} />
             </a>
-            <a href="#" className="hover:text-white transition">
+            <a href="https://github.com/Himanshu8868" className="hover:text-white transition">
               <FiLinkedin size={18} />
             </a>
-            <a href="#" className="hover:text-white transition">
+            <a href="https://github.com/Himanshu8868" className="hover:text-white transition">
               <FiGithub size={18} />
             </a>
           </div>
