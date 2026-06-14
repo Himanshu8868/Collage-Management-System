@@ -14,7 +14,7 @@
 
 // const sendEmail = async (to, subject, html) => {
 //   await transporter.sendMail({
-//     from: `"College System" <${process.env.EMAIL_USER}>`,
+//     from: `"Hey ! CamClg , Your reset password is " <${process.env.EMAIL_USER}>`,
 //     to,
 //     subject,
 //     html,
@@ -22,39 +22,38 @@
 // };
 
 // module.exports = sendEmail;
-// const nodemailer = require('nodemailer');
 
-// const sendEmail = async (to, subject, html) => {
-//     try {
-//         // Create transporter
-//         const transporter = nodemailer.createTransport({
-//             host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-//             port: process.env.EMAIL_PORT || 587,
-//             secure: false, // true for 465, false for other ports
-//             auth: {
-//                 user: process.env.EMAIL_USER,
-//                 pass: process.env.EMAIL_PASS,
-//             },
-//             tls: {
-//                 rejectUnauthorized: false // For development only
-//             }
-//         });
+// utils/mailer.js
+const nodemailer = require("nodemailer");
 
-//         // Send mail
-//         const info = await transporter.sendMail({
-//             from: `"CampusPro" <${process.env.EMAIL_USER}>`,
-//             to: to,
-//             subject: subject,
-//             html: html
-//         });
+const sendEmail = async (to, subject, text) => {
+  try {
+    // For development - Ethereal
+    const testAccount = await nodemailer.createTestAccount();
+    
+    const transporter = nodemailer.createTransport({
+      host: testAccount.smtp.host,
+      port: testAccount.smtp.port,
+      secure: testAccount.smtp.secure,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
 
-//         console.log('Email sent:', info.messageId);
-//         return true;
-//     } catch (error) {
-//         console.error('Email error:', error);
-//         // Don't throw error in production - just log it
-//         return false;
-//     }
-// };
+    const info = await transporter.sendMail({
+      from: '"CampusPro" <noreply@campuspro.com>',
+      to: to,
+      subject: subject,
+      text: text,
+    });
 
-// module.exports = sendEmail;
+    console.log("Email preview:", nodemailer.getTestMessageUrl(info));
+    return true;
+  } catch (error) {
+    console.error("Email error:", error);
+    return false;
+  }
+};
+
+module.exports = sendEmail;

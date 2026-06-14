@@ -127,33 +127,108 @@ const loginUser = async (req, res) => {
 
  // Forget passworld //
 
- const forgotPassword = async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email });
+//  const forgotPassword = async (req, res) => {
+//   const { email } = req.body;
+//   const user = await User.findOne({ email });
 
-  if (!user) return res.status(404).json({ message: "User not found" });
+//   if (!user) return res.status(404).json({ message: "User not found" });
 
-  const token = crypto.randomBytes(32).toString("hex");
-  const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
+//   const token = crypto.randomBytes(32).toString("hex");
+//   const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
 
-  //  Update without save() validation
-  await User.updateOne(
-    { email },
-    {
-      $set: {
-        resetToken: token,
-        resetTokenExpire: Date.now() + 3600000,
-      },
+//   //  Update without save() validation
+//   await User.updateOne(
+//     { email },
+//     {
+//       $set: {
+//         resetToken: token,
+//         resetTokenExpire: Date.now() + 3600000,
+//       },
+//     }
+//   );
+
+//   await sendEmail(
+//     user.email,
+//     " Hey🤔 ! form camclg for Password Reset",
+//     `<p>😪Click this link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
+//   );
+
+//   res.json({ message: "Reset email sent" });
+// };
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate email
+    if (!email) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Please provide email address" 
+      });
     }
-  );
 
-  await sendEmail(
-    user.email,
-    "Password Reset",
-    `<p>Click this link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
-  );
+    // Check if user exists
+    const user = await User.findOne({ email });
 
-  res.json({ message: "Reset email sent" });
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "No account found with this email address" 
+      });
+    }
+
+    // Generate reset token
+    const token = crypto.randomBytes(32).toString("hex");
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${token}`;
+
+    // Update user with reset token
+    await User.updateOne(
+      { email },
+      {
+        $set: {
+          resetToken: token,
+          resetTokenExpire: Date.now() + 3600000, // 1 hour
+        },
+      }
+    );
+
+    // Simple email content
+    const emailContent = `
+      Hello ${user.name || 'User'},
+
+      We received a request to reset your password for your CampusPro account.
+
+      Click the link below to reset your password:
+      ${resetLink}
+
+      This link will expire in 1 hour.
+
+      If you didn't request this, please ignore this email.
+
+      Thanks,
+      CampusPro Team
+    `;
+
+    // Send email
+    await sendEmail(
+      user.email,
+      "Reset Your CampusPro Password",
+      emailContent
+    );
+
+    // Success response
+    res.status(200).json({
+      success: true,
+      message: "Password reset link has been sent to your email address"
+    });
+
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again later"
+    });
+  }
 };
 
 // Reset password function
