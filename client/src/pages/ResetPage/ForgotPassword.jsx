@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify"
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,8 @@ const ForgotPassword = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/auth/forgot-password`,
         { email }
       );
-      setMessage(res.data.message);
+
+  toast.success(res.data.message || "Reset link sent to your email."  ) 
       setEmail("");
     } catch (err) {
       setError(
@@ -31,13 +33,27 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="forgot-password-container">
+    <div className="forgot-password-container mt-10">
       <div className="forgot-password-card">
         <div className="card-header">
-          <h2>Reset Your Password</h2>
-          <p className="subtitle">
-            Enter your email and we'll send you a link to reset your password
-          </p>
+        <div className="text-center">
+  <h2 className="text-2xl md:text-3xl font-bold text-black-900 mb-3">
+    Reset Your Password
+  </h2>
+  
+  <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-4 flex items-center justify-center gap-2">
+    <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span className="text-sm text-blue-700">
+      ⏱️ May take 1-2 minutes — please wait
+    </span>
+  </div>
+  
+  <p className="text-gray-500 text-sm">
+    Enter your email address below and we'll send you a link to reset your password
+  </p>
+</div>
         </div>
 
         <form onSubmit={handleSubmit}>
