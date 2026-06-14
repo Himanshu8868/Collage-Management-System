@@ -387,58 +387,7 @@ const Homepage = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-gray-300 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-white text-lg font-bold mb-4">CampusPro</h3>
-              <p className="mb-4">The complete campus management solution for modern educational institutions.</p>
-              <div className="flex gap-4">
-                {['Twitter', 'Facebook', 'LinkedIn'].map((social) => (
-                  <a key={social} href="#" className="hover:text-white">
-                    {social}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white text-lg font-bold mb-4">Product</h4>
-              <ul className="space-y-2">
-                {['Features', 'Pricing', 'Demo', 'Roadmap'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="hover:text-white">{item}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white text-lg font-bold mb-4">Resources</h4>
-              <ul className="space-y-2">
-                {['Documentation', 'API', 'Help Center', 'Webinars'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="hover:text-white">{item}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white text-lg font-bold mb-4">Company</h4>
-              <ul className="space-y-2">
-                {['About Us', 'Careers', 'Contact', 'Partners'].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="hover:text-white">{item}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-12 pt-8 text-center text-sm">
-            <p>© {new Date().getFullYear()} CampusPro Management System. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+  
     </div>
   );
 };
